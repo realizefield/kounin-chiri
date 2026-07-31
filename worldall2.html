@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>世界の農業 ｜ 高卒認定地理</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#F0FFF4;color:#1A202C;min-height:100vh;}
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,#1A4731 0%,#276749 100%);color:#fff;padding:28px 20px 22px;text-align:center;}
+.hero h1{font-size:22px;font-weight:800;letter-spacing:.05em;margin-bottom:6px;}
+.hero p{font-size:13px;opacity:.85;}
+/* ===== WRAP ===== */
+.wrap{max-width:720px;margin:0 auto;padding:16px 12px 60px;}
+/* ===== UNIT WRAP ===== */
+.unit-wrap{margin-bottom:32px;}
+/* ===== STAGE ===== */
+.stage{background:#fff;border-radius:14px;border:1px solid #B2F5EA;margin-bottom:16px;overflow:hidden;}
+.stage-head{background:linear-gradient(90deg,#2C7A7B,#38A169);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.stage-label{font-size:15px;font-weight:700;}
+.stage-body{padding:16px;}
+/* ===== CHALLENGE ===== */
+.stage.challenge .stage-body{padding:16px;}
+.stage-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ch-btn{border:none;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;}
+.ch-btn.start{background:#F6E05E;color:#744210;}
+.ch-btn.judge{background:#68D391;color:#1A4731;}
+.ch-btn.example{background:#90CDF4;color:#1A365D;}
+.ch-btn.reset{background:#FBD38D;color:#744210;}
+.ch-btn:disabled{opacity:.4;cursor:default;}
+.timer{font-size:13px;font-weight:700;color:#F6E05E;min-width:52px;}
+/* ===== READ BOX ===== */
+.read-box{padding:12px 16px;background:#F0FFF4;border-radius:10px;margin-bottom:12px;}
+.blank{display:inline-block;min-width:80px;border-bottom:2px solid #2C7A7B;color:#2C7A7B;font-weight:700;text-align:center;padding:0 4px;cursor:pointer;transition:background .2s;}
+.blank.filled{background:#C6F6D5;border-radius:4px;color:#276749;}
+.blank.correct{background:#9AE6B4;border-radius:4px;color:#22543D;}
+.blank.wrong{background:#FED7D7;border-radius:4px;color:#9B2C2C;border-bottom-color:#E53E3E;}
+/* ===== WORD BANK ===== */
+.word-bank{display:none;}
+.word-bank.active{
+  display:block;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:200;
+  background:#EBF8FF;
+  border-radius:16px 16px 0 0;
+  box-shadow:0 -4px 24px rgba(0,0,0,.22);
+  padding:10px 14px 24px;
+}
+.wb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.wb-title{font-size:12px;color:#2C5282;font-weight:700;}
+.wb-close{background:none;border:none;font-size:18px;color:#2C5282;cursor:pointer;line-height:1;padding:0 4px;}
+.wb-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{background:#fff;border:1.5px solid #63B3ED;border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer;font-weight:600;color:#2B6CB0;transition:background .15s;}
+.chip:hover{background:#BEE3F8;}
+.chip.used{opacity:.3;pointer-events:none;}
+/* body padding when bank is open */
+body.bank-open{padding-bottom:160px;}
+/* ===== STAGE CLEAR ===== */
+.stage-clear{display:none;text-align:center;padding:14px;font-size:18px;font-weight:800;color:#276749;animation:pop .4s ease;}
+@keyframes pop{0%{transform:scale(.5);opacity:0;}70%{transform:scale(1.15);}100%{transform:scale(1);opacity:1;}}
+/* ===== RANKING ===== */
+.ranking{background:#FEFCE8;border:1px solid #FBBF24;border-radius:12px;padding:12px 16px;margin-bottom:16px;}
+.ranking h3{font-size:14px;color:#92400E;margin-bottom:8px;}
+.ranking ul{list-style:none;font-size:13px;color:#78350F;}
+.ranking ul li{padding:2px 0;}
+/* ===== FIGURE ===== */
+.fig-wrap{text-align:center;margin-bottom:12px;}
+.fig-wrap img{max-width:100%;border-radius:8px;border:1px solid #B2F5EA;}
+/* ===== CONFIRM QUIZ (4択) ===== */
+.q-block{background:#fff;border:1px solid #B2F5EA;border-radius:14px;padding:16px;margin-bottom:16px;}
+.q-title{font-size:15px;font-weight:800;color:#276749;margin-bottom:14px;}
+.q4{margin-bottom:20px;}
+.q4-stem{font-size:14px;font-weight:700;margin-bottom:8px;line-height:1.7;}
+.q4-num{color:#2C7A7B;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.q4-c{border:1.5px solid #B2F5EA;border-radius:10px;padding:10px 8px;font-size:13px;background:#F0FFF4;cursor:pointer;font-weight:600;transition:background .15s,border-color .15s;text-align:center;}
+.q4-c:hover:not(:disabled){background:#C6F6D5;border-color:#68D391;}
+.q4-c.correct{background:#9AE6B4;border-color:#38A169;color:#1A4731;}
+.q4-c.wrong{background:#FED7D7;border-color:#E53E3E;color:#9B2C2C;}
+.q4-exp{font-size:12px;color:#276749;background:#F0FFF4;border-radius:8px;padding:8px 10px;display:none;line-height:1.7;}
+.q4-exp.show{display:block;}
+.q-reset{display:block;margin:8px auto 0;background:#E2E8F0;border:none;border-radius:20px;padding:7px 22px;font-size:13px;font-weight:700;cursor:pointer;color:#2D3748;}
+/* ===== AGRI CARDS ===== */
+.agri-card{border-radius:12px;border:2px solid;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.1);margin-bottom:12px;}
+.agri-head{display:flex;align-items:center;gap:8px;padding:10px 14px;}
+.agri-icon{font-size:22px;line-height:1;}
+.agri-zone{font-size:14px;font-weight:800;}
+.agri-region{font-size:11px;opacity:.75;}
+.agri-body{padding:10px 14px 14px;font-size:13.5px;line-height:1.9;}
+.agri-kw{font-weight:800;border-bottom:2px solid;border-radius:2px;padding:0 2px;}
+/* 色テーマ */
+.ac-eu{background:#EDF7F0;border-color:#38A169;} .ac-eu .agri-head{background:#38A169;} .ac-eu .agri-zone,.ac-eu .agri-region{color:#fff;} .ac-eu .agri-kw{border-bottom-color:#276749;color:#1b5e35;}
+.ac-as{background:#FFF7DC;border-color:#D4A017;} .ac-as .agri-head{background:#D4A017;} .ac-as .agri-zone,.ac-as .agri-region{color:#fff;} .ac-as .agri-kw{border-bottom-color:#A07810;color:#7a5000;}
+.ac-in{background:#FFF0DC;border-color:#E07820;} .ac-in .agri-head{background:#E07820;} .ac-in .agri-zone,.ac-in .agri-region{color:#fff;} .ac-in .agri-kw{border-bottom-color:#B04010;color:#7a3000;}
+.ac-ru{background:#E8F0FF;border-color:#4A6FA8;} .ac-ru .agri-head{background:#4A6FA8;} .ac-ru .agri-zone,.ac-ru .agri-region{color:#fff;} .ac-ru .agri-kw{border-bottom-color:#2a4f88;color:#1a2f60;}
+.ac-us{background:#FDE8FF;border-color:#9040B0;} .ac-us .agri-head{background:#9040B0;} .ac-us .agri-zone,.ac-us .agri-region{color:#fff;} .ac-us .agri-kw{border-bottom-color:#7020A0;color:#4a1060;}
+/* ===== CONFETTI ===== */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;animation:fall 1.2s ease-in forwards;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#2C7A7B;color:#fff;border-radius:20px;padding:10px 22px;font-size:14px;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌾 世界の農業</h1>
+  <p>高卒認定・中高基礎地理 ｜ 江原予備校</p>
+</div>
+
+<div class="wrap" id="wrap">
+
+  <!-- ===== UNIT 1: 世界の農業 説明 ===== -->
+  <div class="unit-wrap">
+
+    <!-- 説明パネル -->
+    <div class="stage">
+      <div class="stage-head">
+        <span class="stage-label">📖 Unit 1　世界の主な農作物と栽培地域</span>
+      </div>
+      <div class="stage-body">
+
+        <div class="fig-wrap" style="margin-bottom:14px;">
+          <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldagri1.png" alt="世界の農業地図">
+        </div>
+
+        <!-- ① ドイツ 混合農業 -->
+        <div class="agri-card ac-eu">
+          <div class="agri-head">
+            <span class="agri-icon">🇩🇪</span>
+            <div>
+              <div class="agri-zone">① ドイツを中心とするヨーロッパ ―― 混合農業</div>
+              <div class="agri-region">西ヨーロッパ・中央ヨーロッパ</div>
+            </div>
+          </div>
+          <div class="agri-body">
+            穀物（小麦・ライ麦など）の栽培と、豚・牛などの<span class="agri-kw ac-eu">家畜飼育</span>を組み合わせた農業を
+            <span class="agri-kw ac-eu">混合農業</span>という。<br>
+            土地の力を保つために、同じ畑で毎年異なる作物を順番に育てる<span class="agri-kw ac-eu">輪作</span>が行われる。<br>
+            北海沿岸など降水量の多い地域では、牛を飼い乳・バター・チーズを生産する<span class="agri-kw ac-eu">酪農</span>も盛ん。
+          </div>
+          <div class="fig-wrap" style="padding:0 14px 14px;">
+            <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldagrikongou.png" alt="ドイツの混合農業">
+          </div>
+        </div>
+
+        <!-- ② 東南アジア・インド南岸 コメ -->
+        <div class="agri-card ac-as">
+          <div class="agri-head">
+            <span class="agri-icon">🌾</span>
+            <div>
+              <div class="agri-zone">② 東南アジア・インド南岸 ―― 米作り</div>
+              <div class="agri-region">東南アジア全域・インド南部・中国南部</div>
+            </div>
+          </div>
+          <div class="agri-body">
+            夏に大量の雨をもたらす<span class="agri-kw ac-as">モンスーン</span>（季節風）の影響で高温多雨になる地域では、
+            稲作（コメの栽培）が盛ん。<br>
+            チャオプラヤ川（タイ）・メコン川・ガンジス川の流域など、大河の三角州（デルタ）は
+            特に米の大産地になっている。<br>
+            人口が多く、収穫した米のほとんどは国内で消費される。
+          </div>
+        </div>
+
+        <!-- ③ デカン高原 綿花 -->
+        <div class="agri-card ac-in">
+          <div class="agri-head">
+            <span class="agri-icon">🌿</span>
+            <div>
+              <div class="agri-zone">③ インド デカン高原 ―― 綿花</div>
+              <div class="agri-region">インド中部・デカン高原</div>
+            </div>
+          </div>
+          <div class="agri-body">
+            インド中部のデカン高原には、玄武岩が風化してできた
+            <span class="agri-kw ac-in">レグール土</span>（黒色土）が広がる。<br>
+            この土は保水性が高く<span class="agri-kw ac-in">綿花</span>の栽培に最適で、インドを世界有数の綿花生産国にしている。<br>
+            綿花から繊維をとり、綿糸・綿製品の原料となる。
+          </div>
+        </div>
+
+        <!-- ④ ロシア・ウクライナ 黒土 小麦 -->
+        <div class="agri-card ac-ru">
+          <div class="agri-head">
+            <span class="agri-icon">🌿</span>
+            <div>
+              <div class="agri-zone">④ ロシア・ウクライナ ―― 黒土と小麦</div>
+              <div class="agri-region">ロシア南部・ウクライナ（黒土地帯）</div>
+            </div>
+          </div>
+          <div class="agri-body">
+            ロシア南部からウクライナにかけては、草原（ステップ）地帯の腐植土が積み重なった
+            <span class="agri-kw ac-ru">チェルノーゼム</span>（黒土）が分布する。<br>
+            非常に肥沃なこの土地で、<span class="agri-kw ac-ru">小麦</span>が大規模に栽培されている。<br>
+            ウクライナは「ヨーロッパのパンかご」と呼ばれるほど小麦の一大産地。
+          </div>
+        </div>
+
+        <!-- ⑤ アメリカ 企業的農法 -->
+        <div class="agri-card ac-us">
+          <div class="agri-head">
+            <span class="agri-icon">🇺🇸</span>
+            <div>
+              <div class="agri-zone">⑤ アメリカ ―― 企業的農業</div>
+              <div class="agri-region">アメリカ中西部〜南部</div>
+            </div>
+          </div>
+          <div class="agri-body">
+            アメリカでは広大な農地に少ない労働力で大型機械を使う<span class="agri-kw ac-us">企業的農業</span>が特徴。<br>
+            地域ごとに作物が特化した「ベルト」が形成される。<br>
+            ・<span class="agri-kw ac-us">コーンベルト</span>（中西部）: トウモロコシ・大豆を大量生産。家畜の飼料にもなる。<br>
+            ・<span class="agri-kw ac-us">コットンベルト</span>（南部）: 綿花の産地。かつては奴隷労働で成立した歴史をもつ。<br>
+            収穫物の多くは輸出され、世界の食料供給を支えている。
+          </div>
+          <div class="fig-wrap" style="padding:0 14px 14px;">
+            <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldagridaikibo.png" alt="アメリカの企業的農業">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ミニテスト 農業 -->
+    <div class="stage challenge" data-id="agri">
+      <div class="stage-head">
+        <span class="stage-label">✏️ ミニテスト（9問）</span>
+        <div class="stage-actions">
+          <span class="timer" id="timer_agri" style="display:none">0:00.0</span>
+          <button class="ch-btn start" onclick="startChallenge('agri')">▶ チャレンジ開始</button>
+          <button class="ch-btn judge" id="judge_agri" style="display:none" onclick="judge('agri')">✓ 判定</button>
+          <button class="ch-btn example" id="example_agri" style="display:none" onclick="showExample('agri')">📖 手本を見る</button>
+          <button class="ch-btn reset" id="reset_agri" style="display:none" onclick="resetChallenge('agri')">↻ リセット</button>
+        </div>
+      </div>
+
+      <div class="fig-wrap" style="margin:12px 0;">
+        <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldagri1.png" alt="世界の農業地図（ミニテスト）">
+      </div>
+
+      <div class="read-box" id="rb_agri">
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ① ドイツでは穀物栽培と家畜飼育を組み合わせた
+          <span class="blank" data-a="混合農業">混合農業</span> が発達した。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ② 牛を飼い乳製品を生産する <span class="blank" data-a="酪農">酪農</span> も北海沿岸で盛ん。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ③ 毎年異なる作物を順番に栽培する <span class="blank" data-a="輪作">輪作</span> で地力を保つ。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ④ 東南アジア・インド南岸では夏の
+          <span class="blank" data-a="モンスーン">モンスーン</span>（季節風）の雨でコメを栽培する。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑤ インドのデカン高原に広がる黒い土
+          <span class="blank" data-a="レグール土">レグール土</span> は綿花栽培に適している。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑥ ロシア・ウクライナに広がる肥沃な黒土を
+          <span class="blank" data-a="チェルノーゼム">チェルノーゼム</span> という。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑦ アメリカでは大型機械で広大な農地を経営する
+          <span class="blank" data-a="企業的農業">企業的農業</span> が特徴。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑧ アメリカ中西部のトウモロコシ産地は
+          <span class="blank" data-a="コーンベルト">コーンベルト</span> と呼ばれる。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑨ アメリカ南部の綿花産地は
+          <span class="blank" data-a="コットンベルト">コットンベルト</span> と呼ばれる。
+        </p>
+      </div>
+
+      <div class="word-bank" id="wb_agri">
+        <div class="wb-header">
+          <span class="wb-title">🗂 語群 — タップして選ぼう</span>
+          <button class="wb-close" onclick="toggleBank('agri')" title="閉じる">⌄</button>
+        </div>
+        <div class="wb-chips" id="wc_agri"></div>
+      </div>
+      <div class="stage-clear"></div>
+    </div>
+    <div class="ranking"><h3>🏆 ベストタイム</h3><ul id="rank_agri"></ul></div>
+
+    <!-- 確認問題 -->
+    <div class="q-block">
+      <div class="q-title">✅ 確認問題（4問）</div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問1．</span>ドイツなど西ヨーロッパで発達した、穀物栽培と家畜飼育を組み合わせた農業は何か？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">酪農</button>
+          <button class="q4-c" data-ans="1">混合農業</button>
+          <button class="q4-c" data-ans="0">企業的農業</button>
+          <button class="q4-c" data-ans="0">プランテーション農業</button>
+        </div>
+        <div class="q4-exp">穀物栽培と家畜飼育を組み合わせたのが混合農業。輪作で地力を保ちながら持続的に生産する。酪農は乳製品生産に特化した農業。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問2．</span>インドのデカン高原に広がる、綿花栽培に適した黒い土を何というか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">チェルノーゼム</button>
+          <button class="q4-c" data-ans="0">ラトソル</button>
+          <button class="q4-c" data-ans="1">レグール土</button>
+          <button class="q4-c" data-ans="0">テラロッサ</button>
+        </div>
+        <div class="q4-exp">レグール土は玄武岩が風化した黒色土。保水性が高く綿花栽培に適する。チェルノーゼムはロシア・ウクライナの黒土（小麦向き）。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問3．</span>ロシア・ウクライナに分布する肥沃な黒土を何というか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="1">チェルノーゼム</button>
+          <button class="q4-c" data-ans="0">レグール土</button>
+          <button class="q4-c" data-ans="0">テラロッサ</button>
+          <button class="q4-c" data-ans="0">ラトソル</button>
+        </div>
+        <div class="q4-exp">チェルノーゼム（黒土）はロシア語で「黒い土地」の意。草原が積み重なった腐植土で非常に肥沃。小麦の大産地を形成している。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問4．</span>アメリカ中西部のトウモロコシ・大豆の大産地を何と呼ぶか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">コットンベルト</button>
+          <button class="q4-c" data-ans="0">グレートプレーンズ</button>
+          <button class="q4-c" data-ans="1">コーンベルト</button>
+          <button class="q4-c" data-ans="0">プレーリー</button>
+        </div>
+        <div class="q4-exp">コーンベルトはアメリカ中西部のトウモロコシ・大豆の産地帯。コットンベルトは南部の綿花産地帯。どちらも企業的農業が行われる。</div>
+      </div>
+
+      <button class="q-reset" onclick="resetQBlock(this)">↻ もう一度</button>
+    </div>
+
+  </div><!-- /unit-wrap -->
+
+  <!-- ===== UNIT 2: 世界の農作物 生産上位5か国 ===== -->
+  <div class="unit-wrap">
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="stage-label">📖 Unit 2　世界の農作物 ― 生産上位5か国の割合</span>
+      </div>
+      <div class="stage-body">
+
+        <div class="fig-wrap" style="margin-bottom:16px;">
+          <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldagrijuni.png" alt="世界の農作物生産量 上位5か国の割合">
+        </div>
+
+        <!-- 米 -->
+        <div class="agri-card ac-as">
+          <div class="agri-head">
+            <span class="agri-icon">🍚</span>
+            <div>
+              <div class="agri-zone">米（コメ）― モンスーン地域で生産</div>
+              <div class="agri-region">中国 28.7% ／ インド 18.4% ／ インドネシア 7.1% ／ バングラデシュ 1.8% ／ ベトナム 1.7%</div>
+            </div>
+          </div>
+          <div class="agri-body">
+            上位5か国はすべて<span class="agri-kw ac-as">モンスーン</span>（季節風）の影響を受ける<span class="agri-kw ac-as">アジア</span>の国々。夏の高温多雨が稲作に最適。<br>
+            生産量1位は<span class="agri-kw ac-as">中国</span>だが、輸出量の上位は<span class="agri-kw ac-as">インド・タイ・ベトナム</span>。<br>
+            <span style="color:#B04010;font-weight:700;">⚠️ 注意：</span>中国は人口が多く、生産した米のほとんどが<span class="agri-kw ac-as">国内消費</span>されるため輸出が少ない。
+          </div>
+          <div class="fig-wrap" style="padding:0 14px 14px;">
+            <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldagrijuni2.png" alt="コメの輸出国 上位5か国の割合">
+          </div>
+        </div>
+
+        <!-- 小麦・ブドウ・オリーブ（ヨーロッパ） -->
+        <div class="agri-card ac-eu">
+          <div class="agri-head">
+            <span class="agri-icon">🌾🍷🫒</span>
+            <div>
+              <div class="agri-zone">小麦・ブドウ・オリーブ ― ヨーロッパ</div>
+              <div class="agri-region">フランス（小麦・ブドウ）／ スペイン・イタリア（オリーブ・ブドウ）</div>
+            </div>
+          </div>
+          <div class="agri-body">
+            <strong>小麦</strong>：中国・インド・ロシア・アメリカ・<span class="agri-kw ac-eu">フランス</span>（5位）。フランスが入ることで「農業大国フランス」と判断できる。<br>
+            <strong>ブドウ</strong>：イタリア・<span class="agri-kw ac-eu">フランス</span>・スペインが上位3位。地中海性気候の温暖な夏が適する。<br>
+            <strong>オリーブ</strong>：<span class="agri-kw ac-eu">スペイン</span>（21.6%）が世界1位。イタリア・ギリシャも上位。地中海沿岸の乾燥した夏が栽培に向く。
+          </div>
+        </div>
+
+        <!-- 綿花 -->
+        <div class="agri-card ac-in">
+          <div class="agri-head">
+            <span class="agri-icon">🌿</span>
+            <div>
+              <div class="agri-zone">綿花 ― 中国・インド・アメリカ・パキスタン</div>
+              <div class="agri-region">中国 23.2% ／ インド 19.1% ／ アメリカ 11.0% ／ ブラジル 5.7% ／ パキスタン 0.6%</div>
+            </div>
+          </div>
+          <div class="agri-body">
+            綿花の生産は<span class="agri-kw ac-in">中国・インド・アメリカ</span>が3強。<span class="agri-kw ac-in">パキスタン</span>も上位に入る。<br>
+            インドのデカン高原のレグール土（黒色土）、アメリカのコットンベルト（南部）が代表的産地。
+          </div>
+        </div>
+
+        <!-- コーヒー・カカオ -->
+        <div class="agri-card ac-us">
+          <div class="agri-head">
+            <span class="agri-icon">☕🍫</span>
+            <div>
+              <div class="agri-zone">コーヒー・カカオ ― 熱帯産品</div>
+              <div class="agri-region">コーヒー：ブラジル 37.3% ／ ベトナム 17.1%　 カカオ：コートジボワール 43.8% ／ ガーナ 15.8%</div>
+            </div>
+          </div>
+          <div class="agri-body">
+            <strong>コーヒー</strong>：<span class="agri-kw ac-us">ブラジル</span>が世界の約4割を生産（世界1位）。2位は<span class="agri-kw ac-us">ベトナム</span>（17.1%）。<br>
+            <strong>カカオ</strong>（チョコレートの原料）：<span class="agri-kw ac-us">コートジボワール</span>（西アフリカ）が約44%で圧倒的1位、2位は<span class="agri-kw ac-us">ガーナ</span>。<br>
+            どちらも元フランス領の西アフリカに位置し、熱帯性気候を活かしたプランテーション農業が盛ん。
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ミニテスト Unit2 -->
+    <div class="stage challenge" data-id="agri2">
+      <div class="stage-head">
+        <span class="stage-label">✏️ ミニテスト（6問）</span>
+        <div class="stage-actions">
+          <span class="timer" id="timer_agri2" style="display:none">0:00.0</span>
+          <button class="ch-btn start" onclick="startChallenge('agri2')">▶ チャレンジ開始</button>
+          <button class="ch-btn judge" id="judge_agri2" style="display:none" onclick="judge('agri2')">✓ 判定</button>
+          <button class="ch-btn example" id="example_agri2" style="display:none" onclick="showExample('agri2')">📖 手本を見る</button>
+          <button class="ch-btn reset" id="reset_agri2" style="display:none" onclick="resetChallenge('agri2')">↻ リセット</button>
+        </div>
+      </div>
+
+      <div class="fig-wrap" style="margin:12px 0;">
+        <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldagrijuni.png" alt="世界の農作物生産量（ミニテスト）">
+      </div>
+
+      <div class="read-box" id="rb_agri2">
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ① コメの生産量世界1位の国は <span class="blank" data-a="中国">中国</span>（28.7%）。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ② コメの輸出量世界1位の国は <span class="blank" data-a="インド">インド</span>（23.7%）。中国は生産量1位でも輸出が少ない。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ③ コメ生産の上位国がアジアに集中する理由 → 夏の <span class="blank" data-a="モンスーン">モンスーン</span>（季節風）による高温多雨。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ④ オリーブ生産世界1位（21.6%）の国は <span class="blank" data-a="スペイン">スペイン</span>。地中海性気候が栽培に適する。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑤ コーヒー生産量世界1位（37.3%）の国は <span class="blank" data-a="ブラジル">ブラジル</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑥ カカオ（チョコレートの原料）生産世界1位（43.8%）は <span class="blank" data-a="コートジボワール">コートジボワール</span>（西アフリカ・元フランス領）。
+        </p>
+      </div>
+
+      <div class="word-bank" id="wb_agri2">
+        <div class="wb-header">
+          <span class="wb-title">🗂 語群 — タップして選ぼう</span>
+          <button class="wb-close" onclick="toggleBank('agri2')" title="閉じる">⌄</button>
+        </div>
+        <div class="wb-chips" id="wc_agri2"></div>
+      </div>
+      <div class="stage-clear"></div>
+    </div>
+    <div class="ranking"><h3>🏆 ベストタイム</h3><ul id="rank_agri2"></ul></div>
+
+    <!-- 確認問題 Unit2 -->
+    <div class="q-block">
+      <div class="q-title">✅ 確認問題（4問）</div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問1．</span>コメの生産量は中国が世界1位なのに、輸出量の上位にならない理由は何か？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">コメの品質が低いから</button>
+          <button class="q4-c" data-ans="1">人口が多く生産量のほとんどが国内で消費されるから</button>
+          <button class="q4-c" data-ans="0">コメの輸出が法律で禁止されているから</button>
+          <button class="q4-c" data-ans="0">中国は小麦の輸出を優先しているから</button>
+        </div>
+        <div class="q4-exp">中国はコメ生産量世界1位だが、約14億の人口を抱えており、収穫量のほとんどが国内消費に回される。輸出量上位はインド・タイ・ベトナムなど。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問2．</span>オリーブ生産量世界1位（21.6%）の国はどこか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">イタリア</button>
+          <button class="q4-c" data-ans="0">フランス</button>
+          <button class="q4-c" data-ans="1">スペイン</button>
+          <button class="q4-c" data-ans="0">ギリシャ</button>
+        </div>
+        <div class="q4-exp">スペインは地中海性気候で夏の乾燥がオリーブ栽培に適し、世界生産の約22%を占める。イタリア・ギリシャも上位。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問3．</span>コーヒー生産量世界1位の国はどこか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">コロンビア</button>
+          <button class="q4-c" data-ans="0">ベトナム</button>
+          <button class="q4-c" data-ans="1">ブラジル</button>
+          <button class="q4-c" data-ans="0">エチオピア</button>
+        </div>
+        <div class="q4-exp">ブラジルは世界のコーヒー生産の約37%を占め圧倒的1位。熱帯〜亜熱帯の高原地帯（テラローシャ土壌）で大規模栽培される。2位はベトナム（17.1%）。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問4．</span>チョコレートの原料カカオを最も多く生産する国はどこか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">ガーナ</button>
+          <button class="q4-c" data-ans="0">インドネシア</button>
+          <button class="q4-c" data-ans="0">ナイジェリア</button>
+          <button class="q4-c" data-ans="1">コートジボワール</button>
+        </div>
+        <div class="q4-exp">コートジボワール（西アフリカ）は世界のカカオ生産の約44%を占める。かつてのフランス植民地で、プランテーション農業によりカカオが大量栽培される。2位はガーナ（15.8%）。</div>
+      </div>
+
+      <button class="q-reset" onclick="resetQBlock(this)">↻ もう一度</button>
+    </div>
+
+  </div><!-- /unit-wrap u2 -->
+
+</div><!-- /wrap -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== BANKS =====
+const BANKS = {
+  agri:  ['混合農業','酪農','輪作','モンスーン','レグール土','チェルノーゼム','企業的農業','コーンベルト','コットンベルト'],
+  agri2: ['中国','インド','モンスーン','スペイン','ブラジル','コートジボワール'],
+};
+
+// ===== TIMER =====
+var timers = {};
+function startTimer(id){
+  if(timers[id]) clearInterval(timers[id].iv);
+  timers[id] = {start: performance.now(), iv: null};
+  var el = document.getElementById('timer_'+id);
+  el.style.display='inline';
+  timers[id].iv = setInterval(function(){
+    var ms = performance.now() - timers[id].start;
+    var s = Math.floor(ms/1000);
+    var m = Math.floor(s/60);
+    el.textContent = m+':'+(s%60<10?'0':'')+(s%60)+'.'+(Math.floor(ms/100)%10);
+  },100);
+}
+function stopTimer(id){
+  if(timers[id]) clearInterval(timers[id].iv);
+  return timers[id] ? (performance.now()-timers[id].start) : 0;
+}
+
+// ===== CHALLENGE =====
+function startChallenge(id){
+  var rb = document.getElementById('rb_'+id);
+  var wb = document.getElementById('wb_'+id);
+  var wc = document.getElementById('wc_'+id);
+  rb.querySelectorAll('.blank').forEach(function(b){
+    b.textContent='';
+    b.classList.remove('filled','correct','wrong');
+    b.dataset.filled='';
+  });
+  var words = BANKS[id].slice().sort(function(){return Math.random()-.5;});
+  wc.innerHTML='';
+  words.forEach(function(w){
+    var c=document.createElement('span');
+    c.className='chip'; c.textContent=w;
+    c.onclick=function(){placeWord(id,w,c);};
+    wc.appendChild(c);
+  });
+  wb.classList.add('active');
+  document.body.classList.add('bank-open');
+  document.querySelector('[data-id="'+id+'"] .ch-btn.start').style.display='none';
+  document.getElementById('judge_'+id).style.display='inline';
+  document.getElementById('example_'+id).style.display='inline';
+  document.getElementById('reset_'+id).style.display='inline';
+  startTimer(id);
+}
+
+function placeWord(id,word,chip){
+  var rb = document.getElementById('rb_'+id);
+  var blanks = rb.querySelectorAll('.blank');
+  for(var i=0;i<blanks.length;i++){
+    if(!blanks[i].dataset.filled){
+      blanks[i].textContent=word;
+      blanks[i].dataset.filled=word;
+      blanks[i].classList.add('filled');
+      chip.classList.add('used');
+      (function(bl,ch){
+        bl.onclick=function(){
+          bl.textContent=''; bl.dataset.filled=''; bl.classList.remove('filled','correct','wrong');
+          ch.classList.remove('used'); bl.onclick=null;
+        };
+      })(blanks[i],chip);
+      return;
+    }
+  }
+}
+
+function judge(id){
+  var ms = stopTimer(id);
+  var rb = document.getElementById('rb_'+id);
+  var blanks = rb.querySelectorAll('.blank');
+  var allOk=true;
+  blanks.forEach(function(b){
+    var ok = b.dataset.filled === b.dataset.a;
+    b.classList.remove('filled');
+    b.classList.add(ok?'correct':'wrong');
+    if(!ok) allOk=false;
+  });
+  if(allOk){
+    document.querySelector('[data-id="'+id+'"] .stage-clear').style.display='block';
+    document.querySelector('[data-id="'+id+'"] .stage-clear').textContent='🎉 全問正解！';
+    document.getElementById('wb_'+id).classList.remove('active');
+    document.body.classList.remove('bank-open');
+    saveRank(id, ms);
+    fireConfetti();
+  }
+}
+
+function showExample(id){
+  stopTimer(id);
+  var rb = document.getElementById('rb_'+id);
+  rb.querySelectorAll('.blank').forEach(function(b){
+    b.textContent=b.dataset.a;
+    b.dataset.filled=b.dataset.a;
+    b.classList.remove('wrong');
+    b.classList.add('correct');
+  });
+  document.getElementById('wb_'+id).classList.remove('active');
+  document.body.classList.remove('bank-open');
+}
+
+function resetChallenge(id){
+  var rb = document.getElementById('rb_'+id);
+  rb.querySelectorAll('.blank').forEach(function(b){
+    b.textContent=b.dataset.a; b.dataset.filled=''; b.classList.remove('filled','correct','wrong'); b.onclick=null;
+  });
+  document.getElementById('wb_'+id).classList.remove('active');
+  document.body.classList.remove('bank-open');
+  document.getElementById('wc_'+id).innerHTML='';
+  document.getElementById('timer_'+id).style.display='none';
+  document.querySelector('[data-id="'+id+'"] .ch-btn.start').style.display='inline';
+  document.getElementById('judge_'+id).style.display='none';
+  document.getElementById('example_'+id).style.display='none';
+  document.getElementById('reset_'+id).style.display='none';
+  document.querySelector('[data-id="'+id+'"] .stage-clear').style.display='none';
+  stopTimer(id);
+}
+
+// ===== TOGGLE BANK =====
+function toggleBank(id){
+  var wb = document.getElementById('wb_'+id);
+  if(wb.classList.contains('active')){
+    wb.classList.remove('active');
+    document.body.classList.remove('bank-open');
+  } else {
+    wb.classList.add('active');
+    document.body.classList.add('bank-open');
+  }
+}
+
+// ===== RANKING =====
+function saveRank(id, ms){
+  var key='gamba_world_'+id;
+  var list=JSON.parse(localStorage.getItem(key)||'[]');
+  var s=Math.floor(ms/1000), m=Math.floor(s/60);
+  var label=m+':'+(s%60<10?'0':'')+(s%60)+'.'+(Math.floor(ms/100)%10);
+  list.push({t:ms,label:label});
+  list.sort(function(a,b){return a.t-b.t;});
+  list=list.slice(0,5);
+  localStorage.setItem(key,JSON.stringify(list));
+  loadRank(id);
+}
+
+function loadRank(id){
+  var key='gamba_world_'+id;
+  var list=JSON.parse(localStorage.getItem(key)||'[]');
+  var ul=document.getElementById('rank_'+id);
+  if(!ul) return;
+  var medals=['🥇','🥈','🥉','4位','5位'];
+  ul.innerHTML='';
+  if(list.length===0){ul.innerHTML='<li style="color:#A0AEC0">まだ記録なし</li>';return;}
+  list.forEach(function(r,i){
+    var li=document.createElement('li');
+    li.textContent=medals[i]+' '+r.label;
+    ul.appendChild(li);
+  });
+}
+
+// ===== Q4 =====
+function initQ4(){
+  document.querySelectorAll('.q4-c').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var q4=this.closest('.q4');
+      if(q4.querySelector('.q4-c.correct,.q4-c.wrong')) return;
+      var correct=this.dataset.ans==='1';
+      this.classList.add(correct?'correct':'wrong');
+      q4.querySelectorAll('.q4-c').forEach(function(b){b.disabled=true;});
+      if(correct){q4.querySelector('.q4-exp').classList.add('show');fireConfetti();}
+      else{
+        var ans=q4.querySelector('.q4-c[data-ans="1"]');
+        if(ans){ans.classList.add('correct');}
+        q4.querySelector('.q4-exp').classList.add('show');
+      }
+    });
+  });
+}
+
+function resetQBlock(btn){
+  var block=btn.closest('.q-block');
+  block.querySelectorAll('.q4-c').forEach(function(b){b.classList.remove('correct','wrong');b.disabled=false;});
+  block.querySelectorAll('.q4-exp').forEach(function(e){e.classList.remove('show');});
+}
+
+// ===== CONFETTI =====
+function fireConfetti(){
+  var colors=['#F6E05E','#68D391','#90CDF4','#FBD38D','#FEB2B2','#B794F4'];
+  for(var i=0;i<30;i++){
+    (function(i){
+      setTimeout(function(){
+        var d=document.createElement('div');
+        d.className='confetti-piece';
+        d.style.left=Math.random()*100+'vw';
+        d.style.top='-10px';
+        d.style.background=colors[Math.floor(Math.random()*colors.length)];
+        d.style.animationDuration=(0.8+Math.random()*0.8)+'s';
+        document.body.appendChild(d);
+        setTimeout(function(){d.remove();},1600);
+      },i*40);
+    })(i);
+  }
+}
+
+// ===== TOAST =====
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2200);
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded',function(){
+  loadRank('agri');
+  loadRank('agri2');
+  initQ4();
+});
+</script>
+</body>
+</html>
