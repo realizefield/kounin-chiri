@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>地図の見方・地形図 ｜ 高卒認定地理</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#F0FFF4;color:#1A202C;min-height:100vh;}
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,#1A4731 0%,#276749 100%);color:#fff;padding:28px 20px 22px;text-align:center;}
+.hero h1{font-size:22px;font-weight:800;letter-spacing:.05em;margin-bottom:6px;}
+.hero p{font-size:13px;opacity:.85;}
+/* ===== UNIT NAVIGATION ===== */
+.unit-nav{display:flex;gap:6px;justify-content:center;align-items:center;padding:10px 12px;background:#E6FFFA;border-bottom:2px solid #B2F5EA;}
+.unav-btn{display:inline-flex;align-items:center;gap:3px;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;transition:background .15s,opacity .15s;white-space:nowrap;}
+.unav-btn.prev{background:#fff;color:#2C7A7B;border:1.5px solid #81E6D9;}
+.unav-btn.prev:hover{background:#E6FFFA;}
+.unav-btn.home{background:#2C7A7B;color:#fff;border:1.5px solid #2C7A7B;flex-shrink:0;}
+.unav-btn.home:hover{background:#276749;}
+.unav-btn.next{background:#38A169;color:#fff;border:1.5px solid #38A169;}
+.unav-btn.next:hover{background:#276749;}
+.unav-btn.disabled{opacity:.35;pointer-events:none;cursor:default;}
+/* ===== WRAP ===== */
+.wrap{max-width:720px;margin:0 auto;padding:16px 12px 60px;}
+/* ===== UNIT WRAP ===== */
+.unit-wrap{margin-bottom:32px;}
+/* ===== STAGE ===== */
+.stage{background:#fff;border-radius:14px;border:1px solid #B2F5EA;margin-bottom:16px;overflow:hidden;}
+.stage-head{background:linear-gradient(90deg,#2C7A7B,#38A169);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.stage-label{font-size:15px;font-weight:700;}
+.stage-body{padding:16px;}
+/* ===== CHALLENGE ===== */
+.stage-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ch-btn{border:none;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;}
+.ch-btn.start{background:#F6E05E;color:#744210;}
+.ch-btn.judge{background:#68D391;color:#1A4731;}
+.ch-btn.example{background:#90CDF4;color:#1A365D;}
+.ch-btn.reset{background:#FBD38D;color:#744210;}
+.ch-btn:disabled{opacity:.4;cursor:default;}
+.timer{font-size:13px;font-weight:700;color:#F6E05E;min-width:52px;}
+/* ===== READ BOX ===== */
+.read-box{padding:12px 16px;background:#F0FFF4;border-radius:10px;margin-bottom:12px;}
+.blank{display:inline-block;min-width:80px;border-bottom:2px solid #2C7A7B;color:#2C7A7B;font-weight:700;text-align:center;padding:0 4px;cursor:pointer;transition:background .2s;}
+.blank.filled{background:#C6F6D5;border-radius:4px;color:#276749;}
+.blank.correct{background:#9AE6B4;border-radius:4px;color:#22543D;}
+.blank.wrong{background:#FED7D7;border-radius:4px;color:#9B2C2C;border-bottom-color:#E53E3E;}
+/* ===== WORD BANK ===== */
+.word-bank{display:none;}
+.word-bank.active{display:block;position:fixed;bottom:0;left:0;right:0;z-index:200;background:#EBF8FF;border-radius:16px 16px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.22);padding:10px 14px 24px;}
+.wb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.wb-title{font-size:12px;color:#2C5282;font-weight:700;}
+.wb-close{background:none;border:none;font-size:18px;color:#2C5282;cursor:pointer;line-height:1;padding:0 4px;}
+.wb-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{background:#fff;border:1.5px solid #63B3ED;border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer;font-weight:600;color:#2B6CB0;transition:background .15s;}
+.chip:hover{background:#BEE3F8;}
+.chip.used{opacity:.3;pointer-events:none;}
+body.bank-open{padding-bottom:160px;}
+/* ===== STAGE CLEAR ===== */
+.stage-clear{display:none;text-align:center;padding:14px;font-size:18px;font-weight:800;color:#276749;animation:pop .4s ease;}
+@keyframes pop{0%{transform:scale(.5);opacity:0;}70%{transform:scale(1.15);}100%{transform:scale(1);opacity:1;}}
+/* ===== RANKING ===== */
+.ranking{background:#FEFCE8;border:1px solid #FBBF24;border-radius:12px;padding:12px 16px;margin-bottom:16px;}
+.ranking h3{font-size:14px;color:#92400E;margin-bottom:8px;}
+.ranking ul{list-style:none;font-size:13px;color:#78350F;}
+.ranking ul li{padding:2px 0;}
+/* ===== CONFIRM QUIZ (4択) ===== */
+.q-block{background:#fff;border:1px solid #B2F5EA;border-radius:14px;padding:16px;margin-bottom:16px;}
+.q-title{font-size:15px;font-weight:800;color:#276749;margin-bottom:14px;}
+.q4{margin-bottom:20px;}
+.q4-stem{font-size:14px;font-weight:700;margin-bottom:8px;line-height:1.7;}
+.q4-num{color:#2C7A7B;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.q4-c{border:1.5px solid #B2F5EA;border-radius:10px;padding:10px 8px;font-size:13px;background:#F0FFF4;cursor:pointer;font-weight:600;transition:background .15s,border-color .15s;text-align:center;}
+.q4-c:hover:not(:disabled){background:#C6F6D5;border-color:#68D391;}
+.q4-c.correct{background:#9AE6B4;border-color:#38A169;color:#1A4731;}
+.q4-c.wrong{background:#FED7D7;border-color:#E53E3E;color:#9B2C2C;}
+.q4-exp{font-size:12px;color:#276749;background:#F0FFF4;border-radius:8px;padding:8px 10px;display:none;line-height:1.7;}
+.q4-exp.show{display:block;}
+.q-reset{display:block;margin:8px auto 0;background:#E2E8F0;border:none;border-radius:20px;padding:7px 22px;font-size:13px;font-weight:700;cursor:pointer;color:#2D3748;}
+/* ===== INFO CARDS ===== */
+.ic-grid{display:grid;gap:10px;margin-bottom:12px;}
+.ic{border-radius:12px;border:2px solid;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.08);}
+.ic-head{display:flex;align-items:center;gap:8px;padding:10px 14px;}
+.ic-icon{font-size:20px;line-height:1;}
+.ic-name{font-size:14px;font-weight:800;}
+.ic-sub{font-size:11px;opacity:.8;}
+.ic-body{padding:10px 14px 14px;font-size:13px;line-height:1.9;}
+.ic-kw{font-weight:800;padding:0 2px;}
+/* 図法カラー */
+.ic-mer{background:#EDF7F0;border-color:#38A169;}.ic-mer .ic-head{background:#38A169;color:#fff;}
+.ic-azi{background:#EFF6FF;border-color:#4299E1;}.ic-azi .ic-head{background:#4299E1;color:#fff;}
+.ic-mol{background:#FFF7DC;border-color:#D69E2E;}.ic-mol .ic-head{background:#D69E2E;color:#fff;}
+/* 等高線カラー */
+.ic-main{background:#F0FFF4;border-color:#38A169;}.ic-main .ic-head{background:#38A169;color:#fff;}
+.ic-idx{background:#FFFAF0;border-color:#DD6B20;}.ic-idx .ic-head{background:#DD6B20;color:#fff;}
+.ic-aux{background:#F7FAFC;border-color:#718096;}.ic-aux .ic-head{background:#718096;color:#fff;}
+/* ===== SCALE TABLE ===== */
+.memo-table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0 14px;}
+.memo-table th{background:#2C7A7B;color:#fff;padding:7px 10px;font-weight:700;font-size:12px;text-align:center;}
+.memo-table td{padding:7px 10px;border:1px solid #B2F5EA;vertical-align:middle;text-align:center;line-height:1.6;}
+.memo-table tr:nth-child(even) td{background:#F0FFF4;}
+.memo-table .label{font-weight:800;color:#1A4731;text-align:left;}
+/* ===== CONFETTI ===== */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;animation:fall 1.2s ease-in forwards;}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0deg);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🗺 地図の見方・地形図</h1>
+  <p>高卒認定試験（地理）対応 ｜ 江原予備校</p>
+</div>
+
+<!-- UNIT NAVIGATION -->
+<div class="unit-nav">
+  <span class="unav-btn prev disabled">&#8592; 前の単元</span>
+  <a class="unav-btn home" href="kouninchiri-index.html">&#127968; 単元一覧</a>
+  <a class="unav-btn next" href="jisa.html">次の単元 &#8594;</a>
+</div>
+
+<div class="wrap">
+
+<!-- ========== UNIT 1: 地図の種類と図法 ========== -->
+<div class="unit-wrap">
+
+  <!-- ランキング -->
+  <div class="ranking" id="rank-map">
+    <h3>🏆 地図の図法 ランキング</h3>
+    <ul id="rank-map-list"><li>まだ記録がありません</li></ul>
+  </div>
+
+  <!-- 解説ステージ -->
+  <div class="stage">
+    <div class="stage-head">
+      <span class="stage-label">📖 Unit 1｜地図の種類と図法</span>
+    </div>
+    <div class="stage-body">
+
+      <p style="font-size:13.5px;line-height:1.9;margin-bottom:14px;">
+        地図はさまざまな<strong>図法（投影法）</strong>で作られています。地球は球体（球面）なので、それを平面に表すと必ずどこかにゆがみが生じます。目的に応じて使い分けることが大切です。
+      </p>
+
+      <!-- メルカトル図法 -->
+      <div class="ic-grid">
+        <div class="ic ic-mer">
+          <div class="ic-head">
+            <span class="ic-icon">🧭</span>
+            <div><div class="ic-name">メルカトル図法</div><div class="ic-sub">正角円筒図法</div></div>
+          </div>
+          <div class="ic-body">
+            ・<span class="ic-kw">経線と緯線が直角に交わる</span>直線で描かれる<br>
+            ・<span class="ic-kw">角度（方位）が正確</span>→「正角図法」とも呼ぶ<br>
+            ・<span class="ic-kw">等角航路</span>（羅針盤の針が一定の角度を保つ航路）が<strong>直線</strong>で表せる → 航海図として利用<br>
+            ・高緯度になるほど<span class="ic-kw">面積が拡大</span>される（グリーンランドが南米と同じくらいに見える）<br>
+            ・最短経路（大圏コース）は直線にならない
+          </div>
+        </div>
+
+        <div class="ic ic-azi">
+          <div class="ic-head">
+            <span class="ic-icon">✈️</span>
+            <div><div class="ic-name">正距方位図法</div><div class="ic-sub">中心からの距離・方位が正確</div></div>
+          </div>
+          <div class="ic-body">
+            ・<span class="ic-kw">中心点からの距離と方位が正確</span><br>
+            ・中心点からの<span class="ic-kw">最短コース（大圏コース）が直線</span>で表せる<br>
+            ・<span class="ic-kw">航空図</span>として利用される<br>
+            ・中心以外の2点間の距離は正確でない<br>
+            ・国連の旗のデザインに採用されている
+          </div>
+        </div>
+
+        <div class="ic ic-mol">
+          <div class="ic-head">
+            <span class="ic-icon">🌍</span>
+            <div><div class="ic-name">モルワイデ図法</div><div class="ic-sub">正積図法（面積が正確）</div></div>
+          </div>
+          <div class="ic-body">
+            ・<span class="ic-kw">面積が正確</span>に保たれる →「正積図法」の代表<br>
+            ・経線が楕円の弧として描かれる<br>
+            ・<span class="ic-kw">分布図</span>（農業・人口・資源など）に利用<br>
+            ・高緯度地域の形のゆがみが大きい<br>
+            ・グード図法（断裂正積図法）も正積図法の一種
+          </div>
+        </div>
+      </div><!-- /ic-grid -->
+
+      <!-- 図法まとめ表 -->
+      <table class="memo-table">
+        <tr><th>図法</th><th>正確なもの</th><th>特徴的な用途</th><th>特記事項</th></tr>
+        <tr><td class="label">メルカトル図法</td><td>角度（方位）</td><td>航海図</td><td>等角航路が直線</td></tr>
+        <tr><td class="label">正距方位図法</td><td>中心からの距離・方位</td><td>航空図</td><td>大圏コースが直線</td></tr>
+        <tr><td class="label">モルワイデ図法</td><td>面積</td><td>分布図</td><td>経線が楕円弧</td></tr>
+      </table>
+
+    </div><!-- /stage-body -->
+  </div><!-- /stage -->
+
+  <!-- 穴埋めステージ -->
+  <div class="stage challenge">
+    <div class="stage-head">
+      <span class="stage-label">✏️ 穴埋めテスト｜地図の図法</span>
+      <div class="stage-actions">
+        <span class="timer" id="timer-map">--:--</span>
+        <button class="ch-btn start" id="start-map" onclick="startChallenge('map')">スタート</button>
+        <button class="ch-btn judge" id="judge-map" onclick="judge('map')" disabled>採点</button>
+        <button class="ch-btn example" id="example-map" onclick="showExample('map')" disabled>答え</button>
+        <button class="ch-btn reset" onclick="resetChallenge('map')">リセット</button>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="read-box" id="rb-map">
+        <p style="font-size:13.5px;line-height:2.2;">
+          地図の図法には大きく3種類ある。<strong>角度と方位が正確</strong>で、等角航路を直線で表せるのは
+          <span class="blank" data-key="map" data-ans="メルカトル図法" onclick="openBank('map',this)">　　　　　</span>
+          である。航海に使われてきた。<br>
+
+          一方、<strong>中心からの距離と方位が正確</strong>で、大圏コース（最短経路）を直線で表せるのは
+          <span class="blank" data-key="map" data-ans="正距方位図法" onclick="openBank('map',this)">　　　　　</span>
+          で、航空図として利用される。<br>
+
+          <strong>面積が正確</strong>に保たれる図法は
+          <span class="blank" data-key="map" data-ans="モルワイデ図法" onclick="openBank('map',this)">　　　　　</span>
+          （正積図法）で、農業や人口などの分布図に使われる。<br>
+
+          メルカトル図法では高緯度になるほど<span class="blank" data-key="map" data-ans="面積" onclick="openBank('map',this)">　　</span>が
+          拡大されてしまう。また、メルカトル図法で表される
+          <span class="blank" data-key="map" data-ans="等角航路" onclick="openBank('map',this)">　　　　</span>
+          は実際の最短コースではない。<br>
+
+          最短コースは<span class="blank" data-key="map" data-ans="大圏コース" onclick="openBank('map',this)">　　　　</span>と呼ばれ、正距方位図法の中心から見ると直線に見える。
+        </p>
+      </div>
+      <div class="stage-clear" id="clear-map">🎉 完璧！ 図法マスター！</div>
+    </div>
+  </div>
+
+  <!-- 4択確認問題 -->
+  <div class="q-block">
+    <div class="q-title">✅ 確認問題｜地図の図法（4択）</div>
+
+    <div class="q4" id="q-map-1">
+      <div class="q4-stem"><span class="q4-num">問1．</span>メルカトル図法の説明として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-1')">①中心からの距離が正確</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-map-1')">②等角航路を直線で表せる</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-1')">③面積が正確な正積図法</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-1')">④大圏コースが直線で表せる</button>
+      </div>
+      <div class="q4-exp" id="exp-q-map-1">
+        メルカトル図法は<strong>正角図法</strong>（角度・方位が正確）で、羅針盤の針を一定に保つ<strong>等角航路</strong>が直線で表せます。航海図として使われてきました。高緯度ほど面積が拡大されるのが欠点です。
+      </div>
+    </div>
+
+    <div class="q4" id="q-map-2">
+      <div class="q4-stem"><span class="q4-num">問2．</span>「大圏コース（最短経路）」が直線で表れる図法はどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-2')">①メルカトル図法</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-map-2')">②正距方位図法</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-2')">③モルワイデ図法</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-2')">④グード図法</button>
+      </div>
+      <div class="q4-exp" id="exp-q-map-2">
+        <strong>正距方位図法</strong>は中心点からの距離と方位が正確で、中心から見た最短コース（大圏コース）が直線で表せます。航空路の計画などに使われ、国連旗のデザインにも採用されています。
+      </div>
+    </div>
+
+    <div class="q4" id="q-map-3">
+      <div class="q4-stem"><span class="q4-num">問3．</span>農業や人口の「分布図」に最も適した図法はどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-3')">①メルカトル図法</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-3')">②正距方位図法</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-map-3')">③モルワイデ図法（正積図法）</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-3')">④正距円筒図法</button>
+      </div>
+      <div class="q4-exp" id="exp-q-map-3">
+        <strong>モルワイデ図法（正積図法）</strong>は面積が正確に保たれるため、農業・人口・資源などの<strong>分布図</strong>に適しています。経線が楕円の弧として描かれるのが特徴です。
+      </div>
+    </div>
+
+    <div class="q4" id="q-map-4">
+      <div class="q4-stem"><span class="q4-num">問4．</span>メルカトル図法の欠点として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-4')">①中心からの距離がゆがむ</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-4')">②経線と緯線が直交しない</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-map-4')">③高緯度ほど面積が拡大される</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-map-4')">④赤道付近の形が大きくゆがむ</button>
+      </div>
+      <div class="q4-exp" id="exp-q-map-4">
+        メルカトル図法は<strong>高緯度ほど面積が拡大</strong>されます。グリーンランドが南アメリカ大陸と同じくらいの大きさに見えるのがその例です（実際の面積は南米の方がはるかに大きい）。
+      </div>
+    </div>
+
+    <button class="q-reset" onclick="resetQ('q-map-1','q-map-2','q-map-3','q-map-4')">問題をリセット</button>
+  </div>
+
+</div><!-- /unit-wrap 1 -->
+
+
+<!-- ========== UNIT 2: 地形図の読み方 ========== -->
+<div class="unit-wrap">
+
+  <!-- ランキング -->
+  <div class="ranking" id="rank-topo">
+    <h3>🏆 地形図 ランキング</h3>
+    <ul id="rank-topo-list"><li>まだ記録がありません</li></ul>
+  </div>
+
+  <!-- 解説ステージ -->
+  <div class="stage">
+    <div class="stage-head">
+      <span class="stage-label">📖 Unit 2｜地形図の読み方</span>
+    </div>
+    <div class="stage-body">
+
+      <p style="font-size:13.5px;line-height:1.9;margin-bottom:14px;">
+        地形図は国土地理院が発行する、地形や施設を詳しく表した地図です。試験では主に
+        <strong>2万5千分の1（1/25,000）</strong>と<strong>5万分の1（1/50,000）</strong>が使われます。
+      </p>
+
+      <!-- 縮尺 -->
+      <p style="font-size:13px;font-weight:800;color:#2C7A7B;margin-bottom:6px;">◆ 縮尺と実際の距離</p>
+      <table class="memo-table">
+        <tr>
+          <th>縮尺</th>
+          <th>地図上の1cm<br>= 実際の距離</th>
+          <th>主曲線の間隔</th>
+          <th>計曲線の間隔</th>
+        </tr>
+        <tr>
+          <td class="label">2万5千分の1<br><small>(1/25,000)</small></td>
+          <td><strong>250m</strong></td>
+          <td>10m ごと</td>
+          <td>50m ごと（5本に1本）</td>
+        </tr>
+        <tr>
+          <td class="label">5万分の1<br><small>(1/50,000)</small></td>
+          <td><strong>500m</strong></td>
+          <td>20m ごと</td>
+          <td>100m ごと（5本に1本）</td>
+        </tr>
+      </table>
+
+      <!-- 等高線 -->
+      <p style="font-size:13px;font-weight:800;color:#2C7A7B;margin-bottom:8px;">◆ 等高線の種類</p>
+      <div class="ic-grid">
+        <div class="ic ic-main">
+          <div class="ic-head">
+            <span class="ic-icon">➖</span>
+            <div><div class="ic-name">主曲線（しゅきょくせん）</div><div class="ic-sub">細い実線</div></div>
+          </div>
+          <div class="ic-body">
+            基本となる等高線。<strong>2万5千分の1では10m間隔</strong>、5万分の1では20m間隔で引かれる。<br>
+            等高線が<strong>込み合っている</strong>ところ → <strong>急傾斜</strong><br>
+            等高線が<strong>広がっている</strong>ところ → <strong>緩傾斜</strong>
+          </div>
+        </div>
+        <div class="ic ic-idx">
+          <div class="ic-head">
+            <span class="ic-icon">➖</span>
+            <div><div class="ic-name">計曲線（けいきょくせん）</div><div class="ic-sub">太い実線（数字入り）</div></div>
+          </div>
+          <div class="ic-body">
+            主曲線5本ごとに引かれる<strong>太い線</strong>。標高の数字が書かれている。<br>
+            2万5千分の1では<strong>50m間隔</strong>、5万分の1では<strong>100m間隔</strong>。<br>
+            地図を読むとき、まずこの線を探すと標高を把握しやすい。
+          </div>
+        </div>
+        <div class="ic ic-aux">
+          <div class="ic-head">
+            <span class="ic-icon">- - -</span>
+            <div><div class="ic-name">補助曲線（ほじょきょくせん）</div><div class="ic-sub">細い破線</div></div>
+          </div>
+          <div class="ic-body">
+            主曲線だけでは表しにくい<strong>なだらかな斜面や窪地</strong>を補うために引く破線。<br>
+            主曲線の間隔の<strong>半分の高さ</strong>で引かれる（2万5千分の1なら5m間隔）。
+          </div>
+        </div>
+      </div><!-- /ic-grid -->
+
+      <!-- 尾根と谷 -->
+      <p style="font-size:13px;font-weight:800;color:#2C7A7B;margin:14px 0 8px;">◆ 尾根と谷の見分け方</p>
+      <div style="background:#F0FFF4;border-radius:10px;padding:12px 16px;font-size:13.5px;line-height:2;margin-bottom:12px;">
+        <strong>尾根（おね）</strong> ＝ 山の稜線・高くなっている部分<br>
+        　→ 等高線が<span style="color:#2C7A7B;font-weight:800;">低い方（数字が小さい方）へ凸</span>になっている<br>
+        <strong>谷（たに）</strong> ＝ 低くくぼんでいる部分<br>
+        　→ 等高線が<span style="color:#C05621;font-weight:800;">高い方（数字が大きい方）へ凸</span>になっている<br>
+        <br>
+        ＜ 覚え方 ＞　<strong>「谷は高い方に食い込む」</strong>
+      </div>
+
+    </div><!-- /stage-body -->
+  </div>
+
+  <!-- 穴埋めステージ -->
+  <div class="stage challenge">
+    <div class="stage-head">
+      <span class="stage-label">✏️ 穴埋めテスト｜地形図</span>
+      <div class="stage-actions">
+        <span class="timer" id="timer-topo">--:--</span>
+        <button class="ch-btn start" id="start-topo" onclick="startChallenge('topo')">スタート</button>
+        <button class="ch-btn judge" id="judge-topo" onclick="judge('topo')" disabled>採点</button>
+        <button class="ch-btn example" id="example-topo" onclick="showExample('topo')" disabled>答え</button>
+        <button class="ch-btn reset" onclick="resetChallenge('topo')">リセット</button>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="read-box" id="rb-topo">
+        <p style="font-size:13.5px;line-height:2.2;">
+          地形図の縮尺のうち、<span class="blank" data-key="topo" data-ans="2万5千分の1" onclick="openBank('topo',this)">　　　　　</span>
+          では地図上の1cmが実際の<span class="blank" data-key="topo" data-ans="250m" onclick="openBank('topo',this)">　　　</span>に相当する。<br>
+
+          等高線には3種類ある。基本となる細い実線を
+          <span class="blank" data-key="topo" data-ans="主曲線" onclick="openBank('topo',this)">　　　　</span>
+          といい、2万5千分の1では<span class="blank" data-key="topo" data-ans="10m" onclick="openBank('topo',this)">　　</span>
+          間隔で引かれる。5本ごとの太い線は
+          <span class="blank" data-key="topo" data-ans="計曲線" onclick="openBank('topo',this)">　　　　</span>
+          といい、標高の数字が書かれている。<br>
+
+          等高線の間隔が<span class="blank" data-key="topo" data-ans="狭い" onclick="openBank('topo',this)">　　</span>
+          ところは急傾斜を表す。<br>
+
+          山の稜線（高くなっている部分）を
+          <span class="blank" data-key="topo" data-ans="尾根" onclick="openBank('topo',this)">　　</span>
+          といい、等高線が低い方に凸になっている。<br>
+
+          低くくぼんだ部分を
+          <span class="blank" data-key="topo" data-ans="谷" onclick="openBank('topo',this)">　　</span>
+          といい、等高線が<span class="blank" data-key="topo" data-ans="高い方" onclick="openBank('topo',this)">　　　</span>
+          へ凸になっている。
+        </p>
+      </div>
+      <div class="stage-clear" id="clear-topo">🎉 完璧！ 地形図マスター！</div>
+    </div>
+  </div>
+
+  <!-- 4択確認問題 -->
+  <div class="q-block">
+    <div class="q-title">✅ 確認問題｜地形図（4択）</div>
+
+    <div class="q4" id="q-topo-1">
+      <div class="q4-stem"><span class="q4-num">問1．</span>2万5千分の1地形図で、地図上の4cmは実際に何mか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-1')">① 100m</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-1')">② 500m</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-topo-1')">③ 1000m（1km）</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-1')">④ 2000m（2km）</button>
+      </div>
+      <div class="q4-exp" id="exp-q-topo-1">
+        2万5千分の1では1cm = 250m。よって4cm = 250 × 4 = <strong>1000m（1km）</strong>。
+        5万分の1なら1cm = 500m、4cm = 2000m です。
+      </div>
+    </div>
+
+    <div class="q4" id="q-topo-2">
+      <div class="q4-stem"><span class="q4-num">問2．</span>2万5千分の1地形図の「計曲線」の高さ間隔は何mか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-2')">① 5m</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-2')">② 10m</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-2')">③ 20m</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-topo-2')">④ 50m</button>
+      </div>
+      <div class="q4-exp" id="exp-q-topo-2">
+        2万5千分の1では主曲線が<strong>10m間隔</strong>、計曲線はその5本ごと = <strong>50m間隔</strong>です。
+        5万分の1では主曲線20m・計曲線100mです。
+      </div>
+    </div>
+
+    <div class="q4" id="q-topo-3">
+      <div class="q4-stem"><span class="q4-num">問3．</span>地形図で等高線が「高い方（数字が大きい方）へ凸」になっているのはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-3')">① 尾根</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-topo-3')">② 谷</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-3')">③ 急傾斜</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-3')">④ 緩傾斜</button>
+      </div>
+      <div class="q4-exp" id="exp-q-topo-3">
+        <strong>谷</strong>は低くくぼんでいる部分で、等高線が<strong>高い方へ凸</strong>に食い込みます。
+        尾根（山の稜線）は等高線が低い方へ凸になります。「谷は高い方に食い込む」と覚えましょう。
+      </div>
+    </div>
+
+    <div class="q4" id="q-topo-4">
+      <div class="q4-stem"><span class="q4-num">問4．</span>地形図で「急傾斜」を表しているのはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'correct','q-topo-4')">① 等高線の間隔が狭い</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-4')">② 等高線の間隔が広い</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-4')">③ 等高線が高い方へ凸</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-4')">④ 等高線が低い方へ凸</button>
+      </div>
+      <div class="q4-exp" id="exp-q-topo-4">
+        等高線の<strong>間隔が狭い = 急傾斜</strong>、広い = 緩傾斜です。崖のような急斜面では多くの等高線が密集して現れます。
+      </div>
+    </div>
+
+    <button class="q-reset" onclick="resetQ('q-topo-1','q-topo-2','q-topo-3','q-topo-4')">問題をリセット</button>
+  </div>
+
+</div><!-- /unit-wrap 2 -->
+
+</div><!-- /wrap -->
+
+<!-- ===== WORD BANKS ===== -->
+<div class="word-bank" id="bank-map">
+  <div class="wb-header">
+    <span class="wb-title">🗂 語群（タップして埋める）</span>
+    <button class="wb-close" onclick="closeBank()">✕</button>
+  </div>
+  <div class="wb-chips" id="chips-map"></div>
+</div>
+
+<div class="word-bank" id="bank-topo">
+  <div class="wb-header">
+    <span class="wb-title">🗂 語群（タップして埋める）</span>
+    <button class="wb-close" onclick="closeBank()">✕</button>
+  </div>
+  <div class="wb-chips" id="chips-topo"></div>
+</div>
+
+<script>
+/* ===== 語群 ===== */
+const BANKS = {
+  map:  ['メルカトル図法','正距方位図法','モルワイデ図法','等角航路','大圏コース','面積','正積図法'],
+  topo: ['2万5千分の1','250m','主曲線','10m','計曲線','狭い','尾根','谷','高い方'],
+};
+
+/* ===== 状態 ===== */
+const state = {
+  map:  {active:false, target:null, timer:null, elapsed:0},
+  topo: {active:false, target:null, timer:null, elapsed:0},
+};
+
+/* ===== ランキング読み込み ===== */
+function loadRank(key, listId){
+  const data = JSON.parse(localStorage.getItem('chizu_'+key+'_rank')||'[]');
+  const ul = document.getElementById(listId);
+  if(!data.length){ul.innerHTML='<li>まだ記録がありません</li>';return;}
+  ul.innerHTML = data.slice(0,5).map((r,i)=>`<li>${['🥇','🥈','🥉','4位','5位'][i]} ${r.time}秒（${r.date}）</li>`).join('');
+}
+loadRank('map','rank-map-list');
+loadRank('topo','rank-topo-list');
+
+function saveRank(key, sec){
+  const data = JSON.parse(localStorage.getItem('chizu_'+key+'_rank')||'[]');
+  const d = new Date();
+  const date = `${d.getMonth()+1}/${d.getDate()}`;
+  data.push({time:sec,date});
+  data.sort((a,b)=>a.time-b.time);
+  localStorage.setItem('chizu_'+key+'_rank', JSON.stringify(data.slice(0,10)));
+  loadRank(key, 'rank-'+key+'-list');
+}
+
+/* ===== チャレンジ開始 ===== */
+function startChallenge(key){
+  const s = state[key];
+  s.active = true; s.elapsed = 0;
+  document.getElementById('start-'+key).disabled = true;
+  document.getElementById('judge-'+key).disabled = false;
+  document.getElementById('example-'+key).disabled = false;
+
+  // チップ生成
+  const pool = [...BANKS[key]].sort(()=>Math.random()-.5);
+  const cont = document.getElementById('chips-'+key);
+  cont.innerHTML = pool.map(w=>`<button class="chip" data-word="${w}" onclick="fillBlank('${key}',this)">${w}</button>`).join('');
+
+  // タイマー
+  s.timer = setInterval(()=>{
+    s.elapsed++;
+    const m = String(Math.floor(s.elapsed/60)).padStart(2,'0');
+    const sec = String(s.elapsed%60).padStart(2,'0');
+    document.getElementById('timer-'+key).textContent = m+':'+sec;
+  },1000);
+}
+
+/* ===== 語群開閉 ===== */
+function openBank(key, el){
+  if(!state[key].active) return;
+  state[key].target = el;
+  document.querySelectorAll('.word-bank').forEach(b=>b.classList.remove('active'));
+  document.getElementById('bank-'+key).classList.add('active');
+  document.body.classList.add('bank-open');
+}
+function closeBank(){
+  document.querySelectorAll('.word-bank').forEach(b=>b.classList.remove('active'));
+  document.body.classList.remove('bank-open');
+}
+
+/* ===== チップで穴を埋める ===== */
+function fillBlank(key, chip){
+  const s = state[key];
+  if(!s.target) return;
+  const prev = s.target.textContent.trim();
+  // 前の単語を解放
+  if(prev){
+    document.querySelectorAll(`#chips-${key} [data-word="${prev}"]`).forEach(c=>c.classList.remove('used'));
+  }
+  s.target.textContent = chip.dataset.word;
+  s.target.classList.add('filled');
+  s.target.classList.remove('correct','wrong');
+  chip.classList.add('used');
+  closeBank();
+}
+
+/* ===== 採点 ===== */
+function judge(key){
+  const s = state[key];
+  clearInterval(s.timer);
+  const blanks = document.querySelectorAll(`[data-key="${key}"]`);
+  let all = true;
+  blanks.forEach(b=>{
+    const ok = b.textContent.trim() === b.dataset.ans;
+    b.classList.toggle('correct', ok);
+    b.classList.toggle('wrong', !ok);
+    b.classList.remove('filled');
+    if(!ok) all = false;
+  });
+  if(all){
+    document.getElementById('clear-'+key).style.display='block';
+    saveRank(key, s.elapsed);
+    confetti();
+  }
+}
+
+/* ===== 答えを表示 ===== */
+function showExample(key){
+  clearInterval(state[key].timer);
+  document.querySelectorAll(`[data-key="${key}"]`).forEach(b=>{
+    b.textContent = b.dataset.ans;
+    b.classList.add('correct');
+    b.classList.remove('filled','wrong');
+  });
+}
+
+/* ===== リセット ===== */
+function resetChallenge(key){
+  clearInterval(state[key].timer);
+  state[key] = {active:false,target:null,timer:null,elapsed:0};
+  document.getElementById('timer-'+key).textContent='--:--';
+  document.getElementById('start-'+key).disabled = false;
+  document.getElementById('judge-'+key).disabled = true;
+  document.getElementById('example-'+key).disabled = true;
+  document.getElementById('clear-'+key).style.display='none';
+  document.querySelectorAll(`[data-key="${key}"]`).forEach(b=>{
+    b.textContent='　　　　　';
+    b.classList.remove('filled','correct','wrong');
+  });
+  document.getElementById('chips-'+key).innerHTML='';
+  closeBank();
+}
+
+/* ===== 4択 ===== */
+function ans(btn, result, qid){
+  const q = document.getElementById(qid);
+  q.querySelectorAll('.q4-c').forEach(b=>b.disabled=true);
+  btn.classList.add(result);
+  const exp = document.getElementById('exp-'+qid);
+  if(exp) exp.classList.add('show');
+}
+function resetQ(...ids){
+  ids.forEach(id=>{
+    const q = document.getElementById(id);
+    if(!q) return;
+    q.querySelectorAll('.q4-c').forEach(b=>{b.disabled=false;b.classList.remove('correct','wrong');});
+    const exp = document.getElementById('exp-'+id);
+    if(exp) exp.classList.remove('show');
+  });
+}
+
+/* ===== 紙吹雪 ===== */
+function confetti(){
+  const colors=['#68D391','#F6E05E','#FC8181','#63B3ED','#B794F4'];
+  for(let i=0;i<28;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${colors[i%5]};animation-delay:${Math.random()*.6}s;animation-duration:${1+Math.random()*.6}s;`;
+    document.body.appendChild(el);
+    el.addEventListener('animationend',()=>el.remove());
+  }
+}
+</script>
+</body>
+</html>

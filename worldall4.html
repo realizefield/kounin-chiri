@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>都市問題・人口問題・世界経済圏 ｜ 高卒認定地理</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#F0FFF4;color:#1A202C;min-height:100vh;}
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,#1A4731 0%,#276749 100%);color:#fff;padding:28px 20px 22px;text-align:center;}
+.hero h1{font-size:22px;font-weight:800;letter-spacing:.05em;margin-bottom:6px;}
+.hero p{font-size:13px;opacity:.85;}
+/* ===== WRAP ===== */
+.wrap{max-width:720px;margin:0 auto;padding:16px 12px 60px;}
+/* ===== UNIT WRAP ===== */
+.unit-wrap{margin-bottom:32px;}
+/* ===== STAGE ===== */
+.stage{background:#fff;border-radius:14px;border:1px solid #B2F5EA;margin-bottom:16px;overflow:hidden;}
+.stage-head{background:linear-gradient(90deg,#2C7A7B,#38A169);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.stage-label{font-size:15px;font-weight:700;}
+.stage-body{padding:16px;}
+/* ===== CHALLENGE ===== */
+.stage-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ch-btn{border:none;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;}
+.ch-btn.start{background:#F6E05E;color:#744210;}
+.ch-btn.judge{background:#68D391;color:#1A4731;}
+.ch-btn.example{background:#90CDF4;color:#1A365D;}
+.ch-btn.reset{background:#FBD38D;color:#744210;}
+.ch-btn:disabled{opacity:.4;cursor:default;}
+.timer{font-size:13px;font-weight:700;color:#F6E05E;min-width:52px;}
+/* ===== READ BOX ===== */
+.read-box{padding:12px 16px;background:#F0FFF4;border-radius:10px;margin-bottom:12px;}
+.blank{display:inline-block;min-width:80px;border-bottom:2px solid #2C7A7B;color:#2C7A7B;font-weight:700;text-align:center;padding:0 4px;cursor:pointer;transition:background .2s;}
+.blank.filled{background:#C6F6D5;border-radius:4px;color:#276749;}
+.blank.correct{background:#9AE6B4;border-radius:4px;color:#22543D;}
+.blank.wrong{background:#FED7D7;border-radius:4px;color:#9B2C2C;border-bottom-color:#E53E3E;}
+/* ===== WORD BANK ===== */
+.word-bank{display:none;}
+.word-bank.active{
+  display:block;position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:#EBF8FF;border-radius:16px 16px 0 0;
+  box-shadow:0 -4px 24px rgba(0,0,0,.22);padding:10px 14px 24px;
+}
+.wb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.wb-title{font-size:12px;color:#2C5282;font-weight:700;}
+.wb-close{background:none;border:none;font-size:18px;color:#2C5282;cursor:pointer;line-height:1;padding:0 4px;}
+.wb-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{background:#fff;border:1.5px solid #63B3ED;border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer;font-weight:600;color:#2B6CB0;transition:background .15s;}
+.chip:hover{background:#BEE3F8;}
+.chip.used{opacity:.3;pointer-events:none;}
+body.bank-open{padding-bottom:160px;}
+/* ===== STAGE CLEAR ===== */
+.stage-clear{display:none;text-align:center;padding:14px;font-size:18px;font-weight:800;color:#276749;animation:pop .4s ease;}
+@keyframes pop{0%{transform:scale(.5);opacity:0;}70%{transform:scale(1.15);}100%{transform:scale(1);opacity:1;}}
+/* ===== RANKING ===== */
+.ranking{background:#FEFCE8;border:1px solid #FBBF24;border-radius:12px;padding:12px 16px;margin-bottom:16px;}
+.ranking h3{font-size:14px;color:#92400E;margin-bottom:8px;}
+.ranking ul{list-style:none;font-size:13px;color:#78350F;}
+.ranking ul li{padding:2px 0;}
+/* ===== CONFIRM QUIZ (4択) ===== */
+.q-block{background:#fff;border:1px solid #B2F5EA;border-radius:14px;padding:16px;margin-bottom:16px;}
+.q-title{font-size:15px;font-weight:800;color:#276749;margin-bottom:14px;}
+.q4{margin-bottom:20px;}
+.q4-stem{font-size:14px;font-weight:700;margin-bottom:8px;line-height:1.7;}
+.q4-num{color:#2C7A7B;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.q4-c{border:1.5px solid #B2F5EA;border-radius:10px;padding:10px 8px;font-size:13px;background:#F0FFF4;cursor:pointer;font-weight:600;transition:background .15s,border-color .15s;text-align:center;}
+.q4-c:hover:not(:disabled){background:#C6F6D5;border-color:#68D391;}
+.q4-c.correct{background:#9AE6B4;border-color:#38A169;color:#1A4731;}
+.q4-c.wrong{background:#FED7D7;border-color:#E53E3E;color:#9B2C2C;}
+.q4-exp{font-size:12px;color:#276749;background:#F0FFF4;border-radius:8px;padding:8px 10px;display:none;line-height:1.7;}
+.q4-exp.show{display:block;}
+.q-reset{display:block;margin:8px auto 0;background:#E2E8F0;border:none;border-radius:20px;padding:7px 22px;font-size:13px;font-weight:700;cursor:pointer;color:#2D3748;}
+/* ===== INFO CARDS ===== */
+.info-card{border-radius:12px;border:2px solid;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.1);margin-bottom:12px;}
+.info-head{display:flex;align-items:center;gap:8px;padding:10px 14px;}
+.info-icon{font-size:22px;line-height:1;}
+.info-title{font-size:14px;font-weight:800;}
+.info-sub{font-size:11px;opacity:.8;}
+.info-body{padding:10px 14px 14px;font-size:13.5px;line-height:1.95;}
+.info-kw{font-weight:800;border-bottom:2px solid;border-radius:2px;padding:0 2px;}
+/* カラーテーマ */
+.ic-red{background:#FFF5F5;border-color:#FC8181;}
+.ic-red .info-head{background:#C53030;} .ic-red .info-title,.ic-red .info-sub{color:#fff;}
+.ic-red .info-kw{border-bottom-color:#9B2C2C;color:#822727;}
+.ic-blue{background:#EBF8FF;border-color:#63B3ED;}
+.ic-blue .info-head{background:#2B6CB0;} .ic-blue .info-title,.ic-blue .info-sub{color:#fff;}
+.ic-blue .info-kw{border-bottom-color:#1A4A8A;color:#1a3a6a;}
+.ic-green{background:#F0FFF4;border-color:#68D391;}
+.ic-green .info-head{background:#276749;} .ic-green .info-title,.ic-green .info-sub{color:#fff;}
+.ic-green .info-kw{border-bottom-color:#1A4731;color:#1a3a21;}
+.ic-gold{background:#FFFBEB;border-color:#F6AD55;}
+.ic-gold .info-head{background:#C05621;} .ic-gold .info-title,.ic-gold .info-sub{color:#fff;}
+.ic-gold .info-kw{border-bottom-color:#9C4221;color:#7a3210;}
+.ic-purple{background:#FAF5FF;border-color:#B794F4;}
+.ic-purple .info-head{background:#553C9A;} .ic-purple .info-title,.ic-purple .info-sub{color:#fff;}
+.ic-purple .info-kw{border-bottom-color:#44337A;color:#322060;}
+.ic-teal{background:#E6FFFA;border-color:#4FD1C5;}
+.ic-teal .info-head{background:#2C7A7B;} .ic-teal .info-title,.ic-teal .info-sub{color:#fff;}
+.ic-teal .info-kw{border-bottom-color:#1D5152;color:#143839;}
+/* ===== KANA BADGE ===== */
+.kana-badge{display:inline-block;background:#F6E05E;color:#744210;border-radius:12px;padding:1px 9px;font-size:11px;font-weight:800;margin-left:6px;vertical-align:middle;letter-spacing:.04em;}
+.kana-row{font-size:12px;color:#fff;opacity:.9;margin-top:3px;font-weight:700;}
+/* ===== EXTERNAL IMAGE PANEL ===== */
+.img-panel-wrap{background:#fff;border:1px solid #B2F5EA;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.img-panel{width:100%;display:block;}
+.img-panel-cap{font-size:11.5px;color:#2C7A7B;font-weight:700;padding:6px 12px;background:#E6FFFA;text-align:center;}
+/* ===== MEMO TABLE ===== */
+.memo-table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;}
+.memo-table th{background:#2C7A7B;color:#fff;padding:6px 8px;font-weight:700;font-size:12px;}
+.memo-table td{padding:6px 8px;border:1px solid #B2F5EA;vertical-align:top;line-height:1.6;}
+.memo-table tr:nth-child(even) td{background:#F0FFF4;}
+.memo-table .ac-name{font-weight:800;color:#1A4731;}
+.memo-table .ac-kana{color:#C05621;font-weight:700;}
+/* ===== FLOW ===== */
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0;padding:10px 12px;background:#E6FFFA;border-radius:8px;}
+.flow-item{background:#2C7A7B;color:#fff;border-radius:6px;padding:4px 10px;font-size:12.5px;font-weight:700;}
+.flow-arrow{color:#2C7A7B;font-weight:900;font-size:15px;}
+/* ===== PYRAMID ===== */
+.pyr-wrap{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0;}
+.pyr{background:#fff;border:2px solid #68D391;border-radius:10px;padding:10px;text-align:center;flex:1;min-width:130px;}
+.pyr .shape{font-size:2rem;margin-bottom:4px;}
+.pyr .name{font-weight:800;font-size:.9rem;margin-bottom:3px;}
+.pyr .tag{font-size:.78rem;font-weight:700;margin-bottom:6px;}
+.pyr .countries{font-size:.75rem;background:#F0FFF4;border-radius:6px;padding:5px 7px;text-align:left;line-height:1.8;}
+/* ===== CONFETTI ===== */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;animation:fall 1.2s ease-in forwards;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#2C7A7B;color:#fff;border-radius:20px;padding:10px 22px;font-size:14px;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌏 都市問題・人口問題・世界経済圏</h1>
+  <p>高卒認定・中高基礎地理 ｜ 江原予備校</p>
+</div>
+
+<div class="wrap" id="wrap">
+
+<!-- ============================================================
+     UNIT 1 ： 人口問題
+     ============================================================ -->
+<div class="unit-wrap">
+
+  <div class="stage">
+    <div class="stage-head">
+      <span class="stage-label">📖 Unit 1　人口問題</span>
+    </div>
+    <div class="stage-body">
+
+      <!-- ① 人口爆発 -->
+      <div class="info-card ic-red">
+        <div class="info-head">
+          <span class="info-icon">🔺</span>
+          <div>
+            <div class="info-title">① 人口爆発 ― 発展途上国の問題</div>
+            <div class="info-sub">アフリカ・南アジア・中南米</div>
+          </div>
+        </div>
+        <div class="info-body">
+          「人口爆発」とは、爆発的な速さで人口が増えていく現象のことです。<span class="info-kw ic-red">発展途上国</span>（特にアフリカや南アジア）で起きています。<br>
+          なぜ急増したのでしょうか？もともと途上国では出生率も死亡率も高かったのですが、20世紀に入って医療・衛生環境が改善されたことで<span class="info-kw ic-red">死亡率だけが急に低下</span>しました。しかし子どもをたくさん産む習慣（<span class="info-kw ic-red">高い出生率</span>）はすぐには変わらず、その差で人口が急増したのです。
+          <div class="flow">
+            <div class="flow-item">医療・衛生の普及</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">死亡率が低下</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">出生率は高いまま</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">人口爆発！</div>
+          </div>
+          食料不足・貧困・失業などが深刻化し、将来世代への負担も大きくなります。
+        </div>
+      </div>
+
+      <!-- ② 少子高齢化 -->
+      <div class="info-card ic-blue">
+        <div class="info-head">
+          <span class="info-icon">🔻</span>
+          <div>
+            <div class="info-title">② 少子高齢化 ― 先進国の問題</div>
+            <div class="info-sub">日本・ドイツ・イタリアなど</div>
+          </div>
+        </div>
+        <div class="info-body">
+          「少子高齢化」とは、<span class="info-kw ic-blue">子どもが少なく（少子）・高齢者が多くなる（高齢化）</span>現象です。先進国で深刻な問題になっています。<br>
+          先進国では、女性の社会進出・経済的負担などから<span class="info-kw ic-blue">出生率</span>が低下しました。一方で医療の発達により平均寿命が延び、高齢者の割合がどんどん大きくなっています。<br>
+          日本の<span class="info-kw ic-blue">合計特殊出生率</span>（1人の女性が一生に産む子どもの平均数）は約<strong>1.2</strong>。人口を維持するには<span class="info-kw ic-blue">2.1</span>が必要で、大幅に下回っています。<br>
+          問題点：①年金・医療費の財政負担増大　②労働力不足　③地方の過疎化
+        </div>
+      </div>
+
+      <!-- ③ 人口ピラミッド -->
+      <div class="info-card ic-gold">
+        <div class="info-head">
+          <span class="info-icon">📊</span>
+          <div>
+            <div class="info-title">③ 人口ピラミッドの種類</div>
+            <div class="info-sub">年齢別・男女別の人口構成グラフ</div>
+          </div>
+        </div>
+        <div class="info-body">
+          人口ピラミッドは<strong>年齢別・男女別の人口を棒グラフにしたもの</strong>で、形を見るだけでその国の人口構成がわかります。「この形はどの国か？」という問題は試験で頻出です。グラフは左が男性・右が女性、下が若い世代を表します。
+          <div class="img-panel-wrap">
+            <img class="img-panel" data-img="worldjinkou.png" alt="人口ピラミッド（富士山型・ベル型・壺型）の解説図">
+            <div class="img-panel-cap">▲ 人口ピラミッドの3種類と代表国</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ 人口移動 -->
+      <div class="info-card ic-green">
+        <div class="info-head">
+          <span class="info-icon">🚶</span>
+          <div>
+            <div class="info-title">④ 人口の移動（移民・難民・頭脳流出）</div>
+            <div class="info-sub">国境を越える人々の移動</div>
+          </div>
+        </div>
+        <div class="info-body">
+          <strong>経済移民</strong>：より豊かな国・稼げる仕事を求めて国境を越えます。メキシコ→アメリカ、東南アジア→日本などが典型例。<br>
+          <strong>難民</strong>：戦争・宗教的・民族的迫害から逃れる人々。シリア難民・アフガニスタン難民が近年の代表例。<br>
+          <span class="info-kw ic-green">ブレイン・ドレイン（頭脳流出）</span>：途上国の優秀な人材がより良い待遇を求めて先進国へ流出する現象。育てた人材を失う途上国にとって大きな痛手です。インドのIT技術者がアメリカのシリコンバレーへ移住するケースが典型例。
+        </div>
+      </div>
+
+      <!-- ⑤ 中国・インド -->
+      <div class="info-card ic-purple">
+        <div class="info-head">
+          <span class="info-icon">🇨🇳🇮🇳</span>
+          <div>
+            <div class="info-title">⑤ 中国・インドの人口問題</div>
+            <div class="info-sub">世界1・2位の人口大国</div>
+          </div>
+        </div>
+        <div class="info-body">
+          中国は1979年から<span class="info-kw ic-purple">一人っ子政策</span>を実施（2015年廃止）。1組の夫婦に子ども1人に制限することで人口増加を抑えることに成功しましたが、急速な高齢化・労働力不足・男女比のアンバランスなどの問題が生じました。<br>
+          インドは2023年に中国を抜いて<strong>世界第1位の人口大国</strong>（約14億人超）に。若い働き手が多く「人口ボーナス」として経済成長の追い風になる一方、雇用不足・インフラ整備が課題です。
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /stage -->
+
+  <!-- ミニテスト Unit1 -->
+  <div class="stage challenge" data-id="pop">
+    <div class="stage-head">
+      <span class="stage-label">✏️ ミニテスト（7問）</span>
+      <div class="stage-actions">
+        <span class="timer" id="timer_pop" style="display:none">0:00.0</span>
+        <button class="ch-btn start" onclick="startChallenge('pop')">▶ チャレンジ開始</button>
+        <button class="ch-btn judge" id="judge_pop" style="display:none" onclick="judge('pop')">✓ 判定</button>
+        <button class="ch-btn example" id="example_pop" style="display:none" onclick="showExample('pop')">📖 手本を見る</button>
+        <button class="ch-btn reset" id="reset_pop" style="display:none" onclick="resetChallenge('pop')">↻ リセット</button>
+      </div>
+    </div>
+    <div class="read-box" id="rb_pop">
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ① 医療普及で死亡率が低下したが出生率が高いまま続き、途上国で人口が急増する現象を
+        <span class="blank" data-a="人口爆発">人口爆発</span> という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ② 先進国で出生率が低下し、高齢者の割合が増大する現象を
+        <span class="blank" data-a="少子高齢化">少子高齢化</span> という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ③ 人口を維持するために必要な合計特殊出生率の目安は
+        <span class="blank" data-a="2.1">2.1</span> とされている。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ④ 下（若年層）が広く上に行くほど細くなる途上国型の人口ピラミッドを
+        <span class="blank" data-a="富士山型">富士山型</span> という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ⑤ 中高年層が膨らみ子ども世代が細い、先進国に多い人口ピラミッドを
+        <span class="blank" data-a="壺型">壺型</span>（つぼ型）という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ⑥ 途上国の優秀な人材が先進国へ流出する現象を
+        <span class="blank" data-a="ブレイン・ドレイン">ブレイン・ドレイン</span>（頭脳流出）という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ⑦ 中国が1979年から2015年まで実施した、出生を1人に制限する政策を
+        <span class="blank" data-a="一人っ子政策">一人っ子政策</span> という。
+      </p>
+    </div>
+    <div class="word-bank" id="wb_pop">
+      <div class="wb-header">
+        <span class="wb-title">🗂 語群 — タップして選ぼう</span>
+        <button class="wb-close" onclick="toggleBank('pop')" title="閉じる">⌄</button>
+      </div>
+      <div class="wb-chips" id="wc_pop"></div>
+    </div>
+    <div class="stage-clear"></div>
+  </div>
+  <div class="ranking"><h3>🏆 ベストタイム</h3><ul id="rank_pop"></ul></div>
+
+  <!-- 確認問題 Unit1 -->
+  <div class="q-block">
+    <div class="q-title">✅ 確認問題（4問）</div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問1．</span>発展途上国で人口爆発が起きた主な理由はどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">出生率と死亡率がともに低下したから</button>
+        <button class="q4-c" data-ans="1">医療普及で死亡率が下がったが、出生率は高いまま続いたから</button>
+        <button class="q4-c" data-ans="0">先進国から大量の移民が流入したから</button>
+        <button class="q4-c" data-ans="0">農業が発展し食料が十分に供給されたから</button>
+      </div>
+      <div class="q4-exp">医療・衛生環境の改善→死亡率の低下→しかし出生率は高いまま維持→急激な人口増加、というのが人口爆発のメカニズム。アフリカや南アジアで起きている。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問2．</span>人口ピラミッドで「壺型（つぼ型）」が示すのはどのような状態か？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">若年層が多く人口増加中の途上国</button>
+        <button class="q4-c" data-ans="1">少子高齢化が進んだ先進国の状態</button>
+        <button class="q4-c" data-ans="0">男女比が極端にアンバランスな状態</button>
+        <button class="q4-c" data-ans="0">人口が安定して増減のない状態</button>
+      </div>
+      <div class="q4-exp">壺型は中高年層が膨らみ、子ども・若年層が細くなった形。少子高齢化が進んだ日本・ドイツ・イタリアなど先進国に見られる。富士山型は途上国（人口増加）。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問3．</span>途上国の優秀な人材が先進国へ流出する現象を何というか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">人口爆発</button>
+        <button class="q4-c" data-ans="0">難民問題</button>
+        <button class="q4-c" data-ans="1">ブレイン・ドレイン（頭脳流出）</button>
+        <button class="q4-c" data-ans="0">少子高齢化</button>
+      </div>
+      <div class="q4-exp">ブレイン・ドレインとは優秀な人材（頭脳）が流出（ドレイン）すること。インドのIT技術者がアメリカへ移住するケースが典型例。途上国にとっては人材を失う大きな痛手となる。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問4．</span>中国の「一人っ子政策」について正しいものはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">1949年から現在も継続して実施されている</button>
+        <button class="q4-c" data-ans="0">人口増加を加速させ経済成長を促した政策である</button>
+        <button class="q4-c" data-ans="1">1979年に開始し、2015年に廃止された人口抑制政策である</button>
+        <button class="q4-c" data-ans="0">インドが実施した農業振興のための政策である</button>
+      </div>
+      <div class="q4-exp">一人っ子政策は1組の夫婦に子ども1人を制限した政策。人口増加抑制には成功したが、急速な高齢化・労働力不足・男女比のアンバランスなどの問題が生じ2015年に廃止された。</div>
+    </div>
+
+    <button class="q-reset" onclick="resetQBlock(this)">↻ もう一度</button>
+  </div>
+
+</div><!-- /unit-wrap 1 -->
+
+
+<!-- ============================================================
+     UNIT 2 ： 都市問題
+     ============================================================ -->
+<div class="unit-wrap">
+
+  <div class="stage">
+    <div class="stage-head">
+      <span class="stage-label">📖 Unit 2　都市問題</span>
+    </div>
+    <div class="stage-body">
+
+      <!-- ① 都市化 -->
+      <div class="info-card ic-teal">
+        <div class="info-head">
+          <span class="info-icon">🏙️</span>
+          <div>
+            <div class="info-title">① 都市化とは何か</div>
+            <div class="info-sub">農村から都市への人口集中</div>
+          </div>
+        </div>
+        <div class="info-body">
+          「都市化」とは、農村に住んでいた人々が仕事や豊かな生活を求めて<span class="info-kw ic-teal">都市へ移り住んでくる現象</span>です。工業化・産業化と一緒に進みます。<br>
+          先進国（日本・ヨーロッパ）ではすでに都市化が完了していますが、現在進行中なのは<span class="info-kw ic-teal">発展途上国</span>です。アフリカやアジアの途上国では今も急速な都市化が進み、さまざまな問題を引き起こしています。<br>
+          都市化による問題は<strong>先進国と途上国で内容が大きく異なります</strong>。それぞれを分けて整理することが大切です。
+        </div>
+      </div>
+
+      <!-- 追加：メガシティ・メガロポリス・コナベーション等 -->
+      <div class="img-panel-wrap">
+        <img class="img-panel" data-img="worldtoshimondai2.png" alt="メガシティ・メガロポリス・コナベーション・ジェントリフィケーション・スプロール現象">
+        <div class="img-panel-cap">▲ メガシティ・メガロポリス・コナベーション・ジェントリフィケーション・スプロール現象</div>
+      </div>
+
+      <!-- ② スラム -->
+      <div class="info-card ic-red">
+        <div class="info-head">
+          <span class="info-icon">🏚️</span>
+          <div>
+            <div class="info-title">② スラムの形成 ― 途上国の都市問題①</div>
+            <div class="info-sub">ブラジルのファベーラ・インドのダラビ</div>
+          </div>
+        </div>
+        <div class="info-body">
+          農村から大量の貧しい人々が都市に流入しても、すぐに仕事や住居が用意されるわけではありません。その結果、都市の周辺部や空き地に<span class="info-kw ic-red">スラム（不法居住区）</span>と呼ばれる劣悪な環境の住宅地が生まれます。電気・水道・下水道などのインフラが整っておらず、衛生環境が極めて悪い状態です。<br>
+          ブラジルのリオデジャネイロにある<span class="info-kw ic-red">ファベーラ</span>は世界的に有名なスラム街。丘の斜面にびっしりと粗末な家が建ち並んでいます。インドのムンバイの「ダラビ」も大規模なスラムとして知られます。
+        </div>
+      </div>
+
+      <!-- ③ プライメートシティ -->
+      <div class="info-card ic-gold">
+        <div class="info-head">
+          <span class="info-icon">🏢</span>
+          <div>
+            <div class="info-title">③ プライメートシティ（首位都市） ― 途上国の都市問題②</div>
+            <div class="info-sub">バンコク・カイロ・ブエノスアイレス</div>
+          </div>
+        </div>
+        <div class="info-body">
+          途上国では、国内の人・物・お金・情報がひとつの都市だけに極端に集中することがあります。この圧倒的に大きな都市を<span class="info-kw ic-gold">プライメートシティ（首位都市）</span>と呼びます。<br>
+          タイの<strong>バンコク</strong>は人口約1000万人超で第2都市の10倍以上の規模。エジプトの<strong>カイロ</strong>、アルゼンチンの<strong>ブエノスアイレス</strong>なども代表例です。<br>
+          都市に機能が集中しすぎると、交通渋滞・住宅不足・環境汚染・地方との格差が深刻化します。
+        </div>
+      </div>
+
+      <!-- ④⑤ ドーナツ化・インナーシティ・コンパクトシティ（画像） -->
+      <div class="img-panel-wrap">
+        <img class="img-panel" data-img="worldtoshimondai.png" alt="ドーナツ化現象・インナーシティ問題・コンパクトシティの解説図">
+        <div class="img-panel-cap">▲ ドーナツ化現象・インナーシティ問題・コンパクトシティ</div>
+      </div>
+
+    </div>
+  </div><!-- /stage -->
+
+  <!-- ミニテスト Unit2 -->
+  <div class="stage challenge" data-id="city">
+    <div class="stage-head">
+      <span class="stage-label">✏️ ミニテスト（6問）</span>
+      <div class="stage-actions">
+        <span class="timer" id="timer_city" style="display:none">0:00.0</span>
+        <button class="ch-btn start" onclick="startChallenge('city')">▶ チャレンジ開始</button>
+        <button class="ch-btn judge" id="judge_city" style="display:none" onclick="judge('city')">✓ 判定</button>
+        <button class="ch-btn example" id="example_city" style="display:none" onclick="showExample('city')">📖 手本を見る</button>
+        <button class="ch-btn reset" id="reset_city" style="display:none" onclick="resetChallenge('city')">↻ リセット</button>
+      </div>
+    </div>
+    <div class="read-box" id="rb_city">
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ① 途上国の都市に流入した貧困層が形成する衛生環境の劣悪な居住区を
+        <span class="blank" data-a="スラム">スラム</span> という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ② ブラジルのリオデジャネイロにある世界的に有名なスラム街を
+        <span class="blank" data-a="ファベーラ">ファベーラ</span> という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ③ 途上国の大都市で第2位以下を圧倒する巨大な首位都市を
+        <span class="blank" data-a="プライメートシティ">プライメートシティ</span>（首位都市）という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ④ 日本の大都市で中心部の人口が減少し郊外に膨らむ現象を
+        <span class="blank" data-a="ドーナツ化現象">ドーナツ化現象</span> という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ⑤ 都市の中心部が荒廃し治安悪化・空き家増加が起きる問題を
+        <span class="blank" data-a="インナーシティ問題">インナーシティ問題</span> という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ⑥ 人口減少・高齢化に対応するため都市機能を中心部に集約する政策を
+        <span class="blank" data-a="コンパクトシティ">コンパクトシティ</span> という。
+      </p>
+    </div>
+    <div class="word-bank" id="wb_city">
+      <div class="wb-header">
+        <span class="wb-title">🗂 語群 — タップして選ぼう</span>
+        <button class="wb-close" onclick="toggleBank('city')" title="閉じる">⌄</button>
+      </div>
+      <div class="wb-chips" id="wc_city"></div>
+    </div>
+    <div class="stage-clear"></div>
+  </div>
+  <div class="ranking"><h3>🏆 ベストタイム</h3><ul id="rank_city"></ul></div>
+
+  <!-- 確認問題 Unit2 -->
+  <div class="q-block">
+    <div class="q-title">✅ 確認問題（4問）</div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問1．</span>ブラジルのリオデジャネイロの「ファベーラ」はどのような都市問題を示しているか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">先進国の都市中心部が荒廃するインナーシティ問題</button>
+        <button class="q4-c" data-ans="1">途上国の都市で貧困層が形成する劣悪な居住区（スラム）の問題</button>
+        <button class="q4-c" data-ans="0">都市中心部の人口が減少するドーナツ化現象</button>
+        <button class="q4-c" data-ans="0">一極集中したプライメートシティの交通渋滞問題</button>
+      </div>
+      <div class="q4-exp">ファベーラはブラジルのスラム街。農村から流入した貧困層が住む劣悪な環境の居住区で、途上国の急速な都市化の弊害。電気・水道・下水道が整っていないことも多い。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問2．</span>タイのバンコクがプライメートシティの代表例とされる理由はどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">バンコクが世界で最も人口密度の高い都市だから</button>
+        <button class="q4-c" data-ans="0">バンコクが世界遺産に複数登録されているから</button>
+        <button class="q4-c" data-ans="1">第2都市を圧倒的に上回る規模で人口・経済が一極集中しているから</button>
+        <button class="q4-c" data-ans="0">バンコクが最も環境に配慮した都市として評価されているから</button>
+      </div>
+      <div class="q4-exp">バンコクは人口約1000万人以上で第2都市の10倍以上の規模。国内の政治・経済・文化のほとんどの機能がバンコクに集中している。このような首位都市を「プライメートシティ」という。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問3．</span>日本で起きた「ドーナツ化現象」の正しい説明はどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">都市の中心部に人口が集中して過密化した現象</button>
+        <button class="q4-c" data-ans="0">農村から都市へ人口が流入して都市化が急進した現象</button>
+        <button class="q4-c" data-ans="1">地価上昇で中心部の人口が減少し、郊外に人口が膨らんだ現象</button>
+        <button class="q4-c" data-ans="0">工場が郊外に移転して公害問題が深刻化した現象</button>
+      </div>
+      <div class="q4-exp">ドーナツ化現象は中心部の地価高騰→住民が郊外へ移住→中心部が空洞化（ドーナツの穴）し郊外が膨らむ（ドーナツの輪）という現象。多摩・千里ニュータウンなどが建設された時期と重なる。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問4．</span>「コンパクトシティ」の考え方として最も正しいものはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">大都市圏に人口を集中させてスラムを一掃する政策</button>
+        <button class="q4-c" data-ans="0">郊外に大型商業施設を建設して地域経済を活性化する政策</button>
+        <button class="q4-c" data-ans="1">人口減少・高齢化に対応するため都市機能を中心部に集約する政策</button>
+        <button class="q4-c" data-ans="0">外国人移民を積極的に受け入れ人口不足を解消する政策</button>
+      </div>
+      <div class="q4-exp">コンパクトシティは病院・商業施設・行政機能を中心部に集め、高齢者でも歩いて暮らせる街をつくる政策。富山市が路面電車（LRT）を整備した「歩いて暮らせるまち」として日本の先進例。</div>
+    </div>
+
+    <button class="q-reset" onclick="resetQBlock(this)">↻ もう一度</button>
+  </div>
+
+</div><!-- /unit-wrap 2 -->
+
+
+<!-- ============================================================
+     UNIT 3 ： 世界経済圏
+     ============================================================ -->
+<div class="unit-wrap">
+
+  <div class="stage">
+    <div class="stage-head">
+      <span class="stage-label">📖 Unit 3　世界経済圏</span>
+    </div>
+    <div class="stage-body">
+
+      <!-- 概要 -->
+      <div class="info-card ic-teal">
+        <div class="info-head">
+          <span class="info-icon">🌐</span>
+          <div>
+            <div class="info-title">そもそも「経済圏」とは何か</div>
+            <div class="info-sub">地域統合・自由貿易協定の基本</div>
+          </div>
+        </div>
+        <div class="info-body">
+          「経済圏」とは、<span class="info-kw ic-teal">近くにある国どうしが集まって、お互いの貿易や経済協力をしやすくするための仕組み</span>です。具体的には<span class="info-kw ic-teal">関税（輸入品にかかる税金）を下げたり撤廃</span>したりして、モノや人やお金が自由に行き来できるようにする約束（条約）を結びます。<br>
+          ひとつの国だけで経済を維持するのは限界があります。近くの国と協力してより大きな市場を作ることで、企業が活動しやすくなり経済が成長しやすくなります。
+        </div>
+      </div>
+
+      <!-- 読み方一覧 -->
+      <div class="info-card ic-teal">
+        <div class="info-head">
+          <span class="info-icon">🔤</span>
+          <div>
+            <div class="info-title">経済圏の読み方・正式名称 一覧</div>
+            <div class="info-sub">まずここを覚えよう！</div>
+          </div>
+        </div>
+        <div class="info-body">
+          <table class="memo-table">
+            <tr><th>略称</th><th>カタカナ読み</th><th>正式名称</th><th>ポイント</th></tr>
+            <tr><td class="ac-name">EU</td><td class="ac-kana">イーユー</td><td>欧州連合<br><small>European Union</small></td><td>欧州27か国・ユーロ導入</td></tr>
+            <tr><td class="ac-name">Brexit</td><td class="ac-kana">ブレグジット</td><td>英国のEU離脱<br><small>Britain + Exit</small></td><td>2020年英国が離脱</td></tr>
+            <tr><td class="ac-name">ASEAN</td><td class="ac-kana">アセアン</td><td>東南アジア諸国連合<br><small>Association of Southeast Asian Nations</small></td><td>東南アジア10か国</td></tr>
+            <tr><td class="ac-name">RCEP</td><td class="ac-kana">アールセップ</td><td>地域的な包括的経済連携<br><small>Regional Comprehensive Economic Partnership</small></td><td>15か国・世界最大の自由貿易圏</td></tr>
+            <tr><td class="ac-name">USMCA</td><td class="ac-kana">ユーエスエムシーエー</td><td>米国・メキシコ・カナダ協定<br><small>（旧NAFTA＝ナフタ）</small></td><td>北米3か国・2020年改定</td></tr>
+            <tr><td class="ac-name">CPTPP</td><td class="ac-kana">シーピーティーピーピー<br>（TPP11＝ティーピーピー）</td><td>環太平洋パートナーシップ協定<br><small>（米国離脱後・11か国）</small></td><td>太平洋11か国・高水準</td></tr>
+            <tr><td class="ac-name">APEC</td><td class="ac-kana">エーペック</td><td>アジア太平洋経済協力<br><small>Asia-Pacific Economic Cooperation</small></td><td>21か国・拘束力なし</td></tr>
+            <tr><td class="ac-name">OPEC</td><td class="ac-kana">オーペック</td><td>石油輸出国機構<br><small>Organization of the Petroleum Exporting Countries</small></td><td>産油国・石油価格調整</td></tr>
+            <tr><td class="ac-name">BRICS</td><td class="ac-kana">ブリックス</td><td>新興5か国<br><small>Brazil・Russia・India・China・South Africa</small></td><td>2024年に拡大・新興国</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- ① EU（画像） -->
+      <div class="img-panel-wrap">
+        <img class="img-panel" data-img="worldEU.png" alt="EU（欧州連合）の解説図">
+        <div class="img-panel-cap">▲ EU（イーユー）― 欧州連合 ／ ヨーロッパ27か国・共通通貨ユーロ・Brexit</div>
+      </div>
+
+      <!-- ② ASEAN（画像） -->
+      <div class="img-panel-wrap">
+        <img class="img-panel" data-img="worldasean.png" alt="ASEAN（東南アジア諸国連合）の解説図">
+        <div class="img-panel-cap">▲ ASEAN（アセアン）― 東南アジア10か国・AFTA・ASEAN＋3</div>
+      </div>
+
+      <!-- ③ RCEP（画像） -->
+      <div class="img-panel-wrap">
+        <img class="img-panel" data-img="worldrcep.png" alt="RCEP（地域的な包括的経済連携）の解説図">
+        <div class="img-panel-cap">▲ RCEP（アールセップ）― 15か国・世界最大の自由貿易圏・2022年発効</div>
+      </div>
+
+      <!-- ④ USMCA・CPTPP（画像） -->
+      <div class="img-panel-wrap">
+        <img class="img-panel" data-img="worldusmca.png" alt="USMCA・CPTPPの解説図">
+        <div class="img-panel-cap">▲ USMCA（ユーエスエムシーエー）旧NAFTA・北米3か国　／　CPTPP（TPP11）太平洋11か国</div>
+      </div>
+
+      <!-- ⑤ OPEC・APEC・BRICS（画像） -->
+      <div class="img-panel-wrap">
+        <img class="img-panel" data-img="worldbrics.png" alt="OPEC・APEC・BRICSの解説図">
+        <div class="img-panel-cap">▲ OPEC（オーペック）・APEC（エーペック）・BRICS（ブリックス）</div>
+      </div>
+
+    </div>
+  </div><!-- /stage -->
+
+  <!-- ミニテスト Unit3 -->
+  <div class="stage challenge" data-id="econ">
+    <div class="stage-head">
+      <span class="stage-label">✏️ ミニテスト（8問）</span>
+      <div class="stage-actions">
+        <span class="timer" id="timer_econ" style="display:none">0:00.0</span>
+        <button class="ch-btn start" onclick="startChallenge('econ')">▶ チャレンジ開始</button>
+        <button class="ch-btn judge" id="judge_econ" style="display:none" onclick="judge('econ')">✓ 判定</button>
+        <button class="ch-btn example" id="example_econ" style="display:none" onclick="showExample('econ')">📖 手本を見る</button>
+        <button class="ch-btn reset" id="reset_econ" style="display:none" onclick="resetChallenge('econ')">↻ リセット</button>
+      </div>
+    </div>
+    <div class="read-box" id="rb_econ">
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ① ヨーロッパ27か国が加盟し、共通通貨ユーロを持つ地域統合体は
+        <span class="blank" data-a="EU">EU</span>（欧州連合）である。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ② イギリスが2020年にEUを離脱したことを
+        <span class="blank" data-a="Brexit">Brexit</span>（ブレグジット）という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ③ 東南アジア10か国が加盟する地域協力機構を
+        <span class="blank" data-a="ASEAN">ASEAN</span>（東南アジア諸国連合）という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ④ 2022年発効の15か国による世界最大の自由貿易圏を
+        <span class="blank" data-a="RCEP">RCEP</span>（地域的な包括的経済連携）という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ⑤ アメリカ・カナダ・メキシコ北米3か国の協定（旧NAFTAの改定版）を
+        <span class="blank" data-a="USMCA">USMCA</span> という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ⑥ 太平洋周辺11か国の高水準な自由貿易協定（米国離脱後）を
+        <span class="blank" data-a="CPTPP">CPTPP</span>（TPP11）という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ⑦ 産油国が石油の生産量・価格を調整するために設立した機構を
+        <span class="blank" data-a="OPEC">OPEC</span>（石油輸出国機構）という。
+      </p>
+      <p style="font-size:14px;line-height:2.4;margin:4px 0;">
+        ⑧ ブラジル・ロシア・インド・中国・南アフリカからなる新興国グループを
+        <span class="blank" data-a="BRICS">BRICS</span> という。
+      </p>
+    </div>
+    <div class="word-bank" id="wb_econ">
+      <div class="wb-header">
+        <span class="wb-title">🗂 語群 — タップして選ぼう</span>
+        <button class="wb-close" onclick="toggleBank('econ')" title="閉じる">⌄</button>
+      </div>
+      <div class="wb-chips" id="wc_econ"></div>
+    </div>
+    <div class="stage-clear"></div>
+  </div>
+  <div class="ranking"><h3>🏆 ベストタイム</h3><ul id="rank_econ"></ul></div>
+
+  <!-- 確認問題 Unit3 -->
+  <div class="q-block">
+    <div class="q-title">✅ 確認問題（4問）</div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問1．</span>EUに関する説明として正しいものはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">東南アジア10か国が加盟する地域協力機構である</button>
+        <button class="q4-c" data-ans="0">条約による拘束力がない話し合いの場（フォーラム）である</button>
+        <button class="q4-c" data-ans="0">イギリスは現在もEUに加盟している</button>
+        <button class="q4-c" data-ans="1">共通通貨ユーロを導入し1993年に発足した地域統合体である</button>
+      </div>
+      <div class="q4-exp">EUはマーストリヒト条約（1993年）で発足。ヨーロッパ27か国が加盟し共通通貨ユーロを導入。イギリスは2020年に離脱（Brexit）済み。条約に拘束力のないフォーラムはAPEC。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問2．</span>2022年に発効したRCEPについて正しいものはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">北米3か国（米・加・墨）の自由貿易協定である</button>
+        <button class="q4-c" data-ans="1">ASEAN10か国＋日中韓など15か国による世界最大の自由貿易圏である</button>
+        <button class="q4-c" data-ans="0">太平洋周辺11か国の協定でアメリカが主導した</button>
+        <button class="q4-c" data-ans="0">産油国が石油生産量を調整するための機構である</button>
+      </div>
+      <div class="q4-exp">RCEPはASEAN10か国＋日本・中国・韓国・オーストラリア・ニュージーランドの計15か国。2022年発効。世界のGDP・貿易量の約3割を占める世界最大の自由貿易圏。日中韓が同枠組みに初めて入った点が画期的。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問3．</span>OPECの主な目的として正しいものはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">加盟国間の関税を撤廃して自由貿易を推進する</button>
+        <button class="q4-c" data-ans="0">東南アジアの政治・安全保障を維持する</button>
+        <button class="q4-c" data-ans="1">産油国が石油の生産量を調整して価格を適切な水準に保つ</button>
+        <button class="q4-c" data-ans="0">新興国どうしが経済成長を共に推進する</button>
+      </div>
+      <div class="q4-exp">OPECは石油輸出国機構。中東の産油国が石油の生産量を協調して決めることで石油価格をコントロールする。1973年のオイルショックはOPECが生産を大幅に削減して原油価格が4倍になった事件。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問4．</span>APECがEUと大きく異なる点はどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">APECはアフリカ諸国が中心となっている</button>
+        <button class="q4-c" data-ans="0">APECは共通通貨を導入している</button>
+        <button class="q4-c" data-ans="1">APECは条約に基づく拘束力がなく自発的な協力のフォーラムである</button>
+        <button class="q4-c" data-ans="0">APECは石油の生産量を調整することが目的である</button>
+      </div>
+      <div class="q4-exp">EUは条約に基づき拘束力あり・共通法律あり・共通通貨あり（強い統合）。APECは拘束力のないフォーラム（話し合いの場）で参加国が自発的に貿易自由化に取り組む。この違いが試験でよく問われる。</div>
+    </div>
+
+    <button class="q-reset" onclick="resetQBlock(this)">↻ もう一度</button>
+  </div>
+
+  <!-- 暗記クイズ Unit3 -->
+  <div class="q-block">
+    <div class="q-title">🔤 経済圏 読み方・暗記クイズ（8問）</div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問1．</span>「ASEAN」のカタカナ読みとして正しいのはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">エーエスイーエーエヌ</button>
+        <button class="q4-c" data-ans="1">アセアン</button>
+        <button class="q4-c" data-ans="0">アシアン</button>
+        <button class="q4-c" data-ans="0">エーセアン</button>
+      </div>
+      <div class="q4-exp">ASEANは「アセアン」と読む。Association of Southeast Asian Nationsの略。東南アジア10か国が加盟する地域協力機構。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問2．</span>「RCEP」のカタカナ読みとして正しいのはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">アルシーイーピー</button>
+        <button class="q4-c" data-ans="0">レセップ</button>
+        <button class="q4-c" data-ans="1">アールセップ</button>
+        <button class="q4-c" data-ans="0">アーセップ</button>
+      </div>
+      <div class="q4-exp">RCEPは「アールセップ」と読む。Regional Comprehensive Economic Partnershipの略。15か国が参加する世界最大の自由貿易圏（2022年発効）。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問3．</span>「OPEC」のカタカナ読みと目的の組み合わせとして正しいのはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">エーペック ／ 自由貿易の推進</button>
+        <button class="q4-c" data-ans="0">ブリックス ／ 新興国の経済協力</button>
+        <button class="q4-c" data-ans="0">アールセップ ／ 石油価格の調整</button>
+        <button class="q4-c" data-ans="1">オーペック ／ 石油の生産量・価格調整</button>
+      </div>
+      <div class="q4-exp">OPECは「オーペック」（Organization of the Petroleum Exporting Countries）。石油輸出国機構として産油国が石油の生産量を協調して決め価格をコントロールする。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問4．</span>「APEC」について正しい説明はどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">「アセアン」と読み、東南アジア10か国の地域協力機構</button>
+        <button class="q4-c" data-ans="1">「エーペック」と読み、アジア太平洋21か国が参加する拘束力のないフォーラム</button>
+        <button class="q4-c" data-ans="0">「オーペック」と読み、産油国が石油生産を調整する機構</button>
+        <button class="q4-c" data-ans="0">「アールセップ」と読み、世界最大の自由貿易圏</button>
+      </div>
+      <div class="q4-exp">APECは「エーペック」（Asia-Pacific Economic Cooperation）。アジア太平洋21か国・地域が参加。条約ではなくフォーラム（話し合いの場）なので拘束力がない点がEUと大きく異なる。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問5．</span>「BRICS」（ブリックス）の構成国として正しいものはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">アメリカ・カナダ・メキシコ・オーストラリア・日本</button>
+        <button class="q4-c" data-ans="0">フランス・ドイツ・イタリア・スペイン・ポルトガル</button>
+        <button class="q4-c" data-ans="1">ブラジル・ロシア・インド・中国・南アフリカ</button>
+        <button class="q4-c" data-ans="0">サウジアラビア・イラン・イラク・クウェート・UAE</button>
+      </div>
+      <div class="q4-exp">BRICSはBrazil（ブラジル）・Russia（ロシア）・India（インド）・China（中国）・South Africa（南アフリカ）の頭文字。経済成長著しい新興国グループ。2024年にエジプト・サウジアラビアなども加盟し拡大中。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問6．</span>USMCA（ユーエスエムシーエー）の旧称として正しいものはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">CPTPP（シーピーティーピーピー）</button>
+        <button class="q4-c" data-ans="1">NAFTA（ナフタ）</button>
+        <button class="q4-c" data-ans="0">APEC（エーペック）</button>
+        <button class="q4-c" data-ans="0">RCEP（アールセップ）</button>
+      </div>
+      <div class="q4-exp">USMCAの旧称はNAFTA（ナフタ／北米自由貿易協定、1994年）。トランプ政権主導で2020年に改定されUSMCAとなった。アメリカ・カナダ・メキシコの北米3か国の協定。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問7．</span>CPTPP（TPP11）に関して正しいものはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">北米3か国の自由貿易協定でアメリカが主導している</button>
+        <button class="q4-c" data-ans="0">東南アジア10か国が結成した地域協力機構である</button>
+        <button class="q4-c" data-ans="0">「オーペック」と読み石油の生産を調整する</button>
+        <button class="q4-c" data-ans="1">アメリカ離脱後、太平洋周辺11か国で2018年に発効した高水準の自由貿易協定</button>
+      </div>
+      <div class="q4-exp">CPTPPは「シーピーティーピーピー」（またはTPP11・ティーピーピーじゅういち）。もともとアメリカ主導のTPPだったが2017年に米国が離脱。残り11か国（日本・オーストラリア・カナダ・ベトナムなど）で2018年に発効。</div>
+    </div>
+
+    <div class="q4">
+      <div class="q4-stem"><span class="q4-num">問8．</span>次の読み方と略称の組み合わせで正しいものはどれか？</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-ans="0">イーユー → OPEC　　アセアン → EU</button>
+        <button class="q4-c" data-ans="0">ブリックス → APEC　　エーペック → BRICS</button>
+        <button class="q4-c" data-ans="0">アールセップ → ASEAN　　オーペック → RCEP</button>
+        <button class="q4-c" data-ans="1">イーユー → EU　　アセアン → ASEAN　　オーペック → OPEC　　ブリックス → BRICS</button>
+      </div>
+      <div class="q4-exp">正しい組み合わせ：EU（イーユー）・ASEAN（アセアン）・RCEP（アールセップ）・USMCA（ユーエスエムシーエー）・APEC（エーペック）・OPEC（オーペック）・BRICS（ブリックス）。繰り返し声に出して覚えよう！</div>
+    </div>
+
+    <button class="q-reset" onclick="resetQBlock(this)">↻ もう一度</button>
+  </div>
+
+</div><!-- /unit-wrap 3 -->
+
+</div><!-- /wrap -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== 画像ベースURL =====
+// GitHubのRaw URLに変更してください（末尾スラッシュ必須）
+// 例: const IMG_BASE = 'https://raw.githubusercontent.com/ユーザー名/リポジトリ名/main/img/';
+const IMG_BASE = './';
+
+// 画像URLをセット
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('[data-img]').forEach(function(el){
+    el.src = IMG_BASE + el.dataset.img;
+  });
+});
+
+// ===== BANKS =====
+const BANKS = {
+  pop:  ['人口爆発','少子高齢化','2.1','富士山型','壺型','ブレイン・ドレイン','一人っ子政策'],
+  city: ['スラム','ファベーラ','プライメートシティ','ドーナツ化現象','インナーシティ問題','コンパクトシティ'],
+  econ: ['EU','Brexit','ASEAN','RCEP','USMCA','CPTPP','OPEC','BRICS'],
+};
+
+// ===== TIMER =====
+var timers = {};
+function startTimer(id){
+  if(timers[id]) clearInterval(timers[id].iv);
+  timers[id] = {start: performance.now(), iv: null};
+  var el = document.getElementById('timer_'+id);
+  el.style.display='inline';
+  timers[id].iv = setInterval(function(){
+    var ms = performance.now() - timers[id].start;
+    var s = Math.floor(ms/1000);
+    var m = Math.floor(s/60);
+    el.textContent = m+':'+(s%60<10?'0':'')+(s%60)+'.'+(Math.floor(ms/100)%10);
+  },100);
+}
+function stopTimer(id){
+  if(timers[id]) clearInterval(timers[id].iv);
+  return timers[id] ? (performance.now()-timers[id].start) : 0;
+}
+
+// ===== CHALLENGE =====
+function startChallenge(id){
+  var rb = document.getElementById('rb_'+id);
+  var wb = document.getElementById('wb_'+id);
+  var wc = document.getElementById('wc_'+id);
+  rb.querySelectorAll('.blank').forEach(function(b){
+    b.textContent='';
+    b.classList.remove('filled','correct','wrong');
+    b.dataset.filled='';
+  });
+  var words = BANKS[id].slice().sort(function(){return Math.random()-.5;});
+  wc.innerHTML='';
+  words.forEach(function(w){
+    var c=document.createElement('span');
+    c.className='chip'; c.textContent=w;
+    c.onclick=function(){placeWord(id,w,c);};
+    wc.appendChild(c);
+  });
+  wb.classList.add('active');
+  document.body.classList.add('bank-open');
+  document.querySelector('[data-id="'+id+'"] .ch-btn.start').style.display='none';
+  document.getElementById('judge_'+id).style.display='inline';
+  document.getElementById('example_'+id).style.display='inline';
+  document.getElementById('reset_'+id).style.display='inline';
+  startTimer(id);
+}
+
+function placeWord(id,word,chip){
+  var rb = document.getElementById('rb_'+id);
+  var blanks = rb.querySelectorAll('.blank');
+  for(var i=0;i<blanks.length;i++){
+    if(!blanks[i].dataset.filled){
+      blanks[i].textContent=word;
+      blanks[i].dataset.filled=word;
+      blanks[i].classList.add('filled');
+      chip.classList.add('used');
+      (function(bl,ch){
+        bl.onclick=function(){
+          bl.textContent=''; bl.dataset.filled=''; bl.classList.remove('filled','correct','wrong');
+          ch.classList.remove('used'); bl.onclick=null;
+        };
+      })(blanks[i],chip);
+      return;
+    }
+  }
+}
+
+function judge(id){
+  var ms = stopTimer(id);
+  var rb = document.getElementById('rb_'+id);
+  var blanks = rb.querySelectorAll('.blank');
+  var allOk=true;
+  blanks.forEach(function(b){
+    var ok = b.dataset.filled === b.dataset.a;
+    b.classList.remove('filled');
+    b.classList.add(ok?'correct':'wrong');
+    if(!ok) allOk=false;
+  });
+  if(allOk){
+    document.querySelector('[data-id="'+id+'"] .stage-clear').style.display='block';
+    document.querySelector('[data-id="'+id+'"] .stage-clear').textContent='🎉 全問正解！';
+    document.getElementById('wb_'+id).classList.remove('active');
+    document.body.classList.remove('bank-open');
+    saveRank(id, ms);
+    fireConfetti();
+  }
+}
+
+function showExample(id){
+  stopTimer(id);
+  var rb = document.getElementById('rb_'+id);
+  rb.querySelectorAll('.blank').forEach(function(b){
+    b.textContent=b.dataset.a;
+    b.dataset.filled=b.dataset.a;
+    b.classList.remove('wrong');
+    b.classList.add('correct');
+  });
+  document.getElementById('wb_'+id).classList.remove('active');
+  document.body.classList.remove('bank-open');
+}
+
+function resetChallenge(id){
+  var rb = document.getElementById('rb_'+id);
+  rb.querySelectorAll('.blank').forEach(function(b){
+    b.textContent=b.dataset.a; b.dataset.filled=''; b.classList.remove('filled','correct','wrong'); b.onclick=null;
+  });
+  document.getElementById('wb_'+id).classList.remove('active');
+  document.body.classList.remove('bank-open');
+  document.getElementById('wc_'+id).innerHTML='';
+  document.getElementById('timer_'+id).style.display='none';
+  document.querySelector('[data-id="'+id+'"] .ch-btn.start').style.display='inline';
+  document.getElementById('judge_'+id).style.display='none';
+  document.getElementById('example_'+id).style.display='none';
+  document.getElementById('reset_'+id).style.display='none';
+  document.querySelector('[data-id="'+id+'"] .stage-clear').style.display='none';
+  stopTimer(id);
+}
+
+function toggleBank(id){
+  var wb = document.getElementById('wb_'+id);
+  if(wb.classList.contains('active')){
+    wb.classList.remove('active');
+    document.body.classList.remove('bank-open');
+  } else {
+    wb.classList.add('active');
+    document.body.classList.add('bank-open');
+  }
+}
+
+// ===== RANKING =====
+function saveRank(id, ms){
+  var key='gamba_world5_'+id;
+  var list=JSON.parse(localStorage.getItem(key)||'[]');
+  var s=Math.floor(ms/1000), m=Math.floor(s/60);
+  var label=m+':'+(s%60<10?'0':'')+(s%60)+'.'+(Math.floor(ms/100)%10);
+  list.push({t:ms,label:label});
+  list.sort(function(a,b){return a.t-b.t;});
+  list=list.slice(0,5);
+  localStorage.setItem(key,JSON.stringify(list));
+  loadRank(id);
+}
+function loadRank(id){
+  var key='gamba_world5_'+id;
+  var list=JSON.parse(localStorage.getItem(key)||'[]');
+  var ul=document.getElementById('rank_'+id);
+  if(!ul) return;
+  var medals=['🥇','🥈','🥉','4位','5位'];
+  ul.innerHTML='';
+  if(list.length===0){ul.innerHTML='<li style="color:#A0AEC0">まだ記録なし</li>';return;}
+  list.forEach(function(r,i){
+    var li=document.createElement('li');
+    li.textContent=medals[i]+' '+r.label;
+    ul.appendChild(li);
+  });
+}
+
+// ===== Q4 =====
+function initQ4(){
+  document.querySelectorAll('.q4-c').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var q4=this.closest('.q4');
+      if(q4.querySelector('.q4-c.correct,.q4-c.wrong')) return;
+      var correct=this.dataset.ans==='1';
+      this.classList.add(correct?'correct':'wrong');
+      q4.querySelectorAll('.q4-c').forEach(function(b){b.disabled=true;});
+      if(correct){q4.querySelector('.q4-exp').classList.add('show');fireConfetti();}
+      else{
+        var ans=q4.querySelector('.q4-c[data-ans="1"]');
+        if(ans) ans.classList.add('correct');
+        q4.querySelector('.q4-exp').classList.add('show');
+      }
+    });
+  });
+}
+function resetQBlock(btn){
+  var block=btn.closest('.q-block');
+  block.querySelectorAll('.q4-c').forEach(function(b){b.classList.remove('correct','wrong');b.disabled=false;});
+  block.querySelectorAll('.q4-exp').forEach(function(e){e.classList.remove('show');});
+}
+
+// ===== CONFETTI =====
+function fireConfetti(){
+  var colors=['#F6E05E','#68D391','#90CDF4','#FBD38D','#FEB2B2','#B794F4'];
+  for(var i=0;i<30;i++){
+    (function(i){
+      setTimeout(function(){
+        var d=document.createElement('div');
+        d.className='confetti-piece';
+        d.style.left=Math.random()*100+'vw';
+        d.style.top='-10px';
+        d.style.background=colors[Math.floor(Math.random()*colors.length)];
+        d.style.animationDuration=(0.8+Math.random()*0.8)+'s';
+        document.body.appendChild(d);
+        setTimeout(function(){d.remove();},1600);
+      },i*40);
+    })(i);
+  }
+}
+
+// ===== TOAST =====
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2200);
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded',function(){
+  loadRank('pop');
+  loadRank('city');
+  loadRank('econ');
+  initQ4();
+});
+</script>
+</body>
+</html>

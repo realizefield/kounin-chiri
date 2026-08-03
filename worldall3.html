@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>世界の鉱産資源と工業都市 ｜ 高卒認定地理</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#F5F8FB;color:#1A202C;min-height:100vh;}
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,#243B53 0%,#2C5282 100%);color:#fff;padding:28px 20px 22px;text-align:center;}
+.hero h1{font-size:22px;font-weight:800;letter-spacing:.05em;margin-bottom:6px;}
+.hero p{font-size:13px;opacity:.85;}
+/* ===== WRAP ===== */
+.wrap{max-width:720px;margin:0 auto;padding:16px 12px 60px;}
+/* ===== UNIT WRAP ===== */
+.unit-wrap{margin-bottom:32px;}
+/* ===== STAGE ===== */
+.stage{background:#fff;border-radius:14px;border:1px solid #C3DAFE;margin-bottom:16px;overflow:hidden;}
+.stage-head{background:linear-gradient(90deg,#2C5282,#3182CE);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.stage-label{font-size:15px;font-weight:700;}
+.stage-body{padding:16px;}
+/* ===== CHALLENGE ===== */
+.stage.challenge .stage-body{padding:16px;}
+.stage-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ch-btn{border:none;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;}
+.ch-btn.start{background:#F6E05E;color:#744210;}
+.ch-btn.judge{background:#68D391;color:#1A4731;}
+.ch-btn.example{background:#90CDF4;color:#1A365D;}
+.ch-btn.reset{background:#FBD38D;color:#744210;}
+.ch-btn:disabled{opacity:.4;cursor:default;}
+.timer{font-size:13px;font-weight:700;color:#F6E05E;min-width:52px;}
+/* ===== READ BOX ===== */
+.read-box{padding:12px 16px;background:#EBF4FF;border-radius:10px;margin-bottom:12px;}
+.blank{display:inline-block;min-width:80px;border-bottom:2px solid #2C5282;color:#2C5282;font-weight:700;text-align:center;padding:0 4px;cursor:pointer;transition:background .2s;}
+.blank.filled{background:#C3DAFE;border-radius:4px;color:#2A4365;}
+.blank.correct{background:#9AE6B4;border-radius:4px;color:#22543D;}
+.blank.wrong{background:#FED7D7;border-radius:4px;color:#9B2C2C;border-bottom-color:#E53E3E;}
+/* ===== WORD BANK ===== */
+.word-bank{display:none;}
+.word-bank.active{
+  display:block;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:200;
+  background:#EBF8FF;
+  border-radius:16px 16px 0 0;
+  box-shadow:0 -4px 24px rgba(0,0,0,.22);
+  padding:10px 14px 24px;
+}
+.wb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.wb-title{font-size:12px;color:#2C5282;font-weight:700;}
+.wb-close{background:none;border:none;font-size:18px;color:#2C5282;cursor:pointer;line-height:1;padding:0 4px;}
+.wb-chips{display:flex;flex-wrap:wrap;gap:8px;max-height:34vh;overflow-y:auto;}
+.chip{background:#fff;border:1.5px solid #63B3ED;border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer;font-weight:600;color:#2B6CB0;transition:background .15s;}
+.chip:hover{background:#BEE3F8;}
+.chip.used{opacity:.3;pointer-events:none;}
+/* body padding when bank is open */
+body.bank-open{padding-bottom:160px;}
+/* ===== STAGE CLEAR ===== */
+.stage-clear{display:none;text-align:center;padding:14px;font-size:18px;font-weight:800;color:#2B6CB0;animation:pop .4s ease;}
+@keyframes pop{0%{transform:scale(.5);opacity:0;}70%{transform:scale(1.15);}100%{transform:scale(1);opacity:1;}}
+/* ===== RANKING ===== */
+.ranking{background:#FEFCE8;border:1px solid #FBBF24;border-radius:12px;padding:12px 16px;margin-bottom:16px;}
+.ranking h3{font-size:14px;color:#92400E;margin-bottom:8px;}
+.ranking ul{list-style:none;font-size:13px;color:#78350F;}
+.ranking ul li{padding:2px 0;}
+/* ===== FIGURE ===== */
+.fig-wrap{text-align:center;margin-bottom:12px;}
+.fig-wrap img{max-width:100%;border-radius:8px;border:1px solid #C3DAFE;}
+/* ===== CONFIRM QUIZ (4択) ===== */
+.q-block{background:#fff;border:1px solid #C3DAFE;border-radius:14px;padding:16px;margin-bottom:16px;}
+.q-title{font-size:15px;font-weight:800;color:#2C5282;margin-bottom:14px;}
+.q4{margin-bottom:20px;}
+.q4-stem{font-size:14px;font-weight:700;margin-bottom:8px;line-height:1.7;}
+.q4-num{color:#2C5282;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.q4-c{border:1.5px solid #C3DAFE;border-radius:10px;padding:10px 8px;font-size:13px;background:#EBF4FF;cursor:pointer;font-weight:600;transition:background .15s,border-color .15s;text-align:center;}
+.q4-c:hover:not(:disabled){background:#BEE3F8;border-color:#63B3ED;}
+.q4-c.correct{background:#9AE6B4;border-color:#38A169;color:#1A4731;}
+.q4-c.wrong{background:#FED7D7;border-color:#E53E3E;color:#9B2C2C;}
+.q4-exp{font-size:12px;color:#2C5282;background:#EBF4FF;border-radius:8px;padding:8px 10px;display:none;line-height:1.7;}
+.q4-exp.show{display:block;}
+.q-reset{display:block;margin:8px auto 0;background:#E2E8F0;border:none;border-radius:20px;padding:7px 22px;font-size:13px;font-weight:700;cursor:pointer;color:#2D3748;}
+/* ===== INFO CARDS ===== */
+.info-card{border-radius:12px;border:2px solid;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.1);margin-bottom:12px;}
+.info-head{display:flex;align-items:center;gap:8px;padding:10px 14px;}
+.info-icon{font-size:22px;line-height:1;}
+.info-zone{font-size:14px;font-weight:800;}
+.info-region{font-size:11px;opacity:.75;}
+.info-body{padding:10px 14px 14px;font-size:13.5px;line-height:1.9;}
+.info-kw{font-weight:800;border-bottom:2px solid;border-radius:2px;padding:0 2px;}
+/* 色テーマ */
+.ic-fe{background:#FDEDE8;border-color:#A8432B;} .ic-fe .info-head{background:#A8432B;} .ic-fe .info-zone,.ic-fe .info-region{color:#fff;} .ic-fe .info-kw{border-bottom-color:#8A2E1A;color:#7a2a15;}
+.ic-co{background:#ECEBE9;border-color:#4A4540;} .ic-co .info-head{background:#4A4540;} .ic-co .info-zone,.ic-co .info-region{color:#fff;} .ic-co .info-kw{border-bottom-color:#2E2A26;color:#3a352f;}
+.ic-oi{background:#E6F2EE;border-color:#2C5145;} .ic-oi .info-head{background:#2C5145;} .ic-oi .info-zone,.ic-oi .info-region{color:#fff;} .ic-oi .info-kw{border-bottom-color:#1C3A30;color:#1c4034;}
+.ic-eu{background:#E8F0FF;border-color:#4A6FA8;} .ic-eu .info-head{background:#4A6FA8;} .ic-eu .info-zone,.ic-eu .info-region{color:#fff;} .ic-eu .info-kw{border-bottom-color:#2a4f88;color:#1a2f60;}
+.ic-na{background:#FDE8FF;border-color:#9040B0;} .ic-na .info-head{background:#9040B0;} .ic-na .info-zone,.ic-na .info-region{color:#fff;} .ic-na .info-kw{border-bottom-color:#7020A0;color:#4a1060;}
+.ic-as{background:#FFF7DC;border-color:#D4A017;} .ic-as .info-head{background:#D4A017;} .ic-as .info-zone,.ic-as .info-region{color:#fff;} .ic-as .info-kw{border-bottom-color:#A07810;color:#7a5000;}
+.ic-sa{background:#FFF0DC;border-color:#E07820;} .ic-sa .info-head{background:#E07820;} .ic-sa .info-zone,.ic-sa .info-region{color:#fff;} .ic-sa .info-kw{border-bottom-color:#B04010;color:#7a3000;}
+/* ===== POINT BOX ===== */
+.point{background:#FEFCE8;border:1px solid #FBBF24;border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13.5px;line-height:1.9;color:#78350F;}
+.point b{color:#92400E;}
+/* ===== 深く知るボタン ===== */
+.deep-btn{display:block;width:100%;border:none;border-radius:0;padding:11px 14px;font-size:13.5px;font-weight:800;cursor:pointer;color:#fff;text-align:center;letter-spacing:.03em;transition:filter .15s;font-family:inherit;}
+.deep-btn:hover{filter:brightness(1.15);}
+.deep-content{display:none;}
+/* ===== MODAL ===== */
+.modal-mask{display:none;position:fixed;inset:0;background:rgba(26,32,44,.62);z-index:500;padding:14px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.modal-mask.active{display:block;}
+.modal{background:#fff;border-radius:16px;max-width:640px;margin:24px auto 40px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.35);animation:pop .3s ease;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px;color:#fff;}
+.modal-head .mt{font-size:15px;font-weight:800;line-height:1.5;}
+.modal-close{background:rgba(255,255,255,.22);border:none;color:#fff;font-size:20px;line-height:1;width:32px;height:32px;border-radius:16px;cursor:pointer;flex-shrink:0;}
+.modal-body{padding:16px;font-size:13.5px;line-height:1.95;max-height:none;}
+.modal-body h4{font-size:14px;font-weight:800;margin:16px 0 6px;padding-left:9px;border-left:4px solid #CBD5E0;}
+.modal-body h4:first-child{margin-top:0;}
+.modal-body p{margin-bottom:10px;}
+/* ステップ */
+.step{border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 12px;margin-bottom:8px;background:#F7FAFC;position:relative;}
+.step .sn{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:#718096;border-radius:10px;padding:1px 9px;margin-right:6px;}
+.step b{font-size:13.5px;}
+.arrow-down{text-align:center;color:#A0AEC0;font-size:15px;line-height:1;margin:-4px 0 4px;}
+.modal-body .exlist{background:#FEFCE8;border:1px solid #FBBF24;border-radius:10px;padding:10px 13px;color:#78350F;font-size:13px;line-height:1.9;}
+.modal-body .exam{background:#EBF4FF;border:1px solid #90CDF4;border-radius:10px;padding:10px 13px;color:#2A4365;font-size:13px;line-height:1.9;}
+body.modal-open{overflow:hidden;}
+/* ===== 花吹雪 ===== */
+.petal-piece{position:fixed;width:11px;height:11px;border-radius:11px 1px 11px 1px;pointer-events:none;animation:fall 1.6s ease-in forwards;z-index:999;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#2C5282;color:#fff;border-radius:20px;padding:10px 22px;font-size:14px;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⛏ 世界の鉱産資源と工業都市</h1>
+  <p>高卒認定・中高基礎地理 ｜ 江原予備校</p>
+</div>
+
+<div class="wrap" id="wrap">
+
+  <!-- ===== UNIT 1: 世界の鉱産資源 ===== -->
+  <div class="unit-wrap">
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="stage-label">📖 Unit 1　世界の鉱産資源 ― 鉄鉱石・石炭・原油</span>
+      </div>
+      <div class="stage-body">
+
+        <div class="fig-wrap" style="margin-bottom:14px;">
+          <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldkousanshigen.png" alt="鉄鉱石・石炭・原油の成り立ち">
+        </div>
+
+        <div class="point" style="margin-bottom:14px;">
+          鉄鉱石・石炭・原油は、<b>地球の成り立ち</b>に関係があります。できた時代がちがうので、採れる場所もちがいます。ここを押さえると、地図を丸暗記しなくてよくなります。
+        </div>
+
+        <!-- ① 鉄鉱石 -->
+        <div class="info-card ic-fe">
+          <div class="info-head">
+            <span class="info-icon">🪨</span>
+            <div>
+              <div class="info-zone">① 鉄鉱石 ―― 先カンブリア時代の海でできた</div>
+              <div class="info-region">安定陸塊（楯状地・卓状地）に分布</div>
+            </div>
+          </div>
+          <div class="info-body">
+            いまから約<span class="info-kw ic-fe">25億〜19億年前</span>、先カンブリア時代の海でつくられた。当時の海には鉄分が溶け込んでいたが、
+            <span class="info-kw ic-fe">シアノバクテリア</span>（<ruby>藍藻<rt>らんそう</rt></ruby>）が光合成で酸素を出すようになり、その酸素と鉄が結びついて酸化鉄となり、海底に沈殿した。<br>
+            これが層状に積み重なったものが<span class="info-kw ic-fe">縞状鉄鉱層</span>である。つまり鉄鉱石は「地球が最初にさびた跡」といえる。<br>
+            分布は<span class="info-kw ic-fe">安定陸塊</span>。古い岩盤が地表に出ている、平らでなだらかな大地に多い。<br>
+            <b>【具体例】</b>メサビ鉄山（アメリカ）・カラジャス鉄山・イタビラ鉄山（ブラジル）・ピルバラ地区（オーストラリア）
+          </div>
+          <button class="deep-btn" style="background:#A8432B" onclick="openDeep('deep_fe','#A8432B','🪨 ① 鉄鉱石はどうしてできたのか')">🔍 もっと深く知る</button>
+          <div class="deep-content" id="deep_fe">
+            <h4 style="border-left-color:#A8432B">4つのステップでできました</h4>
+            <div class="step"><span class="sn">STEP 1</span><b>海に鉄が溶けていた</b><br>約25億年前、地球の空気にはまだ酸素がほとんどありませんでした。酸素がないと鉄は水に溶けたままでいられるので、当時の浅い海には大量の鉄分（Fe）が溶け込んでいました。</div>
+            <div class="arrow-down">▼</div>
+            <div class="step"><span class="sn">STEP 2</span><b>シアノバクテリアが酸素を出した</b><br>そこへ<b>シアノバクテリア（藍藻）</b>という生き物があらわれます。地球ではじめて<b>光合成</b>をして、酸素を海の中に放出しはじめました。</div>
+            <div class="arrow-down">▼</div>
+            <div class="step"><span class="sn">STEP 3</span><b>酸素と鉄がくっついて酸化鉄になった</b><br>放出された酸素は、まず海に溶けていた鉄と結びつきました。こうしてできたのが<b>酸化鉄（Fe₂O₃）</b>、つまり「さび」です。さびは水に溶けないので、重くなって沈みます。</div>
+            <div class="arrow-down">▼</div>
+            <div class="step"><span class="sn">STEP 4</span><b>海底に沈殿して層になった</b><br>沈んだ酸化鉄が海底に積み重なり、何億年もかけて層状の岩になりました。これが<b>縞状鉄鉱層</b>です。しま模様に見えるのは、季節や環境によって沈む量が変わったためと考えられています。</div>
+            <h4 style="border-left-color:#A8432B">なぜ「安定陸塊」で採れるのか</h4>
+            <p>できたのが25億年前という、とてつもなく古い時代だからです。そのころの岩盤がいまも地表に残っているのは、その後けずられも押し上げられもしなかった<b>安定陸塊</b>（楯状地・卓状地）だけ。だから鉄鉱石は、平らでなだらかな古い大地に集中しています。</p>
+            <p>採掘のしかたにも特徴があります。地表近くに層が広がっているので、上からけずり取る<b>露天掘り</b>ができます。坑道を掘らなくてよいぶん、コストが安く大量に採れるのです。</p>
+            <h4 style="border-left-color:#A8432B">具体例</h4>
+            <div class="exlist">
+              ・<b>メサビ鉄山</b>（アメリカ）… スペリオル湖の西岸。五大湖の船でピッツバーグへ運ばれ、アメリカの鉄鋼業を支えました。<br>
+              ・<b>カラジャス鉄山・イタビラ鉄山</b>（ブラジル）… ブラジル高原にあり、現在の輸出量は世界有数です。<br>
+              ・<b>ピルバラ地区</b>（オーストラリア）… 日本が鉄鉱石をいちばん多く買っている相手です。
+            </div>
+            <h4 style="border-left-color:#A8432B">ここが試験に出ます</h4>
+            <div class="exam">
+              「鉄鉱石 ＝ <b>安定陸塊</b>」の組み合わせが最頻出です。オーストラリア・ブラジルが輸出の中心である点もあわせて押さえておきましょう。「地球が最初にさびた跡」と覚えると、成因も一緒に思い出せます。
+            </div>
+          </div>
+        </div>
+
+        <!-- ② 石炭 -->
+        <div class="info-card ic-co">
+          <div class="info-head">
+            <span class="info-icon">🪵</span>
+            <div>
+              <div class="info-zone">② 石炭 ―― 古生代のシダ植物が炭になった</div>
+              <div class="info-region">古期造山帯に分布</div>
+            </div>
+          </div>
+          <div class="info-body">
+            古生代の<span class="info-kw ic-co">石炭紀</span>（約3.6億〜3億年前）が中心。当時は温暖湿潤で、
+            <span class="info-kw ic-co">シダ植物</span>の巨大な森林が湿地に広がっていた。<br>
+            倒れた木が水中に沈んで腐らずに堆積し、地下で長い時間、熱と圧力を受けて炭化した。石炭紀という時代の名前そのものが、この出来事に由来する。<br>
+            分布は<span class="info-kw ic-co">古期造山帯</span>。古生代の造山運動でできた、なだらかな山地の周辺である。<br>
+            <b>【具体例】</b>アパラチア炭田（アメリカ）・ルール炭田（ドイツ）
+          </div>
+          <button class="deep-btn" style="background:#4A4540" onclick="openDeep('deep_co','#4A4540','🪵 ② 石炭はどうしてできたのか')">🔍 もっと深く知る</button>
+          <div class="deep-content" id="deep_co">
+            <h4 style="border-left-color:#4A4540">3つのステップでできました</h4>
+            <div class="step"><span class="sn">STEP 1</span><b>古生代の湿地にシダの森が広がった</b><br>約3.6億〜3億年前、地球は温暖湿潤でした。いまの木のかわりに、高さ30mにもなる<b>巨大なシダ植物</b>が、じめじめした湿地いっぱいに森をつくっていました。</div>
+            <div class="arrow-down">▼</div>
+            <div class="step"><span class="sn">STEP 2</span><b>倒れた木が腐らずに堆積した</b><br>ふつう木は倒れると微生物に分解されて土に還ります。ところが水の中は酸素が届かないため、分解が進みません。倒れた木がそのまま沈み、上に上にと積み重なっていきました。</div>
+            <div class="arrow-down">▼</div>
+            <div class="step"><span class="sn">STEP 3</span><b>熱と圧力で炭になった</b><br>地下に埋もれた植物は、長い時間をかけて<b>熱と圧力</b>を受けます。水分と余分な成分がぬけて炭素の割合が高まり、黒い石＝<b>石炭</b>に変わりました。この時代を<b>石炭紀</b>と呼びます。</div>
+            <h4 style="border-left-color:#4A4540">なぜ「古期造山帯」で採れるのか</h4>
+            <p>石炭ができたのは古生代です。ちょうど同じころ、地球では古生代の<b>造山運動</b>が起きていました。そのときにできた山地が、長い年月でけずられてなだらかになったものが<b>古期造山帯</b>です。</p>
+            <p>つまり「石炭ができた時代」と「その山ができた時代」が同じなので、両者は同じ場所に重なります。アパラチア山脈のふもとにアパラチア炭田がある、という関係です。</p>
+            <h4 style="border-left-color:#4A4540">具体例</h4>
+            <div class="exlist">
+              ・<b>アパラチア炭田</b>（アメリカ）… アパラチア山脈ぞい。メサビの鉄鉱石と組み合わさって、ピッツバーグの鉄鋼業を生みました。<br>
+              ・<b>ルール炭田</b>（ドイツ）… ライン川の水運とあわさって、ヨーロッパ最大の工業地帯になりました。
+            </div>
+            <h4 style="border-left-color:#4A4540">ここが試験に出ます</h4>
+            <div class="exam">
+              「石炭 ＝ <b>古期造山帯</b>」の組み合わせが最頻出です。<b>石炭は陸の植物から、石油は海の生き物から</b>。この対比を取りちがえないようにしましょう。なお質の劣る<b>褐炭</b>は、もっと新しい時代の地層からも採れます。
+            </div>
+          </div>
+        </div>
+
+        <!-- ③ 原油 -->
+        <div class="info-card ic-oi">
+          <div class="info-head">
+            <span class="info-icon">🛢</span>
+            <div>
+              <div class="info-zone">③ 原油 ―― 海の微生物からできた</div>
+              <div class="info-region">新期造山帯の周辺の堆積盆地に分布</div>
+            </div>
+          </div>
+          <div class="info-body">
+            海に住んでいた<span class="info-kw ic-oi">プランクトン</span>などの微生物の遺骸が、海底の泥とともに堆積した。酸素の届かない場所で分解されずに残り、地下深くで熱と圧力を受けて炭化水素、つまり石油に変わった。
+            <span class="info-kw ic-oi">中生代から新生代</span>の地層が中心である。<br>
+            石油は軽いので地層の中を上へ移動するが、上に硬い岩（<span class="info-kw ic-oi">帽岩</span>）があると、そこで行き止まりになって溜まる。この地層がドーム状に盛り上がった構造を<span class="info-kw ic-oi">背斜構造</span>といい、油田の典型的な形である。<br>
+            分布は<span class="info-kw ic-oi">新期造山帯</span>の周辺の堆積盆地。地層が褶曲して背斜ができやすいためである。<br>
+            <b>【具体例】</b>ペルシア湾岸・メキシコ湾岸・北海油田
+          </div>
+          <button class="deep-btn" style="background:#2C5145" onclick="openDeep('deep_oi','#2C5145','🛢 ③ 原油はどうしてできたのか')">🔍 もっと深く知る</button>
+          <div class="deep-content" id="deep_oi">
+            <h4 style="border-left-color:#2C5145">4つのステップでできました</h4>
+            <div class="step"><span class="sn">STEP 1</span><b>海に微生物がすんでいた</b><br>中生代から新生代の海には、<b>プランクトン</b>などの小さな生き物が大量にすんでいました。死ぬとその遺骸が海底に降りつもります。</div>
+            <div class="arrow-down">▼</div>
+            <div class="step"><span class="sn">STEP 2</span><b>海底の泥とともに堆積した</b><br>遺骸は海底の泥といっしょに埋もれました。ここも石炭と同じで、<b>酸素が届かない</b>ため分解されずに残ります。</div>
+            <div class="arrow-down">▼</div>
+            <div class="step"><span class="sn">STEP 3</span><b>熱と圧力で石油に変わった</b><br>地下深くで長い時間、<b>熱と圧力</b>を受けるうちに、遺骸は<b>炭化水素</b>、つまりどろっとした石油に変化しました。</div>
+            <div class="arrow-down">▼</div>
+            <div class="step"><span class="sn">STEP 4</span><b>背斜構造にたまった</b><br>石油は水より軽いので、地層のすき間を上へ上へと移動します。ところが上に硬い岩（<b>帽岩</b>）があると、そこで行き止まりになって溜まります。地層がドーム状にもり上がったこの形を<b>背斜構造</b>といい、油田の典型的な形です。</div>
+            <p>ドームの中は上から順に、<b>石油</b>・<b>水</b>と並びます。軽いものほど上にくるためで、天然ガスがあればさらに上に溜まります。</p>
+            <h4 style="border-left-color:#2C5145">なぜ「新期造山帯の周辺」で採れるのか</h4>
+            <p>背斜構造ができるには、地層がぐにゃりと曲がる（<b>褶曲</b>する）必要があります。地層が大きく曲げられるのは、プレートが押し合っている場所、つまり<b>新期造山帯</b>のまわりです。</p>
+            <p>ただし山の上ではなく、そのふもとの<b>堆積盆地</b>や海底に油田があります。ペルシア湾も北海も、まさに「新しい山脈のそばの浅い海」です。</p>
+            <h4 style="border-left-color:#2C5145">具体例</h4>
+            <div class="exlist">
+              ・<b>ペルシア湾岸</b>（サウジアラビア・クウェートなど）… 世界最大の産油地域。ここを出たタンカーがマラッカ海峡を通って日本へ来ます。<br>
+              ・<b>メキシコ湾岸</b>（アメリカ）… ヒューストンの石油化学コンビナートを支えています。<br>
+              ・<b>北海油田</b>（イギリス・ノルウェー）… 1970年代から開発された海底油田です。
+            </div>
+            <h4 style="border-left-color:#2C5145">ここが試験に出ます</h4>
+            <div class="exam">
+              「原油 ＝ <b>新期造山帯の周辺</b>」の組み合わせと、<b>背斜構造</b>という語が出ます。図で「帽岩・石油・水」の順に並ぶ断面を見せられて答えさせる形式もあります。上から軽い順に並ぶ、と覚えておきましょう。
+            </div>
+          </div>
+        </div>
+
+        <div class="point">
+          <b>覚え方のコツ</b><br>
+          「<b>古い大地に鉄</b> ／ <b>古い山に石炭</b> ／ <b>新しい山のまわりに石油</b>」<br>
+          この3つを声に出して覚えておけば、地図問題はかなり解けます。<br><br>
+          <b>ここから工業都市につながります。</b>鉄をつくるには<b>鉄鉱石と石炭の両方</b>が必要です。だから昔の製鉄所は、その2つが手に入る場所に建てられました。アメリカのピッツバーグ、ドイツのルール工業地帯がその代表例です。
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ミニテスト Unit1 -->
+    <div class="stage challenge" data-id="shigen">
+      <div class="stage-head">
+        <span class="stage-label">✏️ ミニテスト（9問）</span>
+        <div class="stage-actions">
+          <span class="timer" id="timer_shigen" style="display:none">0:00.0</span>
+          <button class="ch-btn start" onclick="startChallenge('shigen')">▶ チャレンジ開始</button>
+          <button class="ch-btn judge" id="judge_shigen" style="display:none" onclick="judge('shigen')">✓ 判定</button>
+          <button class="ch-btn example" id="example_shigen" style="display:none" onclick="showExample('shigen')">📖 手本を見る</button>
+          <button class="ch-btn reset" id="reset_shigen" style="display:none" onclick="resetChallenge('shigen')">↻ リセット</button>
+        </div>
+      </div>
+
+      <div class="read-box" id="rb_shigen">
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ① 鉄と酸素が結びついて海底に積み重なった層を <span class="blank" data-a="縞状鉄鉱層">縞状鉄鉱層</span> という。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ② 鉄鉱石が多く採れるのは、平らで古い大地である <span class="blank" data-a="安定陸塊">安定陸塊</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ③ オーストラリアの代表的な鉄鉱石の産地は <span class="blank" data-a="ピルバラ地区">ピルバラ地区</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ④ 石炭のもとになるシダ植物がしげったのは、古生代の <span class="blank" data-a="石炭紀">石炭紀</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑤ 石炭が多く採れるのは、なだらかな山地である <span class="blank" data-a="古期造山帯">古期造山帯</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑥ アメリカの代表的な炭田は <span class="blank" data-a="アパラチア炭田">アパラチア炭田</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑦ 原油がたまりやすい、ドーム状にもり上がった地層の構造を <span class="blank" data-a="背斜構造">背斜構造</span> という。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑧ 原油が多く採れるのは、けわしい山脈のまわりである <span class="blank" data-a="新期造山帯">新期造山帯</span> の堆積盆地。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑨ 世界最大の原油の産地は <span class="blank" data-a="ペルシア湾岸">ペルシア湾岸</span>。
+        </p>
+      </div>
+
+      <div class="word-bank" id="wb_shigen">
+        <div class="wb-header">
+          <span class="wb-title">🗂 語群 — タップして選ぼう</span>
+          <button class="wb-close" onclick="toggleBank('shigen')" title="閉じる">⌄</button>
+        </div>
+        <div class="wb-chips" id="wc_shigen"></div>
+      </div>
+      <div class="stage-clear"></div>
+    </div>
+    <div class="ranking"><h3>🏆 ベストタイム</h3><ul id="rank_shigen"></ul></div>
+
+    <!-- 分布図 -->
+    <div class="stage">
+      <div class="stage-head">
+        <span class="stage-label">🗺 Unit 1-2　世界の鉱産資源の分布</span>
+      </div>
+      <div class="stage-body">
+
+        <div class="fig-wrap" style="margin-bottom:14px;">
+          <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldmine1.png" alt="世界の鉱産資源の分布図">
+        </div>
+
+        <div class="info-card ic-eu">
+          <div class="info-head">
+            <span class="info-icon">🗺</span>
+            <div>
+              <div class="info-zone">地図の読み方 ― 3つの造山帯をまず押さえる</div>
+              <div class="info-region">造山帯が分かれば、資源の場所も分かる</div>
+            </div>
+          </div>
+          <div class="info-body">
+            ・<span class="info-kw ic-eu">環太平洋造山帯</span>：太平洋をぐるりと囲む新期造山帯。日本もこの上にある。<br>
+            ・<span class="info-kw ic-eu">アルプスヒマラヤ造山帯</span>：ヨーロッパからアジアへ東西にのびる新期造山帯。<br>
+            ・<span class="info-kw ic-eu">古期造山帯</span>：低くてなだらかな山地。<span class="info-kw ic-eu">アパラチア山脈</span>（アメリカ）・<span class="info-kw ic-eu">ウラル山脈</span>（ロシア）・<span class="info-kw ic-eu">グレートディバイディング山脈</span>（オーストラリア）が代表で、いずれも<span class="info-kw ic-eu">石炭</span>の産地になっている。
+          </div>
+        </div>
+
+        <div class="info-card ic-sa">
+          <div class="info-head">
+            <span class="info-icon">🔴</span>
+            <div>
+              <div class="info-zone">おさえておきたい産地</div>
+              <div class="info-region">鉄鉱石 ／ 石油 ／ 銅</div>
+            </div>
+          </div>
+          <div class="info-body">
+            <b>鉄鉱石</b>：<span class="info-kw ic-sa">メサビ鉄山</span>（五大湖周辺）・<span class="info-kw ic-sa">カラジャス鉄山</span>（ブラジル）<br>
+            <b>石油</b>：<span class="info-kw ic-sa">ペルシア湾</span>（世界最大）・<span class="info-kw ic-sa">北海油田</span>（イギリス・ノルウェーが開発）・<span class="info-kw ic-sa">ベネズエラ</span><br>
+            <b>銅</b>：<span class="info-kw ic-sa">チリ</span>（世界1位）・<span class="info-kw ic-sa">ザンビア</span>（アフリカ・カッパーベルト）<br>
+            銅は新期造山帯にそって産出する。チリはアンデス山脈（環太平洋造山帯）の上にあることを地図で確認しよう。
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ミニテスト 分布図 -->
+    <div class="stage challenge" data-id="mine">
+      <div class="stage-head">
+        <span class="stage-label">✏️ ミニテスト・地図（15問）</span>
+        <div class="stage-actions">
+          <span class="timer" id="timer_mine" style="display:none">0:00.0</span>
+          <button class="ch-btn start" onclick="startChallenge('mine')">▶ チャレンジ開始</button>
+          <button class="ch-btn judge" id="judge_mine" style="display:none" onclick="judge('mine')">✓ 判定</button>
+          <button class="ch-btn example" id="example_mine" style="display:none" onclick="showExample('mine')">📖 手本を見る</button>
+          <button class="ch-btn reset" id="reset_mine" style="display:none" onclick="resetChallenge('mine')">↻ リセット</button>
+        </div>
+      </div>
+
+      <div class="fig-wrap" style="margin:12px 0;">
+        <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldmine2.png" alt="世界の鉱産資源の分布（番号入り）">
+      </div>
+
+      <div class="read-box" id="rb_mine">
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ① 国名アメリカの <span class="blank" data-a="メサビ">メサビ</span> 鉄山
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ② アパラチア山脈（古期造山帯）低くてなだらか、石炭の産地 → <span class="blank" data-a="アパラチア">アパラチア</span> 炭田
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ③ 国名 <span class="blank" data-a="ベネズエラ">ベネズエラ</span>　石油の産地
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ④ 国名ブラジルの <span class="blank" data-a="カラジャス">カラジャス</span> 鉄山
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑤ 国名 <span class="blank" data-a="チリ">チリ</span>　⑥ <span class="blank" data-a="銅">銅</span> の産地
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑦ グレートディバイディング山脈（古期造山帯）低くてなだらか <span class="blank" data-a="石炭">石炭</span> の産地
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑧ <span class="blank" data-a="ペルシア">ペルシア</span> 湾　⑨ <span class="blank" data-a="石油">石油</span> の産地
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑩ 国名 <span class="blank" data-a="ザンビア">ザンビア</span>　⑪ <span class="blank" data-a="銅">銅</span> の産地
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑫ <span class="blank" data-a="北海">北海</span> 油田　石油の産地（イギリス・ノルウェーの開発）
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑬ <span class="blank" data-a="ウラル">ウラル</span> 山脈（古期造山帯）低くてなだらか、石炭の産地
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑭ <span class="blank" data-a="アルプスヒマラヤ">アルプスヒマラヤ</span> 造山帯
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑮ <span class="blank" data-a="環太平洋">環太平洋</span> 造山帯
+        </p>
+      </div>
+
+      <div class="word-bank" id="wb_mine">
+        <div class="wb-header">
+          <span class="wb-title">🗂 語群 — タップして選ぼう</span>
+          <button class="wb-close" onclick="toggleBank('mine')" title="閉じる">⌄</button>
+        </div>
+        <div class="wb-chips" id="wc_mine"></div>
+      </div>
+      <div class="stage-clear"></div>
+    </div>
+    <div class="ranking"><h3>🏆 ベストタイム</h3><ul id="rank_mine"></ul></div>
+
+    <!-- 確認問題 Unit1 -->
+    <div class="q-block">
+      <div class="q-title">✅ 確認問題（4問）</div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問1．</span>鉄鉱石のもとになる縞状鉄鉱層ができたのはいつごろか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="1">約25億〜19億年前</button>
+          <button class="q4-c" data-ans="0">約3億年前</button>
+          <button class="q4-c" data-ans="0">約1億年前</button>
+          <button class="q4-c" data-ans="0">約1万年前</button>
+        </div>
+        <div class="q4-exp">先カンブリア時代の海で、シアノバクテリアが出した酸素と鉄が結びついて沈殿した。地球に酸素が生まれた出来事の記録でもある。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問2．</span>石炭のもとになったものは何か？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">海のプランクトン</button>
+          <button class="q4-c" data-ans="1">陸のシダ植物</button>
+          <button class="q4-c" data-ans="0">海に溶けた鉄</button>
+          <button class="q4-c" data-ans="0">火山灰</button>
+        </div>
+        <div class="q4-exp">石炭は陸の植物から、石油は海の生き物から。ここが大きなちがい。石炭紀の湿地で、倒れた木が腐らずに堆積して炭化した。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問3．</span>原油がたまりやすい、ドーム状にもり上がった地層の構造を何というか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">縞状鉄鉱層</button>
+          <button class="q4-c" data-ans="0">楯状地</button>
+          <button class="q4-c" data-ans="1">背斜構造</button>
+          <button class="q4-c" data-ans="0">三角州</button>
+        </div>
+        <div class="q4-exp">軽い石油は地層の中を上へ移動するが、硬い帽岩でせき止められて溜まる。地層が褶曲した新期造山帯の周辺にできやすい。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問4．</span>次のうち、鉄鉱石の産地ではないものはどれか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">カラジャス</button>
+          <button class="q4-c" data-ans="0">ピルバラ地区</button>
+          <button class="q4-c" data-ans="1">アパラチア</button>
+          <button class="q4-c" data-ans="0">メサビ</button>
+        </div>
+        <div class="q4-exp">アパラチアは石炭（炭田）。鉄鉱石はメサビ・カラジャス・イタビラ・ピルバラ。鉄と石炭を取りちがえないようにしよう。</div>
+      </div>
+
+      <button class="q-reset" onclick="resetQBlock(this)">↻ もう一度</button>
+    </div>
+
+  </div><!-- /unit-wrap u1 -->
+
+  <!-- ===== UNIT 2: 世界の工業都市 ===== -->
+  <div class="unit-wrap">
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="stage-label">📖 Unit 2　世界の工業都市 ― 地域別のまとめ</span>
+      </div>
+      <div class="stage-body">
+
+        <div class="fig-wrap" style="margin-bottom:14px;">
+          <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldkougyou1.png" alt="世界の工業都市">
+        </div>
+
+        <!-- ヨーロッパ -->
+        <div class="info-card ic-eu">
+          <div class="info-head">
+            <span class="info-icon">🇪🇺</span>
+            <div>
+              <div class="info-zone">① ヨーロッパ</div>
+              <div class="info-region">ユーロポート ／ ルール工業地帯 ／ トゥールーズ</div>
+            </div>
+          </div>
+          <div class="info-body">
+            ・<span class="info-kw ic-eu">ユーロポート</span>（オランダ・ロッテルダム）：ライン川の河口にある<span class="info-kw ic-eu">EU最大の港</span>。ヨーロッパの玄関口。<br>
+            ・<span class="info-kw ic-eu">ルール工業地帯</span>（ドイツ）：<span class="info-kw ic-eu">ヨーロッパ最大</span>の工業地帯。ルール炭田の石炭と<span class="info-kw ic-eu">ライン川</span>の水運を利用して鉄鋼業がさかん。現在は衰退し再開発が進む。<br>
+            ・<span class="info-kw ic-eu">トゥールーズ</span>（フランス）：航空機工業がさかん。<span class="info-kw ic-eu">エアバス</span>を製造。
+          </div>
+        </div>
+
+        <!-- 北アメリカ 古い工業 -->
+        <div class="info-card ic-na">
+          <div class="info-head">
+            <span class="info-icon">🏭</span>
+            <div>
+              <div class="info-zone">② 北アメリカ ― 古い工業（五大湖のまわり）</div>
+              <div class="info-region">シアトル ／ シカゴ ／ デトロイト ／ ピッツバーグ</div>
+            </div>
+          </div>
+          <div class="info-body">
+            ・<span class="info-kw ic-na">シアトル</span>：航空機の街。<span class="info-kw ic-na">ボーイング社</span>がある。近年はアマゾン・マイクロソフトの本社もあり、ICTの拠点でもある。<br>
+            ・<span class="info-kw ic-na">シカゴ</span>：五大湖と鉄道が交わる交通の要衝で、中西部の<span class="info-kw ic-na">農産物の集散地</span>。穀物の値段が決まる取引所がある。<br>
+            ・<span class="info-kw ic-na">デトロイト</span>：<span class="info-kw ic-na">自動車工業</span>の街。<span class="info-kw ic-na">ゼネラルモーターズ</span>と<span class="info-kw ic-na">フォード</span>の本拠地。日本車におされて衰退した。<br>
+            ・<span class="info-kw ic-na">ピッツバーグ</span>：<span class="info-kw ic-na">メサビ鉄山</span>の鉄鉱石と<span class="info-kw ic-na">アパラチア炭田</span>の石炭を使って鉄鋼業で栄えた。
+          </div>
+        </div>
+
+        <!-- 北アメリカ 新しい工業 -->
+        <div class="info-card ic-na">
+          <div class="info-head">
+            <span class="info-icon">💻</span>
+            <div>
+              <div class="info-zone">③ 北アメリカ ― 新しい工業（南部・西部）</div>
+              <div class="info-region">サンベルト ／ シリコンバレー ／ ヒューストン</div>
+            </div>
+          </div>
+          <div class="info-body">
+            ・<span class="info-kw ic-na">サンベルト</span>：<span class="info-kw ic-na">北緯37度以南</span>の新興工業地帯。メキシコに近く<span class="info-kw ic-na">低賃金の労働者</span>が得られ、<span class="info-kw ic-na">土地が安い</span>。温暖な気候をいかして1970年代から急成長した。<br>
+            ・<span class="info-kw ic-na">シリコンバレー</span>：<span class="info-kw ic-na">世界最大のICT産業</span>の集積地。Google・Apple・Meta などが集まる。近くに<span class="info-kw ic-na">スタンフォード大学</span>があることが発展の理由のひとつ。<br>
+            ・<span class="info-kw ic-na">ヒューストン</span>：<span class="info-kw ic-na">アメリカ最大の石油化学コンビナート</span>がある。メキシコ湾岸油田とタンカーの入る港が立地の理由。宇宙センターでも有名。
+          </div>
+        </div>
+
+        <!-- アジア -->
+        <div class="info-card ic-as">
+          <div class="info-head">
+            <span class="info-icon">🌏</span>
+            <div>
+              <div class="info-zone">④ アジア</div>
+              <div class="info-region">ムンバイ ／ バンガロール ／ シンガポール ／ 経済特区</div>
+            </div>
+          </div>
+          <div class="info-body">
+            ・<span class="info-kw ic-as">ムンバイ</span>（インド）：<span class="info-kw ic-as">綿工業</span>がさかん。デカン高原のレグール土で採れる綿花を使う。<br>
+            ・<span class="info-kw ic-as">バンガロール</span>（インド）：アメリカとの<span class="info-kw ic-as">時差12時間</span>を利用した<span class="info-kw ic-as">ソフトウェア開発</span>で発展。英語が使えることも強み。現在の正式表記は「ベンガルール」。<br>
+            ・<span class="info-kw ic-as">シンガポール</span>：マラッカ海峡に面し<span class="info-kw ic-as">中継貿易</span>で発展。<span class="info-kw ic-as">ジュロン工業地区</span>では石油化学がさかん。石油は採れないが「通り道」であることを強みにしている。<br>
+            ・<span class="info-kw ic-as">経済特区</span>（中国）：<span class="info-kw ic-as">華人の故郷</span>である地区に、資本主義経済を許可したもの。外国の資本と技術を呼び込むねらい。シェンチェン（深圳）が代表。
+          </div>
+        </div>
+
+        <!-- 南アメリカ -->
+        <div class="info-card ic-sa">
+          <div class="info-head">
+            <span class="info-icon">🇧🇷</span>
+            <div>
+              <div class="info-zone">⑤ 南アメリカ</div>
+              <div class="info-region">サンパウロ（ブラジル）</div>
+            </div>
+          </div>
+          <div class="info-body">
+            <span class="info-kw ic-sa">サンパウロ</span>は<span class="info-kw ic-sa">南米最大の工業都市</span>。<span class="info-kw ic-sa">鉄鋼</span>と<span class="info-kw ic-sa">航空機</span>のほか、自動車工業もさかん。<br>
+            もとは<span class="info-kw ic-sa">コーヒー</span>で栄えた街で、そこで蓄えた資金が工業の元手になった。外港は<span class="info-kw ic-sa">サントス</span>。
+          </div>
+        </div>
+
+        <div class="point">
+          <b>並べて覚えると強くなります</b><br>
+          ・古い工業（デトロイト・ピッツバーグ・ルール）＝<b>資源</b>があった場所 → <b>おとろえた</b><br>
+          ・新しい工業（シリコンバレー・サンベルト・バンガロール）＝<b>大学・人材・気候</b>が強み → <b>のびている</b><br><br>
+          アメリカでは、産業の中心が<b>北東から南・西へ移動</b>しました。「さびついた地帯（ラストベルト）から、太陽の地帯（サンベルト）へ」と覚えましょう。
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ミニテスト 工業都市の地図 -->
+    <div class="stage challenge" data-id="kougyou">
+      <div class="stage-head">
+        <span class="stage-label">✏️ ミニテスト・地図（15問）</span>
+        <div class="stage-actions">
+          <span class="timer" id="timer_kougyou" style="display:none">0:00.0</span>
+          <button class="ch-btn start" onclick="startChallenge('kougyou')">▶ チャレンジ開始</button>
+          <button class="ch-btn judge" id="judge_kougyou" style="display:none" onclick="judge('kougyou')">✓ 判定</button>
+          <button class="ch-btn example" id="example_kougyou" style="display:none" onclick="showExample('kougyou')">📖 手本を見る</button>
+          <button class="ch-btn reset" id="reset_kougyou" style="display:none" onclick="resetChallenge('kougyou')">↻ リセット</button>
+        </div>
+      </div>
+
+      <div class="fig-wrap" style="margin:12px 0;">
+        <img src="https://raw.githubusercontent.com/realizefield/kounin-chiri/main/worldkougyou2.png" alt="世界の工業都市（番号入り）">
+      </div>
+
+      <div class="read-box" id="rb_kougyou">
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ① ロッテルダムにあるEUの港を <span class="blank" data-a="ユーロポート">ユーロポート</span> という。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ② <span class="blank" data-a="ルール">ルール</span> 工業地帯はヨーロッパ最大。ライン川を利用し鉄鋼業さかん。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ③ <span class="blank" data-a="シアトル">シアトル</span>　航空機　ボーイング社
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ④ <span class="blank" data-a="シカゴ">シカゴ</span>　農産物の集散地
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑤ <span class="blank" data-a="デトロイト">デトロイト</span>　自動車工業　ゼネラルモーターズ・フォード
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑥ <span class="blank" data-a="ピッツバーグ">ピッツバーグ</span>　メサビ鉄山・アパラチア炭田から鉄鋼業
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑦ <span class="blank" data-a="サンベルト">サンベルト</span>　メキシコに近く低賃金労働者、土地が安い新興工業地帯
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑧ <span class="blank" data-a="ヒューストン">ヒューストン</span>　アメリカ最大の石油化学コンビナート
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑨ <span class="blank" data-a="サンパウロ">サンパウロ</span>　南米最大の工業都市　鉄鋼・航空機
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑩ <span class="blank" data-a="シリコンバレー">シリコンバレー</span>　世界最大ICT産業　google amazon apple
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑪ <span class="blank" data-a="経済特区">経済特区</span>　華人の故郷である地区に資本主義経済許可
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑫ <span class="blank" data-a="シンガポール">シンガポール</span>　中継貿易　ジュロン工業地帯→石油化学
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑬ <span class="blank" data-a="バンガロール">バンガロール</span>　アメリカとの時差12時間を利用したソフトウェア開発
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑭ <span class="blank" data-a="ムンバイ">ムンバイ</span>　綿工業さかん
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑮ <span class="blank" data-a="トゥールーズ">トゥールーズ</span>　航空機工業さかん　エアバスの製造
+        </p>
+      </div>
+
+      <div class="word-bank" id="wb_kougyou">
+        <div class="wb-header">
+          <span class="wb-title">🗂 語群 — タップして選ぼう</span>
+          <button class="wb-close" onclick="toggleBank('kougyou')" title="閉じる">⌄</button>
+        </div>
+        <div class="wb-chips" id="wc_kougyou"></div>
+      </div>
+      <div class="stage-clear"></div>
+    </div>
+    <div class="ranking"><h3>🏆 ベストタイム</h3><ul id="rank_kougyou"></ul></div>
+
+    <!-- ミニテスト Unit2 -->
+    <div class="stage challenge" data-id="toshi">
+      <div class="stage-head">
+        <span class="stage-label">✏️ ミニテスト（8問）</span>
+        <div class="stage-actions">
+          <span class="timer" id="timer_toshi" style="display:none">0:00.0</span>
+          <button class="ch-btn start" onclick="startChallenge('toshi')">▶ チャレンジ開始</button>
+          <button class="ch-btn judge" id="judge_toshi" style="display:none" onclick="judge('toshi')">✓ 判定</button>
+          <button class="ch-btn example" id="example_toshi" style="display:none" onclick="showExample('toshi')">📖 手本を見る</button>
+          <button class="ch-btn reset" id="reset_toshi" style="display:none" onclick="resetChallenge('toshi')">↻ リセット</button>
+        </div>
+      </div>
+
+      <div class="read-box" id="rb_toshi">
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ① ゼネラルモーターズとフォードの本拠地で、自動車工業の街は <span class="blank" data-a="デトロイト">デトロイト</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ② メサビ鉄山とアパラチア炭田を利用して鉄鋼業で栄えた都市は <span class="blank" data-a="ピッツバーグ">ピッツバーグ</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ③ アメリカ最大の石油化学コンビナートがある都市は <span class="blank" data-a="ヒューストン">ヒューストン</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ④ 世界最大のICT産業が集まる地域は <span class="blank" data-a="シリコンバレー">シリコンバレー</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑤ 北緯37度以南の、土地が安く新しい工業がのびた地域を <span class="blank" data-a="サンベルト">サンベルト</span> という。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑥ ライン川の水運を利用した、ヨーロッパ最大の工業地帯は <span class="blank" data-a="ルール工業地帯">ルール工業地帯</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑦ アメリカとの時差を利用したソフトウェア開発で発展したインドの都市は <span class="blank" data-a="バンガロール">バンガロール</span>。
+        </p>
+        <p style="font-size:14px;line-height:2.2;margin:4px 0;">
+          ⑧ マラッカ海峡に面し、中継貿易とジュロン工業地区で知られる国は <span class="blank" data-a="シンガポール">シンガポール</span>。
+        </p>
+      </div>
+
+      <div class="word-bank" id="wb_toshi">
+        <div class="wb-header">
+          <span class="wb-title">🗂 語群 — タップして選ぼう</span>
+          <button class="wb-close" onclick="toggleBank('toshi')" title="閉じる">⌄</button>
+        </div>
+        <div class="wb-chips" id="wc_toshi"></div>
+      </div>
+      <div class="stage-clear"></div>
+    </div>
+    <div class="ranking"><h3>🏆 ベストタイム</h3><ul id="rank_toshi"></ul></div>
+
+    <!-- 確認問題 Unit2 -->
+    <div class="q-block">
+      <div class="q-title">✅ 確認問題（4問）</div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問1．</span>五大湖のまわりで自動車工業が発達し、のちに衰退した都市はどこか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">シアトル</button>
+          <button class="q4-c" data-ans="1">デトロイト</button>
+          <button class="q4-c" data-ans="0">ヒューストン</button>
+          <button class="q4-c" data-ans="0">サンパウロ</button>
+        </div>
+        <div class="q4-exp">デトロイトはゼネラルモーターズとフォードの本拠地。石油危機のあと日本車におされて衰退し、ラストベルトの象徴になった。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問2．</span>バンガロールでソフトウェア開発が発展した理由として正しいものはどれか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">石油が大量に採れるから</button>
+          <button class="q4-c" data-ans="1">アメリカとの時差を利用できるから</button>
+          <button class="q4-c" data-ans="0">鉄鉱石と石炭がそろうから</button>
+          <button class="q4-c" data-ans="0">EUに加盟しているから</button>
+        </div>
+        <div class="q4-exp">時差が約12時間あるため、アメリカが夜のあいだにインドが働ける。英語が使えること、数学教育の水準が高いことも強み。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問3．</span>石油が採れないのに石油化学がさかんな、マラッカ海峡の国はどこか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="0">ブラジル</button>
+          <button class="q4-c" data-ans="0">オランダ</button>
+          <button class="q4-c" data-ans="1">シンガポール</button>
+          <button class="q4-c" data-ans="0">ドイツ</button>
+        </div>
+        <div class="q4-exp">中東からのタンカーが必ず通るマラッカ海峡にあるため、原油を降ろして精製し、また送り出す中継貿易が成り立つ。ジュロン工業地区が拠点。</div>
+      </div>
+
+      <div class="q4">
+        <div class="q4-stem"><span class="q4-num">問4．</span>サンベルトの説明として正しいものはどれか？</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-ans="1">北緯37度以南で、土地が安く新しい工業がのびた地域</button>
+          <button class="q4-c" data-ans="0">五大湖のまわりで、鉄鋼業が衰退した地域</button>
+          <button class="q4-c" data-ans="0">ライン川ぞいのヨーロッパ最大の工業地帯</button>
+          <button class="q4-c" data-ans="0">中国で資本主義経済を許可した地区</button>
+        </div>
+        <div class="q4-exp">サンベルトは温暖な気候・安い土地・低賃金の労働力が強み。おとろえたラストベルト（五大湖周辺）との対比で覚えるとよい。</div>
+      </div>
+
+      <button class="q-reset" onclick="resetQBlock(this)">↻ もう一度</button>
+    </div>
+
+  </div><!-- /unit-wrap u2 -->
+
+</div><!-- /wrap -->
+
+<div class="toast" id="toast"></div>
+
+<!-- ===== 深く知る ポップアップ ===== -->
+<div class="modal-mask" id="deepMask" onclick="if(event.target===this)closeDeep()">
+  <div class="modal">
+    <div class="modal-head" id="deepHead">
+      <span class="mt" id="deepTitle"></span>
+      <button class="modal-close" onclick="closeDeep()" title="閉じる">✕</button>
+    </div>
+    <div class="modal-body" id="deepBody"></div>
+  </div>
+</div>
+
+<script>
+// ===== BANKS =====
+const BANKS = {
+  shigen: ['縞状鉄鉱層','安定陸塊','ピルバラ地区','石炭紀','古期造山帯','アパラチア炭田','背斜構造','新期造山帯','ペルシア湾岸'],
+  mine:   ['メサビ','アパラチア','ベネズエラ','カラジャス','チリ','銅','石炭','ペルシア','石油','ザンビア','銅','北海','ウラル','アルプスヒマラヤ','環太平洋'],
+  kougyou:['ユーロポート','ルール','シアトル','シカゴ','デトロイト','ピッツバーグ','サンベルト','ヒューストン','サンパウロ','シリコンバレー','経済特区','シンガポール','バンガロール','ムンバイ','トゥールーズ'],
+  toshi:  ['デトロイト','ピッツバーグ','ヒューストン','シリコンバレー','サンベルト','ルール工業地帯','バンガロール','シンガポール'],
+};
+
+// ===== TIMER =====
+var timers = {};
+function startTimer(id){
+  if(timers[id]) clearInterval(timers[id].iv);
+  timers[id] = {start: performance.now(), iv: null};
+  var el = document.getElementById('timer_'+id);
+  el.style.display='inline';
+  timers[id].iv = setInterval(function(){
+    var ms = performance.now() - timers[id].start;
+    var s = Math.floor(ms/1000);
+    var m = Math.floor(s/60);
+    el.textContent = m+':'+(s%60<10?'0':'')+(s%60)+'.'+(Math.floor(ms/100)%10);
+  },100);
+}
+function stopTimer(id){
+  if(timers[id]) clearInterval(timers[id].iv);
+  return timers[id] ? (performance.now()-timers[id].start) : 0;
+}
+
+// ===== CHALLENGE =====
+function startChallenge(id){
+  var rb = document.getElementById('rb_'+id);
+  var wb = document.getElementById('wb_'+id);
+  var wc = document.getElementById('wc_'+id);
+  rb.querySelectorAll('.blank').forEach(function(b){
+    b.textContent='';
+    b.classList.remove('filled','correct','wrong');
+    b.dataset.filled='';
+  });
+  var words = BANKS[id].slice().sort(function(){return Math.random()-.5;});
+  wc.innerHTML='';
+  words.forEach(function(w){
+    var c=document.createElement('span');
+    c.className='chip'; c.textContent=w;
+    c.onclick=function(){placeWord(id,w,c);};
+    wc.appendChild(c);
+  });
+  wb.classList.add('active');
+  document.body.classList.add('bank-open');
+  document.querySelector('[data-id="'+id+'"] .ch-btn.start').style.display='none';
+  document.getElementById('judge_'+id).style.display='inline';
+  document.getElementById('example_'+id).style.display='inline';
+  document.getElementById('reset_'+id).style.display='inline';
+  startTimer(id);
+}
+
+function placeWord(id,word,chip){
+  var rb = document.getElementById('rb_'+id);
+  var blanks = rb.querySelectorAll('.blank');
+  for(var i=0;i<blanks.length;i++){
+    if(!blanks[i].dataset.filled){
+      blanks[i].textContent=word;
+      blanks[i].dataset.filled=word;
+      blanks[i].classList.add('filled');
+      chip.classList.add('used');
+      (function(bl,ch){
+        bl.onclick=function(){
+          bl.textContent=''; bl.dataset.filled=''; bl.classList.remove('filled','correct','wrong');
+          ch.classList.remove('used'); bl.onclick=null;
+        };
+      })(blanks[i],chip);
+      return;
+    }
+  }
+}
+
+function judge(id){
+  var ms = stopTimer(id);
+  var rb = document.getElementById('rb_'+id);
+  var blanks = rb.querySelectorAll('.blank');
+  var allOk=true;
+  blanks.forEach(function(b){
+    var ok = b.dataset.filled === b.dataset.a;
+    b.classList.remove('filled');
+    b.classList.add(ok?'correct':'wrong');
+    if(!ok) allOk=false;
+  });
+  if(allOk){
+    document.querySelector('[data-id="'+id+'"] .stage-clear').style.display='block';
+    document.querySelector('[data-id="'+id+'"] .stage-clear').textContent='🌸 全問正解！';
+    document.getElementById('wb_'+id).classList.remove('active');
+    document.body.classList.remove('bank-open');
+    saveRank(id, ms);
+    fireConfetti();
+  }
+}
+
+function showExample(id){
+  stopTimer(id);
+  var rb = document.getElementById('rb_'+id);
+  rb.querySelectorAll('.blank').forEach(function(b){
+    b.textContent=b.dataset.a;
+    b.dataset.filled=b.dataset.a;
+    b.classList.remove('wrong');
+    b.classList.add('correct');
+  });
+  document.getElementById('wb_'+id).classList.remove('active');
+  document.body.classList.remove('bank-open');
+}
+
+function resetChallenge(id){
+  var rb = document.getElementById('rb_'+id);
+  rb.querySelectorAll('.blank').forEach(function(b){
+    b.textContent=b.dataset.a; b.dataset.filled=''; b.classList.remove('filled','correct','wrong'); b.onclick=null;
+  });
+  document.getElementById('wb_'+id).classList.remove('active');
+  document.body.classList.remove('bank-open');
+  document.getElementById('wc_'+id).innerHTML='';
+  document.getElementById('timer_'+id).style.display='none';
+  document.querySelector('[data-id="'+id+'"] .ch-btn.start').style.display='inline';
+  document.getElementById('judge_'+id).style.display='none';
+  document.getElementById('example_'+id).style.display='none';
+  document.getElementById('reset_'+id).style.display='none';
+  document.querySelector('[data-id="'+id+'"] .stage-clear').style.display='none';
+  stopTimer(id);
+}
+
+// ===== TOGGLE BANK =====
+function toggleBank(id){
+  var wb = document.getElementById('wb_'+id);
+  if(wb.classList.contains('active')){
+    wb.classList.remove('active');
+    document.body.classList.remove('bank-open');
+  } else {
+    wb.classList.add('active');
+    document.body.classList.add('bank-open');
+  }
+}
+
+// ===== RANKING =====
+function saveRank(id, ms){
+  var key='gamba_world3_'+id;
+  var list=[];
+  try{ list=JSON.parse(localStorage.getItem(key)||'[]'); }catch(e){ list=[]; }
+  var s=Math.floor(ms/1000), m=Math.floor(s/60);
+  var label=m+':'+(s%60<10?'0':'')+(s%60)+'.'+(Math.floor(ms/100)%10);
+  list.push({t:ms,label:label});
+  list.sort(function(a,b){return a.t-b.t;});
+  list=list.slice(0,5);
+  try{ localStorage.setItem(key,JSON.stringify(list)); }catch(e){}
+  loadRank(id);
+}
+
+function loadRank(id){
+  var key='gamba_world3_'+id;
+  var list=[];
+  try{ list=JSON.parse(localStorage.getItem(key)||'[]'); }catch(e){ list=[]; }
+  var ul=document.getElementById('rank_'+id);
+  if(!ul) return;
+  var medals=['🥇','🥈','🥉','4位','5位'];
+  ul.innerHTML='';
+  if(list.length===0){ul.innerHTML='<li style="color:#A0AEC0">まだ記録なし</li>';return;}
+  list.forEach(function(r,i){
+    var li=document.createElement('li');
+    li.textContent=medals[i]+' '+r.label;
+    ul.appendChild(li);
+  });
+}
+
+// ===== Q4 =====
+function initQ4(){
+  document.querySelectorAll('.q4-c').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var q4=this.closest('.q4');
+      if(q4.querySelector('.q4-c.correct,.q4-c.wrong')) return;
+      var correct=this.dataset.ans==='1';
+      this.classList.add(correct?'correct':'wrong');
+      q4.querySelectorAll('.q4-c').forEach(function(b){b.disabled=true;});
+      if(correct){q4.querySelector('.q4-exp').classList.add('show');fireConfetti();}
+      else{
+        var ans=q4.querySelector('.q4-c[data-ans="1"]');
+        if(ans){ans.classList.add('correct');}
+        q4.querySelector('.q4-exp').classList.add('show');
+      }
+    });
+  });
+}
+
+function resetQBlock(btn){
+  var block=btn.closest('.q-block');
+  block.querySelectorAll('.q4-c').forEach(function(b){b.classList.remove('correct','wrong');b.disabled=false;});
+  block.querySelectorAll('.q4-exp').forEach(function(e){e.classList.remove('show');});
+}
+
+// ===== 花吹雪 =====
+function fireConfetti(){
+  var colors=['#F6B8C8','#FAD3DD','#F19FB4','#FFE3EA','#F7C6D4'];
+  for(var i=0;i<30;i++){
+    (function(i){
+      setTimeout(function(){
+        var d=document.createElement('div');
+        d.className='petal-piece';
+        d.style.left=Math.random()*100+'vw';
+        d.style.top='-10px';
+        d.style.background=colors[Math.floor(Math.random()*colors.length)];
+        d.style.animationDuration=(1.2+Math.random()*1.0)+'s';
+        document.body.appendChild(d);
+        setTimeout(function(){d.remove();},2400);
+      },i*40);
+    })(i);
+  }
+}
+
+// ===== 深く知る モーダル =====
+function openDeep(srcId, color, title){
+  var src = document.getElementById(srcId);
+  if(!src) return;
+  document.getElementById('deepTitle').textContent = title;
+  document.getElementById('deepHead').style.background = color;
+  document.getElementById('deepBody').innerHTML = src.innerHTML;
+  var mask = document.getElementById('deepMask');
+  mask.classList.add('active');
+  mask.scrollTop = 0;
+  document.body.classList.add('modal-open');
+}
+function closeDeep(){
+  document.getElementById('deepMask').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') closeDeep();
+});
+
+// ===== TOAST =====
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2200);
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded',function(){
+  loadRank('shigen');
+  loadRank('mine');
+  loadRank('kougyou');
+  loadRank('toshi');
+  initQ4();
+});
+</script>
+</body>
+</html>
