@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>高認地理・高校受験・地理総合 学習ナビ ｜ 江原予備校</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#F0FFF4;color:#1A202C;min-height:100vh;}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,#1A4731 0%,#276749 100%);color:#fff;padding:32px 20px 26px;text-align:center;}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.18);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.08em;padding:3px 14px;margin-bottom:10px;}
+.hero h1{font-size:24px;font-weight:800;letter-spacing:.06em;margin-bottom:8px;line-height:1.35;}
+.hero p{font-size:13px;opacity:.85;line-height:1.7;}
+
+/* ===== WRAP ===== */
+.wrap{max-width:720px;margin:0 auto;padding:20px 12px 60px;}
+
+/* ===== SECTION TITLE ===== */
+.sec-title{font-size:13px;font-weight:700;color:#276749;letter-spacing:.08em;margin:24px 0 10px 4px;padding-left:10px;border-left:4px solid #38A169;}
+
+/* ===== INDEX GRID ===== */
+.idx-grid{display:grid;gap:12px;}
+
+/* ===== INDEX CARD ===== */
+.idx-card{background:#fff;border:1.5px solid #B2F5EA;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);transition:box-shadow .18s,transform .18s;display:flex;align-items:stretch;}
+.idx-card:hover:not(.coming){box-shadow:0 6px 20px rgba(44,122,123,.2);transform:translateY(-2px);}
+.idx-card a{display:flex;align-items:stretch;width:100%;text-decoration:none;color:inherit;}
+.idx-card.coming{opacity:.65;cursor:default;}
+.idx-card.coming a{pointer-events:none;}
+
+/* 番号バー */
+.idx-num{min-width:52px;background:linear-gradient(180deg,#2C7A7B,#38A169);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 6px;gap:2px;}
+.idx-num .n-step{font-size:10px;font-weight:700;opacity:.8;letter-spacing:.04em;}
+.idx-num .n-val{font-size:22px;font-weight:800;line-height:1;}
+
+/* カード本体 */
+.idx-body{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:4px;justify-content:center;}
+.idx-filename{font-size:10px;color:#999;font-family:monospace;}
+.idx-title{font-size:16px;font-weight:800;color:#1A4731;line-height:1.3;}
+.idx-sub{font-size:12px;color:#2C7A7B;line-height:1.6;}
+.idx-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.tag{font-size:10px;background:#E6FFFA;color:#2C7A7B;border:1px solid #81E6D9;border-radius:10px;padding:1px 8px;font-weight:700;}
+.tag.soon{background:#FFF5F5;color:#C53030;border-color:#FC8181;}
+
+/* 矢印 */
+.idx-arrow{display:flex;align-items:center;padding:0 14px;color:#B2F5EA;font-size:22px;}
+.idx-card:not(.coming) .idx-arrow{color:#38A169;}
+
+/* ===== PROGRESS BAR AREA ===== */
+.prog-wrap{background:#fff;border:1px solid #B2F5EA;border-radius:12px;padding:14px 16px;margin-bottom:20px;}
+.prog-label{font-size:12px;color:#276749;font-weight:700;margin-bottom:8px;}
+.prog-bar-bg{background:#E6FFFA;border-radius:10px;height:10px;overflow:hidden;}
+.prog-bar{background:linear-gradient(90deg,#38A169,#68D391);height:100%;border-radius:10px;width:0%;transition:width 1s ease;}
+.prog-count{font-size:11px;color:#999;text-align:right;margin-top:4px;}
+
+/* ===== FOOTER NOTE ===== */
+.foot-note{text-align:center;font-size:11px;color:#999;margin-top:32px;line-height:1.8;}
+.foot-note b{color:#276749;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">江原予備校</div>
+  <h1>高認地理・高校受験・地理総合<br>学習ナビゲーター</h1>
+  <p>下のカードから学習したい単元を選んでください。<br>番号順に進めることをおすすめします。</p>
+</div>
+
+<div class="wrap">
+
+  <!-- 進捗エリア（将来の拡張用） -->
+  <div class="prog-wrap" id="progWrap">
+    <div class="prog-label">📊 学習の進み具合（概算）</div>
+    <div class="prog-bar-bg"><div class="prog-bar" id="progBar"></div></div>
+    <div class="prog-count" id="progCount">0 / 9 ユニット</div>
+  </div>
+
+  <!-- 地理基礎 -->
+  <div class="sec-title">📐 地理の基礎</div>
+  <div class="idx-grid">
+
+    <!-- 01 地図の見方・地形図 -->
+    <div class="idx-card" id="card-1">
+      <a href="chizu.html">
+        <div class="idx-num"><span class="n-step">UNIT</span><span class="n-val">01</span></div>
+        <div class="idx-body">
+          <span class="idx-filename">chizu.html</span>
+          <div class="idx-title">地図の見方・地形図</div>
+          <div class="idx-sub">メルカトル・正距方位・モルワイデ図法、縮尺・等高線・尾根と谷</div>
+          <div class="idx-tags"><span class="tag">地図の図法</span><span class="tag">縮尺</span><span class="tag">等高線</span><span class="tag">地形図</span></div>
+        </div>
+        <div class="idx-arrow">›</div>
+      </a>
+    </div>
+
+    <!-- 02 時差 -->
+    <div class="idx-card" id="card-2">
+      <a href="jisa.html">
+        <div class="idx-num"><span class="n-step">UNIT</span><span class="n-val">02</span></div>
+        <div class="idx-body">
+          <span class="idx-filename">jisa.html</span>
+          <div class="idx-title">時差の計算</div>
+          <div class="idx-sub">標準時・経度と時差・日付変更線・世界の主要都市の時刻計算</div>
+          <div class="idx-tags"><span class="tag">標準時</span><span class="tag">経度</span><span class="tag">計算演習</span></div>
+        </div>
+        <div class="idx-arrow">›</div>
+      </a>
+    </div>
+
+  </div><!-- /地理基礎 -->
+
+  <!-- 日本地理 -->
+  <div class="sec-title">🗾 日本地理</div>
+  <div class="idx-grid">
+
+    <!-- 03 日本のすがた -->
+    <div class="idx-card" id="card-3">
+      <a href="worldall0.html">
+        <div class="idx-num"><span class="n-step">UNIT</span><span class="n-val">03</span></div>
+        <div class="idx-body">
+          <span class="idx-filename">worldall0.html</span>
+          <div class="idx-title">日本のすがた</div>
+          <div class="idx-sub">日本の位置・領域・地形・気候・人口・都市の特色</div>
+          <div class="idx-tags"><span class="tag">日本の位置</span><span class="tag">地形・気候</span><span class="tag">人口</span></div>
+        </div>
+        <div class="idx-arrow">›</div>
+      </a>
+    </div>
+
+    <!-- 04 日本の農業 -->
+    <div class="idx-card" id="card-4">
+      <a href="kouninchirijapanagr.html">
+        <div class="idx-num"><span class="n-step">UNIT</span><span class="n-val">04</span></div>
+        <div class="idx-body">
+          <span class="idx-filename">kouninchirijapanagr.html</span>
+          <div class="idx-title">日本の農業</div>
+          <div class="idx-sub">稲作・畑作・畜産・農業地域・食料自給率・農業政策</div>
+          <div class="idx-tags"><span class="tag">稲作</span><span class="tag">食料自給率</span><span class="tag">農業地域</span></div>
+        </div>
+        <div class="idx-arrow">›</div>
+      </a>
+    </div>
+
+    <!-- 05 日本の工業 -->
+    <div class="idx-card" id="card-5">
+      <a href="kouninjapankougyou.html">
+        <div class="idx-num"><span class="n-step">UNIT</span><span class="n-val">05</span></div>
+        <div class="idx-body">
+          <span class="idx-filename">kouninjapankougyou.html</span>
+          <div class="idx-title">日本の工業</div>
+          <div class="idx-sub">太平洋ベルト・工業地帯・地場産業・貿易と産業の変化</div>
+          <div class="idx-tags"><span class="tag">工業地帯</span><span class="tag">太平洋ベルト</span><span class="tag">貿易</span></div>
+        </div>
+        <div class="idx-arrow">›</div>
+      </a>
+    </div>
+
+  </div><!-- /日本地理 -->
+
+  <!-- 世界地理 -->
+  <div class="sec-title">🌏 世界地理</div>
+  <div class="idx-grid">
+
+    <!-- 06 世界地理 総合 -->
+    <div class="idx-card" id="card-6">
+      <a href="worldall1.html">
+        <div class="idx-num"><span class="n-step">UNIT</span><span class="n-val">06</span></div>
+        <div class="idx-body">
+          <span class="idx-filename">worldall1.html</span>
+          <div class="idx-title">世界地理 総合</div>
+          <div class="idx-sub">世界の地形・気候・宗教・民族・言語の基礎知識</div>
+          <div class="idx-tags"><span class="tag">世界の地形</span><span class="tag">気候区</span><span class="tag">宗教・民族</span></div>
+        </div>
+        <div class="idx-arrow">›</div>
+      </a>
+    </div>
+
+    <!-- 07 世界の農業 -->
+    <div class="idx-card" id="card-7">
+      <a href="worldall2.html">
+        <div class="idx-num"><span class="n-step">UNIT</span><span class="n-val">07</span></div>
+        <div class="idx-body">
+          <span class="idx-filename">worldall2.html</span>
+          <div class="idx-title">世界の農業</div>
+          <div class="idx-sub">農業の地域差・主要農産物・輸出入ランキング・農業政策</div>
+          <div class="idx-tags"><span class="tag">農業地域</span><span class="tag">食料問題</span><span class="tag">農産物貿易</span></div>
+        </div>
+        <div class="idx-arrow">›</div>
+      </a>
+    </div>
+
+    <!-- 08 世界の鉱産資源と工業都市 -->
+    <div class="idx-card" id="card-8">
+      <a href="worldall3.html">
+        <div class="idx-num"><span class="n-step">UNIT</span><span class="n-val">08</span></div>
+        <div class="idx-body">
+          <span class="idx-filename">worldall3.html</span>
+          <div class="idx-title">世界の鉱産資源と工業都市</div>
+          <div class="idx-sub">石油・石炭・鉄鉱石・世界の工業地域・多国籍企業</div>
+          <div class="idx-tags"><span class="tag">エネルギー</span><span class="tag">工業地域</span><span class="tag">資源</span></div>
+        </div>
+        <div class="idx-arrow">›</div>
+      </a>
+    </div>
+
+    <!-- 09 都市問題・人口問題・世界経済圏 -->
+    <div class="idx-card" id="card-9">
+      <a href="worldall4.html">
+        <div class="idx-num"><span class="n-step">UNIT</span><span class="n-val">09</span></div>
+        <div class="idx-body">
+          <span class="idx-filename">worldall4.html</span>
+          <div class="idx-title">都市問題・人口問題・世界経済圏</div>
+          <div class="idx-sub">人口ピラミッド・スラム・メガシティ・EU/ASEAN/BRICS ほか</div>
+          <div class="idx-tags"><span class="tag">人口問題</span><span class="tag">都市問題</span><span class="tag">EU・ASEAN</span><span class="tag">経済圏</span></div>
+        </div>
+        <div class="idx-arrow">›</div>
+      </a>
+    </div>
+
+  </div><!-- /世界地理 -->
+
+  <div class="foot-note">
+    <b>江原予備校</b> 高卒認定地理シリーズ<br>
+    ※各ページのランキングは端末ごとに保存されます。<br>
+    ※ファイルはすべて同じフォルダ内に置いてください。
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+// ===== 進捗カウント（localStorage の記録を確認）=====
+(function(){
+  // 各ファイルが「完了済み」かどうかを localStorage の既存キーで判定
+  // キーが存在していれば「訪問済み」とみなす
+  var keys = [
+    null,                        // dummy index 0
+    'chizu_visited',
+    'jisa_visited',
+    'worldall0_visited',
+    'kouninagr_visited',
+    'kouninkougyou_visited',
+    'worldall1_visited',
+    'gamba_world2_noka',         // worldall2
+    'gamba_world3_kousan',       // worldall3
+    'gamba_world5_pop',          // worldall4
+  ];
+
+  // 訪問フラグをセット（このページ自体を開いたタイミング）
+  // 各ページ側で localStorage.setItem('xxx_visited','1') とセットしてもらう形
+
+  var done = 0;
+  for(var i=1;i<keys.length;i++){
+    if(keys[i] && localStorage.getItem(keys[i])){done++;}
+  }
+  var total = 9;
+  var pct = Math.round(done/total*100);
+  document.getElementById('progBar').style.width = pct+'%';
+  document.getElementById('progCount').textContent = done+' / '+total+' ユニット';
+})();
+</script>
+</body>
+</html>
