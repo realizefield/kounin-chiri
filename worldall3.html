@@ -130,6 +130,17 @@ body.modal-open{overflow:hidden;}
 /* ===== TOAST ===== */
 .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#2C5282;color:#fff;border-radius:20px;padding:10px 22px;font-size:14px;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;}
 .toast.show{opacity:1;}
+
+/* ===== UNIT NAVIGATION ===== */
+.unit-nav{display:flex;gap:6px;justify-content:center;align-items:center;padding:10px 12px;background:#E6FFFA;border-bottom:2px solid #B2F5EA;}
+.unav-btn{display:inline-flex;align-items:center;gap:3px;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;transition:background .15s,opacity .15s;white-space:nowrap;}
+.unav-btn.prev{background:#fff;color:#2C7A7B;border:1.5px solid #81E6D9;}
+.unav-btn.prev:hover{background:#E6FFFA;}
+.unav-btn.home{background:#2C7A7B;color:#fff;border:1.5px solid #2C7A7B;flex-shrink:0;}
+.unav-btn.home:hover{background:#276749;}
+.unav-btn.next{background:#38A169;color:#fff;border:1.5px solid #38A169;}
+.unav-btn.next:hover{background:#276749;}
+.unav-btn.disabled{opacity:.35;pointer-events:none;cursor:default;}
 </style>
 </head>
 <body>
@@ -139,6 +150,13 @@ body.modal-open{overflow:hidden;}
   <p>高卒認定・中高基礎地理 ｜ 江原予備校</p>
 </div>
 
+
+<!-- UNIT NAVIGATION -->
+<div class="unit-nav">
+  <a class="unav-btn prev" href="worldall2.html">&#8592; 前の単元</a>
+  <a class="unav-btn home" href="kouninchiri-index.html">&#127968; 単元一覧</a>
+  <a class="unav-btn next" href="worldall4.html">次の単元 &#8594;</a>
+</div>
 <div class="wrap" id="wrap">
 
   <!-- ===== UNIT 1: 世界の鉱産資源 ===== -->

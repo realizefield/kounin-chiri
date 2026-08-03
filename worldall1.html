@@ -114,6 +114,17 @@ body.bank-open{padding-bottom:160px;}
 /* 熱帯 */ .en{background:#FFF0DC;border-color:#E07820;} .en .env-head{background:#E07820;} .en .env-zone,.en .env-region{color:#fff;} .en .env-kw{border-bottom-color:#E07820;color:#7a3000;} .en .env-badge{background:#FFE0B8;border-color:#E07820;color:#7a3000;}
 /* 高い土地 */ .et{background:#EDE0F8;border-color:#7E57C2;} .et .env-head{background:#7E57C2;} .et .env-zone,.et .env-region{color:#fff;} .et .env-kw{border-bottom-color:#7E57C2;color:#3d1b80;} .et .env-badge{background:#DDD0F5;border-color:#7E57C2;color:#3d1b80;}
 /* 低い土地 */ .eh{background:#DCF5E4;border-color:#38A169;} .eh .env-head{background:#38A169;} .eh .env-zone,.eh .env-region{color:#fff;} .eh .env-kw{border-bottom-color:#38A169;color:#1b5e35;} .eh .env-badge{background:#C0EDD0;border-color:#38A169;color:#1b5e35;}
+
+/* ===== UNIT NAVIGATION ===== */
+.unit-nav{display:flex;gap:6px;justify-content:center;align-items:center;padding:10px 12px;background:#E6FFFA;border-bottom:2px solid #B2F5EA;}
+.unav-btn{display:inline-flex;align-items:center;gap:3px;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;transition:background .15s,opacity .15s;white-space:nowrap;}
+.unav-btn.prev{background:#fff;color:#2C7A7B;border:1.5px solid #81E6D9;}
+.unav-btn.prev:hover{background:#E6FFFA;}
+.unav-btn.home{background:#2C7A7B;color:#fff;border:1.5px solid #2C7A7B;flex-shrink:0;}
+.unav-btn.home:hover{background:#276749;}
+.unav-btn.next{background:#38A169;color:#fff;border:1.5px solid #38A169;}
+.unav-btn.next:hover{background:#276749;}
+.unav-btn.disabled{opacity:.35;pointer-events:none;cursor:default;}
 </style>
 </head>
 <body>
@@ -123,6 +134,13 @@ body.bank-open{padding-bottom:160px;}
   <p>高卒認定・中高基礎地理 ｜ 江原予備校</p>
 </div>
 
+
+<!-- UNIT NAVIGATION -->
+<div class="unit-nav">
+  <a class="unav-btn prev" href="kouninjapankougyou.html">&#8592; 前の単元</a>
+  <a class="unav-btn home" href="kouninchiri-index.html">&#127968; 単元一覧</a>
+  <a class="unav-btn next" href="worldall2.html">次の単元 &#8594;</a>
+</div>
 <div class="wrap" id="wrap">
 
   <!-- ===== UNIT 1: 世界の造山帯 ===== -->

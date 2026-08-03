@@ -88,12 +88,30 @@ body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:#F0F
 .ranking h3{margin-bottom:6px;font-size:13px}
 .ranking ul{list-style:none}
 @media(max-width:500px){.hero h1{font-size:19px}.ch-btn{font-size:12px;padding:5px 10px}}
+
+/* ===== UNIT NAVIGATION ===== */
+.unit-nav{display:flex;gap:6px;justify-content:center;align-items:center;padding:10px 12px;background:#E6FFFA;border-bottom:2px solid #B2F5EA;}
+.unav-btn{display:inline-flex;align-items:center;gap:3px;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;transition:background .15s,opacity .15s;white-space:nowrap;}
+.unav-btn.prev{background:#fff;color:#2C7A7B;border:1.5px solid #81E6D9;}
+.unav-btn.prev:hover{background:#E6FFFA;}
+.unav-btn.home{background:#2C7A7B;color:#fff;border:1.5px solid #2C7A7B;flex-shrink:0;}
+.unav-btn.home:hover{background:#276749;}
+.unav-btn.next{background:#38A169;color:#fff;border:1.5px solid #38A169;}
+.unav-btn.next:hover{background:#276749;}
+.unav-btn.disabled{opacity:.35;pointer-events:none;cursor:default;}
 </style>
 </head>
 <body>
 <nav class="topnav">
   <span class="brand">🗾 GAMBA 中学地理 — 日本のすがた</span>
 </nav>
+
+<!-- UNIT NAVIGATION -->
+<div class="unit-nav">
+  <a class="unav-btn prev" href="jisa.html">&#8592; 前の単元</a>
+  <a class="unav-btn home" href="kouninchiri-index.html">&#127968; 単元一覧</a>
+  <a class="unav-btn next" href="kouninchirijapanagr.html">次の単元 &#8594;</a>
+</div>
 <div class="wrap">
 <header class="hero">
   <h1>日本のすがた ★☆☆</h1>
