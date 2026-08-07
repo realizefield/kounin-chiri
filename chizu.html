@@ -101,6 +101,9 @@ body.bank-open{padding-bottom:160px;}
 .memo-table td{padding:7px 10px;border:1px solid #B2F5EA;vertical-align:middle;text-align:center;line-height:1.6;}
 .memo-table tr:nth-child(even) td{background:#F0FFF4;}
 .memo-table .label{font-weight:800;color:#1A4731;text-align:left;}
+/* ===== IMAGES ===== */
+.unit-img{width:100%;border-radius:10px;margin:12px 0 4px;display:block;box-shadow:0 2px 10px rgba(0,0,0,.12);}
+.img-cap{font-size:11px;color:#718096;text-align:center;margin-bottom:14px;}
 /* ===== CONFETTI ===== */
 .confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;animation:fall 1.2s ease-in forwards;}
 @keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0deg);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
@@ -143,6 +146,10 @@ body.bank-open{padding-bottom:160px;}
         地図はさまざまな<strong>図法（投影法）</strong>で作られています。地球は球体（球面）なので、それを平面に表すと必ずどこかにゆがみが生じます。目的に応じて使い分けることが大切です。
       </p>
 
+      <!-- 図法まとめビジュアル -->
+      <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/chizu4.png" alt="3つの図法の特徴まとめ">
+      <p class="img-cap">▲ 3つの図法の特徴まとめ</p>
+
       <!-- メルカトル図法 -->
       <div class="ic-grid">
         <div class="ic ic-mer">
@@ -157,6 +164,8 @@ body.bank-open{padding-bottom:160px;}
             ・高緯度になるほど<span class="ic-kw">面積が拡大</span>される（グリーンランドが南米と同じくらいに見える）<br>
             ・最短経路（大圏コース）は直線にならない
           </div>
+          <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/chizu1.png" alt="メルカトル図法">
+          <p class="img-cap">▲ メルカトル図法（正角円筒図法）の詳細</p>
         </div>
 
         <div class="ic ic-azi">
@@ -171,6 +180,8 @@ body.bank-open{padding-bottom:160px;}
             ・中心以外の2点間の距離は正確でない<br>
             ・国連の旗のデザインに採用されている
           </div>
+          <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/chizu2.png" alt="正距方位図法">
+          <p class="img-cap">▲ 正距方位図法の詳細</p>
         </div>
 
         <div class="ic ic-mol">
@@ -185,8 +196,14 @@ body.bank-open{padding-bottom:160px;}
             ・高緯度地域の形のゆがみが大きい<br>
             ・グード図法（断裂正積図法）も正積図法の一種
           </div>
+          <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/chizu3.png" alt="モルワイデ図法">
+          <p class="img-cap">▲ モルワイデ図法（正積図法）の詳細</p>
         </div>
       </div><!-- /ic-grid -->
+
+      <!-- 大圏コース比較ビジュアル -->
+      <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/taikenkouro.png" alt="大圏コースと等角コース">
+      <p class="img-cap">▲ 図法で見え方が変わる！大圏コースと等角コース</p>
 
       <!-- 図法まとめ表 -->
       <table class="memo-table">
