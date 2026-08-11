@@ -41,7 +41,7 @@ body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#F0FFF4;color:#1
 .timer{font-size:13px;font-weight:700;color:#F6E05E;min-width:52px;}
 /* ===== READ BOX ===== */
 .read-box{padding:12px 16px;background:#F0FFF4;border-radius:10px;margin-bottom:12px;}
-.blank{display:inline-block;min-width:80px;border-bottom:2px solid #2C7A7B;color:#2C7A7B;font-weight:700;text-align:center;padding:0 4px;cursor:pointer;transition:background .2s;}
+.blank{display:inline-block;min-width:80px;min-height:1.8em;line-height:1.8em;border-bottom:2px solid #2C7A7B;color:#2C7A7B;font-weight:700;text-align:center;padding:0 6px;cursor:pointer;transition:background .2s;vertical-align:middle;}
 .blank.filled{background:#C6F6D5;border-radius:4px;color:#276749;}
 .blank.correct{background:#9AE6B4;border-radius:4px;color:#22543D;}
 .blank.wrong{background:#FED7D7;border-radius:4px;color:#9B2C2C;border-bottom-color:#E53E3E;}
@@ -55,6 +55,8 @@ body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#F0FFF4;color:#1
 .chip{background:#fff;border:1.5px solid #63B3ED;border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer;font-weight:600;color:#2B6CB0;transition:background .15s;}
 .chip:hover{background:#BEE3F8;}
 .chip.used{opacity:.3;pointer-events:none;}
+.chip.selected{background:#FEFCBF;border-color:#D69E2E;box-shadow:0 0 0 2.5px #D69E2E;color:#744210;}
+.blank.chip-ready{outline:2px dashed #D69E2E;background:#FFFFF0 !important;}
 body.bank-open{padding-bottom:160px;}
 /* ===== STAGE CLEAR ===== */
 .stage-clear{display:none;text-align:center;padding:14px;font-size:18px;font-weight:800;color:#276749;animation:pop .4s ease;}
@@ -101,6 +103,9 @@ body.bank-open{padding-bottom:160px;}
 .memo-table td{padding:7px 10px;border:1px solid #B2F5EA;vertical-align:middle;text-align:center;line-height:1.6;}
 .memo-table tr:nth-child(even) td{background:#F0FFF4;}
 .memo-table .label{font-weight:800;color:#1A4731;text-align:left;}
+/* ===== BLANK STUDY MODE ===== */
+.blank.prefilled{background:#E6FFFA;border-radius:4px;color:#2C7A7B;border-bottom-color:#2C7A7B;font-weight:700;}
+.blank.selected{outline:2.5px solid #E53E3E !important;background:#FFF5F5 !important;}
 /* ===== IMAGES ===== */
 .unit-img{width:100%;border-radius:10px;margin:12px 0 4px;display:block;box-shadow:0 2px 10px rgba(0,0,0,.12);}
 .img-cap{font-size:11px;color:#718096;text-align:center;margin-bottom:14px;}
@@ -229,26 +234,27 @@ body.bank-open{padding-bottom:160px;}
       </div>
     </div>
     <div class="stage-body">
+      <div id="chips-map" style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 0 12px;min-height:36px;"></div>
       <div class="read-box" id="rb-map">
         <p style="font-size:13.5px;line-height:2.2;">
           地図の図法には大きく3種類ある。<strong>角度と方位が正確</strong>で、等角航路を直線で表せるのは
-          <span class="blank" data-key="map" data-ans="メルカトル図法" onclick="openBank('map',this)">　　　　　</span>
+          <span class="blank" data-key="map" data-ans="メルカトル図法" onclick="pickWord('map',this)">　　　　　</span>
           である。航海に使われてきた。<br>
 
           一方、<strong>中心からの距離と方位が正確</strong>で、大圏コース（最短経路）を直線で表せるのは
-          <span class="blank" data-key="map" data-ans="正距方位図法" onclick="openBank('map',this)">　　　　　</span>
+          <span class="blank" data-key="map" data-ans="正距方位図法" onclick="pickWord('map',this)">　　　　　</span>
           で、航空図として利用される。<br>
 
           <strong>面積が正確</strong>に保たれる図法は
-          <span class="blank" data-key="map" data-ans="モルワイデ図法" onclick="openBank('map',this)">　　　　　</span>
+          <span class="blank" data-key="map" data-ans="モルワイデ図法" onclick="pickWord('map',this)">　　　　　</span>
           （正積図法）で、農業や人口などの分布図に使われる。<br>
 
-          メルカトル図法では高緯度になるほど<span class="blank" data-key="map" data-ans="面積" onclick="openBank('map',this)">　　</span>が
+          メルカトル図法では高緯度になるほど<span class="blank" data-key="map" data-ans="面積" onclick="pickWord('map',this)">　　</span>が
           拡大されてしまう。また、メルカトル図法で表される
-          <span class="blank" data-key="map" data-ans="等角航路" onclick="openBank('map',this)">　　　　</span>
+          <span class="blank" data-key="map" data-ans="等角航路" onclick="pickWord('map',this)">　　　　</span>
           は実際の最短コースではない。<br>
 
-          最短コースは<span class="blank" data-key="map" data-ans="大圏コース" onclick="openBank('map',this)">　　　　</span>と呼ばれ、正距方位図法の中心から見ると直線に見える。
+          最短コースは<span class="blank" data-key="map" data-ans="大圏コース" onclick="pickWord('map',this)">　　　　</span>と呼ばれ、正距方位図法の中心から見ると直線に見える。
         </p>
       </div>
       <div class="stage-clear" id="clear-map">🎉 完璧！ 図法マスター！</div>
@@ -412,10 +418,57 @@ body.bank-open{padding-bottom:160px;}
     </div><!-- /stage-body -->
   </div>
 
-  <!-- 穴埋めステージ -->
+  <!-- 穴埋めステージ（等高線の基本） -->
   <div class="stage challenge">
     <div class="stage-head">
-      <span class="stage-label">✏️ 穴埋めテスト｜地形図</span>
+      <span class="stage-label">✏️ 穴埋めテスト①｜等高線の基本と縮尺</span>
+      <div class="stage-actions">
+        <span class="timer" id="timer-contour">--:--</span>
+        <button class="ch-btn start" id="start-contour" onclick="startChallenge('contour')">スタート</button>
+        <button class="ch-btn judge" id="judge-contour" onclick="judge('contour')" disabled>採点</button>
+        <button class="ch-btn example" id="example-contour" onclick="showExample('contour')" disabled>答え</button>
+        <button class="ch-btn reset" onclick="resetChallenge('contour')">リセット</button>
+      </div>
+    </div>
+    <div class="stage-body">
+      <!-- 語群（インライン表示） -->
+      <div id="chips-contour" style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 0 12px;min-height:36px;"></div>
+      <div class="read-box" id="rb-contour">
+        <p style="font-size:13.5px;line-height:2.4;">
+          等高線とは、<span class="blank" data-key="contour" data-ans="高さ" onclick="pickWord('contour',this)">　　</span>
+          の等しい地点を結んだ線のことである。<br>
+
+          主に引かれている<strong>細い実線</strong>を
+          <span class="blank" data-key="contour" data-ans="主曲線" onclick="pickWord('contour',this)">　　　　</span>
+          といい、5本ごとに引かれる<strong>太い実線</strong>を
+          <span class="blank" data-key="contour" data-ans="計曲線" onclick="pickWord('contour',this)">　　　　</span>
+          という。<br>
+
+          縮尺が<strong>2万5千分の1</strong>の地形図では、主曲線の間隔は
+          <span class="blank" data-key="contour" data-ans="10m" onclick="pickWord('contour',this)">　　</span>
+          ごと、計曲線の間隔は
+          <span class="blank" data-key="contour" data-ans="50m" onclick="pickWord('contour',this)">　　</span>
+          ごとである。<br>
+
+          縮尺が<strong>5万分の1</strong>の地形図では、主曲線の間隔は
+          <span class="blank" data-key="contour" data-ans="20m" onclick="pickWord('contour',this)">　　</span>
+          ごと、計曲線の間隔は
+          <span class="blank" data-key="contour" data-ans="100m" onclick="pickWord('contour',this)">　　　</span>
+          ごとである。<br>
+
+          【例題】主曲線の間隔が20mごとの地形図の縮尺は
+          <span class="blank" data-key="contour" data-ans="50000" onclick="pickWord('contour',this)">　　　　</span>
+          分の1である。
+        </p>
+      </div>
+      <div class="stage-clear" id="clear-contour">🎉 完璧！ 等高線マスター！</div>
+    </div>
+  </div>
+
+  <!-- 穴埋めステージ（地形図総合） -->
+  <div class="stage challenge">
+    <div class="stage-head">
+      <span class="stage-label">✏️ 穴埋めテスト②｜地形図</span>
       <div class="stage-actions">
         <span class="timer" id="timer-topo">--:--</span>
         <button class="ch-btn start" id="start-topo" onclick="startChallenge('topo')">スタート</button>
@@ -425,28 +478,29 @@ body.bank-open{padding-bottom:160px;}
       </div>
     </div>
     <div class="stage-body">
+      <div id="chips-topo" style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 0 12px;min-height:36px;"></div>
       <div class="read-box" id="rb-topo">
         <p style="font-size:13.5px;line-height:2.2;">
-          地形図の縮尺のうち、<span class="blank" data-key="topo" data-ans="2万5千分の1" onclick="openBank('topo',this)">　　　　　</span>
-          では地図上の1cmが実際の<span class="blank" data-key="topo" data-ans="250m" onclick="openBank('topo',this)">　　　</span>に相当する。<br>
+          地形図の縮尺のうち、<span class="blank" data-key="topo" data-ans="2万5千分の1" onclick="pickWord('topo',this)">　　　　　</span>
+          では地図上の1cmが実際の<span class="blank" data-key="topo" data-ans="250m" onclick="pickWord('topo',this)">　　　</span>に相当する。<br>
 
           等高線には3種類ある。基本となる細い実線を
-          <span class="blank" data-key="topo" data-ans="主曲線" onclick="openBank('topo',this)">　　　　</span>
-          といい、2万5千分の1では<span class="blank" data-key="topo" data-ans="10m" onclick="openBank('topo',this)">　　</span>
+          <span class="blank" data-key="topo" data-ans="主曲線" onclick="pickWord('topo',this)">　　　　</span>
+          といい、2万5千分の1では<span class="blank" data-key="topo" data-ans="10m" onclick="pickWord('topo',this)">　　</span>
           間隔で引かれる。5本ごとの太い線は
-          <span class="blank" data-key="topo" data-ans="計曲線" onclick="openBank('topo',this)">　　　　</span>
+          <span class="blank" data-key="topo" data-ans="計曲線" onclick="pickWord('topo',this)">　　　　</span>
           といい、標高の数字が書かれている。<br>
 
-          等高線の間隔が<span class="blank" data-key="topo" data-ans="狭い" onclick="openBank('topo',this)">　　</span>
+          等高線の間隔が<span class="blank" data-key="topo" data-ans="狭い" onclick="pickWord('topo',this)">　　</span>
           ところは急傾斜を表す。<br>
 
           山の稜線（高くなっている部分）を
-          <span class="blank" data-key="topo" data-ans="尾根" onclick="openBank('topo',this)">　　</span>
+          <span class="blank" data-key="topo" data-ans="尾根" onclick="pickWord('topo',this)">　　</span>
           といい、等高線が低い方に凸になっている。<br>
 
           低くくぼんだ部分を
-          <span class="blank" data-key="topo" data-ans="谷" onclick="openBank('topo',this)">　　</span>
-          といい、等高線が<span class="blank" data-key="topo" data-ans="高い方" onclick="openBank('topo',this)">　　　</span>
+          <span class="blank" data-key="topo" data-ans="谷" onclick="pickWord('topo',this)">　　</span>
+          といい、等高線が<span class="blank" data-key="topo" data-ans="高い方" onclick="pickWord('topo',this)">　　　</span>
           へ凸になっている。
         </p>
       </div>
@@ -467,8 +521,36 @@ body.bank-open{padding-bottom:160px;}
         <button class="q4-c" onclick="ans(this,'wrong','q-topo-1')">④ 2000m（2km）</button>
       </div>
       <div class="q4-exp" id="exp-q-topo-1">
-        2万5千分の1では1cm = 250m。よって4cm = 250 × 4 = <strong>1000m（1km）</strong>。
-        5万分の1なら1cm = 500m、4cm = 2000m です。
+        縮尺2万5千分の1なので、地図上の4cmは実際には：<br>
+        4cm × 25000 ＝ 100000cm ＝ 1000m ＝ <strong>1km</strong>
+      </div>
+    </div>
+
+    <div class="q4" id="q-scale-2">
+      <div class="q4-stem"><span class="q4-num">問1-2．</span>5万分の1地形図で、地図上の6cmは実際に何mか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-scale-2')">① 600m</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-scale-2')">② 1500m（1.5km）</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-scale-2')">③ 3000m（3km）</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-scale-2')">④ 6000m（6km）</button>
+      </div>
+      <div class="q4-exp" id="exp-q-scale-2">
+        縮尺5万分の1なので：<br>
+        6cm × 50000 ＝ 300000cm ＝ 3000m ＝ <strong>3km</strong>
+      </div>
+    </div>
+
+    <div class="q4" id="q-scale-3">
+      <div class="q4-stem"><span class="q4-num">問1-3．</span>2万5千分の1地形図で、地図上の2cmは実際に何mか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-scale-3')">① 100m</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-scale-3')">② 250m</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-scale-3')">③ 500m</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-scale-3')">④ 1000m（1km）</button>
+      </div>
+      <div class="q4-exp" id="exp-q-scale-3">
+        縮尺2万5千分の1なので：<br>
+        2cm × 25000 ＝ 50000cm ＝ <strong>500m</strong>
       </div>
     </div>
 
@@ -513,41 +595,223 @@ body.bank-open{padding-bottom:160px;}
       </div>
     </div>
 
-    <button class="q-reset" onclick="resetQ('q-topo-1','q-topo-2','q-topo-3','q-topo-4')">問題をリセット</button>
+    <button class="q-reset" onclick="resetQ('q-topo-1','q-scale-2','q-scale-3','q-topo-2','q-topo-3','q-topo-4')">問題をリセット</button>
+  </div>
+
+  <!-- 図を使った確認問題 -->
+  <div class="q-block">
+    <div class="q-title">📐 図の読み取り問題｜等高線と傾斜・縮尺</div>
+
+    <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/chizu8.png" alt="等高線と断面図">
+    <p class="img-cap" style="margin-bottom:16px;">▲ 図：等高線と断面図（A=200m・Q,P,Bは各地点）</p>
+
+    <div class="q4" id="q-topo-5">
+      <div class="q4-stem"><span class="q4-num">問5．</span>【例題1-(1)】図のP地点とQ地点では、どちらの傾斜が大きいか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-5')">① P地点</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-topo-5')">② Q地点</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-5')">③ 同じ傾斜</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-5')">④ B地点</button>
+      </div>
+      <div class="q4-exp" id="exp-q-topo-5">
+        Q地点付近は等高線の間隔が<strong>狭く</strong>、急傾斜であることがわかります。P地点は等高線の間隔が広く、緩やかな傾斜です。<strong>等高線の間隔が狭い = 急傾斜</strong>が基本ルールです。
+      </div>
+    </div>
+
+    <div class="q4" id="q-topo-6">
+      <div class="q4-stem"><span class="q4-num">問6．</span>【例題1-(2)】この地形図では主曲線の間隔が20mごとである。縮尺はどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-6')">① 2万5千分の1</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-topo-6')">② 5万分の1</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-6')">③ 10万分の1</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-topo-6')">④ 1万分の1</button>
+      </div>
+      <div class="q4-exp" id="exp-q-topo-6">
+        主曲線の間隔が<strong>20mごと → 5万分の1（1/50,000）</strong>の地形図です。2万5千分の1では主曲線が10mごとになります。この対応は必ず暗記しましょう。
+      </div>
+    </div>
+
+    <button class="q-reset" onclick="resetQ('q-topo-5','q-topo-6')">問題をリセット</button>
+  </div>
+
+  <!-- 鳥取市読図問題 -->
+  <div class="q-block">
+    <div class="q-title">🗺 読図問題｜鳥取市の地形図（1:25,000）</div>
+
+    <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/chizu9.png" alt="鳥取市地形図">
+    <p class="img-cap" style="margin-bottom:16px;">▲ 図：鳥取市の一部（1：25,000）</p>
+
+    <div class="q4" id="q-tot-1">
+      <div class="q4-stem"><span class="q4-num">問1．</span>地形図から読み取れる内容として<strong>誤っているもの</strong>を，次のア〜エから1つ選べ。</div>
+      <div class="q4-choices" style="display:flex;flex-direction:column;gap:8px;">
+        <button class="q4-c" onclick="ans(this,'wrong','q-tot-1')">ア　線路の西側に複数の工場がある。</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-tot-1')">イ　高等学校の東側に田が，南側に畑がある。</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-tot-1')">ウ　傾斜地で果樹が栽培されている。</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-tot-1')">エ　「つのい」駅の南東の方向に消防署がある。</button>
+      </div>
+      <div class="q4-exp" id="exp-q-tot-1">
+        <strong>エが誤り。</strong>「つのい」駅から見た消防署の方向は<strong>南西</strong>であり，南東ではありません。地図記号や方位の読み取りは慎重に確認しましょう。
+      </div>
+    </div>
+
+    <div class="q4" id="q-tot-2">
+      <div class="q4-stem"><span class="q4-num">問2．</span>「海蔵寺」にある三角点の周辺には，土地の起伏を表すための線がある。この線は何とよばれるか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'correct','q-tot-2')">① 等高線</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-tot-2')">② 水準線</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-tot-2')">③ 地勢線</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-tot-2')">④ 断面線</button>
+      </div>
+      <div class="q4-exp" id="exp-q-tot-2">
+        土地の起伏（高さの変化）を表すために，同じ高さの地点を結んだ線を<strong>等高線</strong>といいます。2万5千分の1の地形図では，細い線（主曲線）が10mごとに引かれています。
+      </div>
+    </div>
+
+    <div class="q4" id="q-tot-3">
+      <div class="q4-stem"><span class="q4-num">問3．</span>郵便局から「桂木」の神社までを地形図上で直線で結ぶと3cmだった。実際の直線距離は何mか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-tot-3')">① 250m</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-tot-3')">② 500m</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-tot-3')">③ 750m</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-tot-3')">④ 1000m（1km）</button>
+      </div>
+      <div class="q4-exp" id="exp-q-tot-3">
+        縮尺2万5千分の1なので：<br>
+        3cm × 25000 ＝ 75000cm ＝ <strong>750m</strong>
+      </div>
+    </div>
+
+    <button class="q-reset" onclick="resetQ('q-tot-1','q-tot-2','q-tot-3')">問題をリセット</button>
+  </div>
+
+  <!-- 福井市読図問題 -->
+  <div class="q-block">
+    <div class="q-title">🗺 読図問題｜福井市の地形図（2万5千分の1）</div>
+
+    <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/chizu10.png" alt="福井市地形図">
+    <p class="img-cap" style="margin-bottom:16px;">▲ 図：福井市の一部（2万5千分の1）</p>
+
+    <div class="q4" id="q-fuk-1">
+      <div class="q4-stem"><span class="q4-num">問1．</span>図に関する次のア〜エの説明のうち，<strong>誤っているもの</strong>を1つ選べ。</div>
+      <div class="q4-choices" style="display:flex;flex-direction:column;gap:8px;">
+        <button class="q4-c" onclick="ans(this,'wrong','q-fuk-1')">ア　城跡に県庁がある。</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-fuk-1')">イ　消防署のすぐ近くに神社が複数ある。</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-fuk-1')">ウ　水準点または三角点によれば，標高20m以上の地点がある。</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-fuk-1')">エ　水田と畑がある。</button>
+      </div>
+      <div class="q4-exp" id="exp-q-fuk-1">
+        <strong>イが誤り。</strong>消防署のすぐ近くに神社が複数あるとは読み取れません。地図記号をよく確認しましょう。城跡（ア）・標高20m以上の地点（ウ）・水田と畑（エ）はいずれも正しく読み取れます。
+      </div>
+    </div>
+
+    <p style="font-size:13px;line-height:1.9;background:#F0FFF4;border-radius:8px;padding:10px 14px;margin:14px 0 6px;">
+      <strong>問2．</strong>Aから西に向かって進むと，広い通りがあり，<strong>①道路上に線路が敷かれていた</strong>。その広い通りを南に向かうと，通りに沿って左手に<strong>②高等学校があり</strong>，さらに南に進み，左折すると「ふくい」駅に着いた。Aと「ふくい」駅とを，直線で結んだときの地図上の長さは約4cmなので，実際の距離は<strong>③約2kmとなる</strong>。<br>
+      <span style="font-size:11px;color:#718096;">下線部①〜③が正しければ○，誤りなら×を選んでください。</span>
+    </p>
+
+    <div class="q4" id="q-fuk-2a">
+      <div class="q4-stem"><span class="q4-num">①</span>道路上に線路が敷かれていた。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'correct','q-fuk-2a')">○　正しい</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-fuk-2a')">×　誤り</button>
+      </div>
+      <div class="q4-exp" id="exp-q-fuk-2a">
+        <strong>○ 正しい。</strong>地図記号から路面電車（道路上を走る線路）が読み取れます。
+      </div>
+    </div>
+
+    <div class="q4" id="q-fuk-2b">
+      <div class="q4-stem"><span class="q4-num">②</span>通りに沿って左手に高等学校があった。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'correct','q-fuk-2b')">○　正しい</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-fuk-2b')">×　誤り</button>
+      </div>
+      <div class="q4-exp" id="exp-q-fuk-2b">
+        <strong>○ 正しい。</strong>通りの左手（東側）に高等学校の地図記号が確認できます。
+      </div>
+    </div>
+
+    <div class="q4" id="q-fuk-2c">
+      <div class="q4-stem"><span class="q4-num">③</span>Aと「ふくい」駅の実際の距離は約2kmとなる。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'wrong','q-fuk-2c')">○　正しい</button>
+        <button class="q4-c" onclick="ans(this,'correct','q-fuk-2c')">×　誤り</button>
+      </div>
+      <div class="q4-exp" id="exp-q-fuk-2c">
+        <strong>× 誤り。</strong>2万5千分の1なので：<br>
+        4cm × 25000 ＝ 100000cm ＝ 1000m ＝ <strong>1km</strong><br>
+        約2kmではなく，約<strong>1km</strong>が正解です。
+      </div>
+    </div>
+
+    <button class="q-reset" onclick="resetQ('q-fuk-1','q-fuk-2a','q-fuk-2b','q-fuk-2c')">問題をリセット</button>
+  </div>
+
+  <!-- 略地図と地理院地図の読み取り問題（R7年2回） -->
+  <div class="q-block">
+    <div class="q-title">🗺 読図問題｜略地図と地理院地図の読み取り（R7年第2回）</div>
+
+    <p style="font-size:13px;font-weight:700;color:#2C5282;margin:8px 0 4px;">▼ 資料5　マコトさんがユメカさんに送った中学校までの略地図</p>
+    <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/chizu11.png" alt="資料5 略地図">
+
+    <p style="font-size:13px;font-weight:700;color:#2C5282;margin:14px 0 4px;">▼ 資料6　地理院地図上での中学校周辺（ア〜エは小・中学校の位置）</p>
+    <img class="unit-img" src="https://realizefield.github.io/kounin-chiri/chizu12.png" alt="資料6 地理院地図">
+
+    <div style="background:#EBF8FF;border-radius:10px;padding:12px 14px;margin:12px 0;font-size:13px;line-height:1.9;">
+      <strong>📝 会話文（要約）</strong><br>
+      ・駅を出て，商業施設の角を<strong>右折</strong>→右手にお寺を見ながら<strong>左折</strong>して直進。<br>
+      ・中学校に着く少し<strong>手前に消防署</strong>がある。<br>
+      ・消防署を目印にすると，中学校の場所は空欄 <strong>X</strong> である。
+    </div>
+
+    <div class="q4" id="q-mako-1">
+      <div class="q4-stem"><span class="q4-num">問．</span>資料5・資料6を参照して，空欄 X に当てはまる中学校の場所（ア〜エ）として最も適切なものを選べ。</div>
+      <div class="q4-choices">
+        <button class="q4-c" onclick="ans(this,'correct','q-mako-1')">①　ア</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-mako-1')">②　イ</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-mako-1')">③　ウ</button>
+        <button class="q4-c" onclick="ans(this,'wrong','q-mako-1')">④　エ</button>
+      </div>
+      <div class="q4-exp" id="exp-q-mako-1">
+        <strong>答：① ア</strong><br>
+        略地図（資料5）の道順を地理院地図（資料6）に重ねて考えます。<br>
+        ・駅から商業施設の角を右折 → 右手のお寺を見ながら左折して直進。<br>
+        ・その道筋で，中学校（✕記号）の<strong>手前に消防署（Y記号）</strong>があるのは<strong>ア</strong>の位置です。<br>
+        イ・ウ・エは消防署が手前にないか，道順と合いません。
+      </div>
+    </div>
+
+    <button class="q-reset" onclick="resetQ('q-mako-1')">問題をリセット</button>
   </div>
 
 </div><!-- /unit-wrap 2 -->
 
 </div><!-- /wrap -->
 
-<!-- ===== WORD BANKS ===== -->
-<div class="word-bank" id="bank-map">
-  <div class="wb-header">
-    <span class="wb-title">🗂 語群（タップして埋める）</span>
-    <button class="wb-close" onclick="closeBank()">✕</button>
+<!-- ===== 語句ピッカー（底ドロワー） ===== -->
+<div id="word-picker" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.35);" onclick="if(event.target===this)closePicker()">
+  <div style="position:absolute;bottom:0;left:0;right:0;background:#EBF8FF;border-radius:20px 20px 0 0;box-shadow:0 -6px 28px rgba(0,0,0,.25);padding:14px 16px 32px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:13px;font-weight:700;color:#2C5282;">▼ 語句を選んでタップ</span>
+      <button onclick="closePicker()" style="background:none;border:none;font-size:22px;color:#4A5568;cursor:pointer;line-height:1;padding:0 4px;">✕</button>
+    </div>
+    <div id="picker-chips" style="display:flex;flex-wrap:wrap;gap:10px;"></div>
   </div>
-  <div class="wb-chips" id="chips-map"></div>
-</div>
-
-<div class="word-bank" id="bank-topo">
-  <div class="wb-header">
-    <span class="wb-title">🗂 語群（タップして埋める）</span>
-    <button class="wb-close" onclick="closeBank()">✕</button>
-  </div>
-  <div class="wb-chips" id="chips-topo"></div>
 </div>
 
 <script>
 /* ===== 語群 ===== */
 const BANKS = {
-  map:  ['メルカトル図法','正距方位図法','モルワイデ図法','等角航路','大圏コース','面積','正積図法'],
-  topo: ['2万5千分の1','250m','主曲線','10m','計曲線','狭い','尾根','谷','高い方'],
+  map:      ['メルカトル図法','正距方位図法','モルワイデ図法','等角航路','大圏コース','面積','正積図法'],
+  contour:  ['高さ','主曲線','計曲線','10m','50m','20m','100m','50000'],
+  topo:     ['2万5千分の1','250m','主曲線','10m','計曲線','狭い','尾根','谷','高い方'],
 };
 
 /* ===== 状態 ===== */
 const state = {
-  map:  {active:false, target:null, timer:null, elapsed:0},
-  topo: {active:false, target:null, timer:null, elapsed:0},
+  map:     {active:false, target:null, timer:null, elapsed:0},
+  contour: {active:false, target:null, timer:null, elapsed:0},
+  topo:    {active:false, target:null, timer:null, elapsed:0},
 };
 
 /* ===== ランキング読み込み ===== */
@@ -559,6 +823,12 @@ function loadRank(key, listId){
 }
 loadRank('map','rank-map-list');
 loadRank('topo','rank-topo-list');
+
+/* ===== 学習モード：ページ読み込み時に答えを表示 ===== */
+document.querySelectorAll('.blank').forEach(b=>{
+  b.textContent = b.dataset.ans;
+  b.classList.add('prefilled');
+});
 
 function saveRank(key, sec){
   const data = JSON.parse(localStorage.getItem('chizu_'+key+'_rank')||'[]');
@@ -578,10 +848,17 @@ function startChallenge(key){
   document.getElementById('judge-'+key).disabled = false;
   document.getElementById('example-'+key).disabled = false;
 
-  // チップ生成
+  // 空欄をクリア（タップできるよう全角スペースをセット）
+  document.querySelectorAll(`[data-key="${key}"]`).forEach(b=>{
+    b.textContent='　　'; b.classList.remove('prefilled','correct','wrong','filled'); b.style.outline='';
+    b.style.color='#CBD5E0';
+  });
+
+  // チップを語群エリアに生成
   const pool = [...BANKS[key]].sort(()=>Math.random()-.5);
   const cont = document.getElementById('chips-'+key);
-  cont.innerHTML = pool.map(w=>`<button class="chip" data-word="${w}" onclick="fillBlank('${key}',this)">${w}</button>`).join('');
+  // チップをステータス表示（視覚的参考）
+  cont.innerHTML = BANKS[key].map(w=>`<span class="chip" data-word="${w}">${w}</span>`).join('');
 
   // タイマー
   s.timer = setInterval(()=>{
@@ -592,33 +869,53 @@ function startChallenge(key){
   },1000);
 }
 
-/* ===== 語群開閉 ===== */
-function openBank(key, el){
+/* ===== 語句ピッカー ===== */
+var pickerKey = null;
+var pickerEl  = null;
+
+function pickWord(key, el){
   if(!state[key].active) return;
-  state[key].target = el;
-  document.querySelectorAll('.word-bank').forEach(b=>b.classList.remove('active'));
-  document.getElementById('bank-'+key).classList.add('active');
-  document.body.classList.add('bank-open');
-}
-function closeBank(){
-  document.querySelectorAll('.word-bank').forEach(b=>b.classList.remove('active'));
-  document.body.classList.remove('bank-open');
+  pickerKey = key;
+  pickerEl  = el;
+
+  // 使用中の語句を収集
+  var used = {};
+  var blanks = document.querySelectorAll('[data-key="' + key + '"]');
+  for(var i = 0; i < blanks.length; i++){
+    if(blanks[i] !== el){
+      var w = blanks[i].textContent.trim();
+      if(w) used[w] = true;
+    }
+  }
+  var current = el.textContent.trim();
+
+  // ボタンを生成（index で参照、各ボタンに直接 onclick）
+  var bank = BANKS[key];
+  var html = '';
+  for(var j = 0; j < bank.length; j++){
+    var word = bank[j];
+    var extra = (word === current) ? ' style="background:#FEFCBF;border-color:#D69E2E;"'
+              : used[word]         ? ' style="opacity:.45;"'
+              : '';
+    html += '<button class="chip"' + extra + ' onclick="doFill(' + j + ')">' + word + '</button>';
+  }
+  document.getElementById('picker-chips').innerHTML = html;
+  document.getElementById('word-picker').style.display = 'block';
 }
 
-/* ===== チップで穴を埋める ===== */
-function fillBlank(key, chip){
-  const s = state[key];
-  if(!s.target) return;
-  const prev = s.target.textContent.trim();
-  // 前の単語を解放
-  if(prev){
-    document.querySelectorAll(`#chips-${key} [data-word="${prev}"]`).forEach(c=>c.classList.remove('used'));
-  }
-  s.target.textContent = chip.dataset.word;
-  s.target.classList.add('filled');
-  s.target.classList.remove('correct','wrong');
-  chip.classList.add('used');
-  closeBank();
+function doFill(idx){
+  if(!pickerKey || !pickerEl) return;
+  var word = BANKS[pickerKey][idx];
+  pickerEl.textContent = word;
+  pickerEl.style.color = '';
+  pickerEl.className   = 'blank filled';
+  closePicker();
+}
+
+function closePicker(){
+  document.getElementById('word-picker').style.display = 'none';
+  pickerKey = null;
+  pickerEl  = null;
 }
 
 /* ===== 採点 ===== */
@@ -644,10 +941,12 @@ function judge(key){
 /* ===== 答えを表示 ===== */
 function showExample(key){
   clearInterval(state[key].timer);
+  closePicker();
   document.querySelectorAll(`[data-key="${key}"]`).forEach(b=>{
     b.textContent = b.dataset.ans;
     b.classList.add('correct');
-    b.classList.remove('filled','wrong');
+    b.classList.remove('filled','wrong','prefilled');
+    b.style.outline=''; b.style.color='';
   });
 }
 
@@ -655,17 +954,19 @@ function showExample(key){
 function resetChallenge(key){
   clearInterval(state[key].timer);
   state[key] = {active:false,target:null,timer:null,elapsed:0};
+  closePicker();
   document.getElementById('timer-'+key).textContent='--:--';
   document.getElementById('start-'+key).disabled = false;
   document.getElementById('judge-'+key).disabled = true;
   document.getElementById('example-'+key).disabled = true;
   document.getElementById('clear-'+key).style.display='none';
   document.querySelectorAll(`[data-key="${key}"]`).forEach(b=>{
-    b.textContent='　　　　　';
+    b.textContent=b.dataset.ans;
+    b.classList.add('prefilled');
     b.classList.remove('filled','correct','wrong');
+    b.style.outline=''; b.style.color='';
   });
   document.getElementById('chips-'+key).innerHTML='';
-  closeBank();
 }
 
 /* ===== 4択 ===== */
