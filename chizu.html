@@ -106,6 +106,10 @@ body.bank-open{padding-bottom:160px;}
 /* ===== BLANK STUDY MODE ===== */
 .blank.prefilled{background:#E6FFFA;border-radius:4px;color:#2C7A7B;border-bottom-color:#2C7A7B;font-weight:700;}
 .blank.selected{outline:2.5px solid #E53E3E !important;background:#FFF5F5 !important;}
+/* ===== SELECT BLANK (テストモード) ===== */
+.blank-sel{display:inline-block;border:none;border-bottom:2px solid #2C7A7B;background:#EBF8FF;color:#2C7A7B;font-size:14px;font-weight:700;vertical-align:middle;border-radius:4px;padding:3px 6px;cursor:pointer;font-family:inherit;max-width:200px;}
+.blank-sel.correct{background:#9AE6B4;border-bottom-color:#38A169;color:#22543D;}
+.blank-sel.wrong{background:#FED7D7;border-bottom-color:#E53E3E;color:#9B2C2C;}
 /* ===== IMAGES ===== */
 .unit-img{width:100%;border-radius:10px;margin:12px 0 4px;display:block;box-shadow:0 2px 10px rgba(0,0,0,.12);}
 .img-cap{font-size:11px;color:#718096;text-align:center;margin-bottom:14px;}
@@ -842,29 +846,42 @@ function saveRank(key, sec){
 
 /* ===== チャレンジ開始 ===== */
 function startChallenge(key){
-  const s = state[key];
+  var s = state[key];
   s.active = true; s.elapsed = 0;
   document.getElementById('start-'+key).disabled = true;
   document.getElementById('judge-'+key).disabled = false;
   document.getElementById('example-'+key).disabled = false;
 
-  // 空欄をクリア（タップできるよう全角スペースをセット）
-  document.querySelectorAll(`[data-key="${key}"]`).forEach(b=>{
-    b.textContent='　　'; b.classList.remove('prefilled','correct','wrong','filled'); b.style.outline='';
-    b.style.color='#CBD5E0';
+  // 各 span を非表示にして select を挿入
+  document.querySelectorAll('[data-key="' + key + '"]').forEach(function(b){
+    b.style.display = 'none';
+    var sel = document.createElement('select');
+    sel.className = 'blank-sel';
+    sel.dataset.key = key;
+    sel.dataset.ans = b.dataset.ans;
+    var defOpt = document.createElement('option');
+    defOpt.value = '';
+    defOpt.textContent = '-- 選ぶ --';
+    sel.appendChild(defOpt);
+    BANKS[key].forEach(function(word){
+      var opt = document.createElement('option');
+      opt.value = word;
+      opt.textContent = word;
+      sel.appendChild(opt);
+    });
+    b.parentNode.insertBefore(sel, b.nextSibling);
   });
 
-  // チップを語群エリアに生成
-  const pool = [...BANKS[key]].sort(()=>Math.random()-.5);
-  const cont = document.getElementById('chips-'+key);
-  // チップをステータス表示（視覚的参考）
-  cont.innerHTML = BANKS[key].map(w=>`<span class="chip" data-word="${w}">${w}</span>`).join('');
+  // 語群チップを参考表示
+  var cont = document.getElementById('chips-'+key);
+  cont.innerHTML = '<span style="font-size:12px;color:#718096;font-weight:600;">【語群】</span> ' +
+    BANKS[key].map(function(w){ return '<span class="chip" style="cursor:default;">' + w + '</span>'; }).join('');
 
   // タイマー
-  s.timer = setInterval(()=>{
+  s.timer = setInterval(function(){
     s.elapsed++;
-    const m = String(Math.floor(s.elapsed/60)).padStart(2,'0');
-    const sec = String(s.elapsed%60).padStart(2,'0');
+    var m = String(Math.floor(s.elapsed/60)).padStart(2,'0');
+    var sec = String(s.elapsed%60).padStart(2,'0');
     document.getElementById('timer-'+key).textContent = m+':'+sec;
   },1000);
 }
@@ -920,15 +937,13 @@ function closePicker(){
 
 /* ===== 採点 ===== */
 function judge(key){
-  const s = state[key];
+  var s = state[key];
   clearInterval(s.timer);
-  const blanks = document.querySelectorAll(`[data-key="${key}"]`);
-  let all = true;
-  blanks.forEach(b=>{
-    const ok = b.textContent.trim() === b.dataset.ans;
-    b.classList.toggle('correct', ok);
-    b.classList.toggle('wrong', !ok);
-    b.classList.remove('filled');
+  var all = true;
+  document.querySelectorAll('select.blank-sel[data-key="' + key + '"]').forEach(function(sel){
+    var ok = sel.value === sel.dataset.ans;
+    sel.classList.toggle('correct', ok);
+    sel.classList.toggle('wrong', !ok);
     if(!ok) all = false;
   });
   if(all){
@@ -942,11 +957,10 @@ function judge(key){
 function showExample(key){
   clearInterval(state[key].timer);
   closePicker();
-  document.querySelectorAll(`[data-key="${key}"]`).forEach(b=>{
-    b.textContent = b.dataset.ans;
-    b.classList.add('correct');
-    b.classList.remove('filled','wrong','prefilled');
-    b.style.outline=''; b.style.color='';
+  document.querySelectorAll('select.blank-sel[data-key="' + key + '"]').forEach(function(sel){
+    sel.value = sel.dataset.ans;
+    sel.classList.add('correct');
+    sel.classList.remove('wrong');
   });
 }
 
@@ -960,8 +974,14 @@ function resetChallenge(key){
   document.getElementById('judge-'+key).disabled = true;
   document.getElementById('example-'+key).disabled = true;
   document.getElementById('clear-'+key).style.display='none';
-  document.querySelectorAll(`[data-key="${key}"]`).forEach(b=>{
-    b.textContent=b.dataset.ans;
+  // select を削除
+  document.querySelectorAll('select.blank-sel[data-key="' + key + '"]').forEach(function(sel){
+    sel.remove();
+  });
+  // span を再表示（学習モード：答えを表示）
+  document.querySelectorAll('[data-key="' + key + '"]').forEach(function(b){
+    b.style.display = '';
+    b.textContent = b.dataset.ans;
     b.classList.add('prefilled');
     b.classList.remove('filled','correct','wrong');
     b.style.outline=''; b.style.color='';
